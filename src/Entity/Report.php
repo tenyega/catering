@@ -7,6 +7,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReportRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+
 class Report
 {
     #[ORM\Id]
@@ -22,6 +24,12 @@ class Report
 
     #[ORM\Column]
     private ?int $totalOrders = null;
+
+    #[ORM\PrePersist]
+    public function setPaymentDateValue(): void
+    {
+        $this->reportDate = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {

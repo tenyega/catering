@@ -7,6 +7,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+
 class Payment
 {
     #[ORM\Id]
@@ -23,6 +25,13 @@ class Payment
     #[ORM\OneToOne(inversedBy: 'payment', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $orderid = null;
+
+    #[ORM\PrePersist]
+    public function setPaymentDateValue(): void
+    {
+        $this->paymentDate = new \DateTimeImmutable();
+    }
+
 
     public function getId(): ?int
     {

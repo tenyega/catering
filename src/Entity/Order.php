@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
+#[ORM\HasLifecycleCallbacks]
+
 class Order
 {
     #[ORM\Id]
@@ -35,6 +37,20 @@ class Order
      */
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'orderid', orphanRemoval: true)]
     private Collection $orderItems;
+
+    #[ORM\PrePersist]
+    public function setorderDateValue(): void
+    {
+        $this->orderDate = new \DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function setOrderUpdateValue(): void
+    {
+        $this->orderDate = new \DateTimeImmutable();
+    }
+
+
 
     public function __construct()
     {
