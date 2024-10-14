@@ -2,16 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\CustomerRepository;
+use App\Repository\EmployeeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: CustomerRepository::class)]
+#[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class Customer implements UserInterface, PasswordAuthenticatedUserInterface
+class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -33,22 +33,10 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 120)]
-    private ?string $firstName = null;
-
-    #[ORM\Column(length: 120)]
-    private ?string $lastName = null;
-
-    #[ORM\Column(length: 120)]
-    private ?string $phone = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $address = null;
-
     /**
      * @var Collection<int, Order>
      */
-    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'customerId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'employeeId')]
     private Collection $orders;
 
     public function __construct()
@@ -131,54 +119,6 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName): static
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName): static
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): static
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(string $address): static
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Order>
      */
@@ -191,7 +131,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->orders->contains($order)) {
             $this->orders->add($order);
-            $order->setCustomerId($this);
+            $order->setEmployeeId($this);
         }
 
         return $this;
@@ -201,8 +141,8 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->orders->removeElement($order)) {
             // set the owning side to null (unless already changed)
-            if ($order->getCustomerId() === $this) {
-                $order->setCustomerId(null);
+            if ($order->getEmployeeId() === $this) {
+                $order->setEmployeeId(null);
             }
         }
 

@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -27,19 +25,20 @@ class Order
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Customer $customerid = null;
+    private ?Customer $customerId = null;
 
-    #[ORM\OneToOne(mappedBy: 'orderid', cascade: ['persist', 'remove'])]
-    private ?Payment $payment = null;
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Employee $employeeId = null;
 
-    /**
-     * @var Collection<int, OrderItem>
-     */
-    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'orderid', orphanRemoval: true)]
-    private Collection $orderItems;
+    #[ORM\Column(length: 255)]
+    private ?string $paymentStatus = null;
+
+    #[ORM\Column(length: 120)]
+    private ?string $orderStatus = null;
 
     #[ORM\PrePersist]
-    public function setorderDateValue(): void
+    public function setOrderDateValue(): void
     {
         $this->orderDate = new \DateTimeImmutable();
     }
@@ -48,13 +47,6 @@ class Order
     public function setOrderUpdateValue(): void
     {
         $this->orderDate = new \DateTimeImmutable();
-    }
-
-
-
-    public function __construct()
-    {
-        $this->orderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,61 +78,50 @@ class Order
         return $this;
     }
 
-    public function getCustomerid(): ?Customer
+    public function getCustomerId(): ?Customer
     {
-        return $this->customerid;
+        return $this->customerId;
     }
 
-    public function setCustomerid(?Customer $customerid): static
+    public function setCustomerId(?Customer $customerId): static
     {
-        $this->customerid = $customerid;
+        $this->customerId = $customerId;
 
         return $this;
     }
 
-    public function getPayment(): ?Payment
+    public function getEmployeeId(): ?Employee
     {
-        return $this->payment;
+        return $this->employeeId;
     }
 
-    public function setPayment(Payment $payment): static
+    public function setEmployeeId(?Employee $employeeId): static
     {
-        // set the owning side of the relation if necessary
-        if ($payment->getOrderid() !== $this) {
-            $payment->setOrderid($this);
-        }
-
-        $this->payment = $payment;
+        $this->employeeId = $employeeId;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, OrderItem>
-     */
-    public function getOrderItems(): Collection
+    public function getPaymentStatus(): ?string
     {
-        return $this->orderItems;
+        return $this->paymentStatus;
     }
 
-    public function addOrderItem(OrderItem $orderItem): static
+    public function setPaymentStatus(string $paymentStatus): static
     {
-        if (!$this->orderItems->contains($orderItem)) {
-            $this->orderItems->add($orderItem);
-            $orderItem->setOrderid($this);
-        }
+        $this->paymentStatus = $paymentStatus;
 
         return $this;
     }
 
-    public function removeOrderItem(OrderItem $orderItem): static
+    public function getOrderStatus(): ?string
     {
-        if ($this->orderItems->removeElement($orderItem)) {
-            // set the owning side to null (unless already changed)
-            if ($orderItem->getOrderid() === $this) {
-                $orderItem->setOrderid(null);
-            }
-        }
+        return $this->orderStatus;
+    }
+
+    public function setOrderStatus(string $orderStatus): static
+    {
+        $this->orderStatus = $orderStatus;
 
         return $this;
     }
