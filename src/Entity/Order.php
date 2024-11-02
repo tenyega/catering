@@ -3,13 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
-#[ORM\HasLifecycleCallbacks]
-
 class Order
 {
     #[ORM\Id]
@@ -20,16 +20,16 @@ class Order
     #[ORM\Column]
     private ?\DateTimeImmutable $orderDate = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $totalAmount = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Customer $customerId = null;
+    private ?Customer $customer = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Employee $employeeId = null;
+    private ?Employee $employee = null;
 
     #[ORM\Column(length: 255)]
     private ?string $paymentStatus = null;
@@ -37,16 +37,18 @@ class Order
     #[ORM\Column(length: 120)]
     private ?string $orderStatus = null;
 
-    #[ORM\PrePersist]
-    public function setOrderDateValue(): void
-    {
-        $this->orderDate = new \DateTimeImmutable();
-    }
+    /**
+     * @var Collection<int, OrderItem>
+     */
+    #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'orders')]
+    private Collection $orderItems;
 
-    #[ORM\PreUpdate]
-    public function setOrderUpdateValue(): void
+    #[ORM\OneToOne(mappedBy: 'orderId', cascade: ['persist', 'remove'])]
+    private ?Payment $payment = null;
+
+    public function __construct()
     {
-        $this->orderDate = new \DateTimeImmutable();
+        $this->orderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,26 +80,26 @@ class Order
         return $this;
     }
 
-    public function getCustomerId(): ?Customer
+    public function getCustomer(): ?Customer
     {
-        return $this->customerId;
+        return $this->customer;
     }
 
-    public function setCustomerId(?Customer $customerId): static
+    public function setCustomer(?Customer $customer): static
     {
-        $this->customerId = $customerId;
+        $this->customer = $customer;
 
         return $this;
     }
 
-    public function getEmployeeId(): ?Employee
+    public function getEmployee(): ?Employee
     {
-        return $this->employeeId;
+        return $this->employee;
     }
 
-    public function setEmployeeId(?Employee $employeeId): static
+    public function setEmployee(?Employee $employee): static
     {
-        $this->employeeId = $employeeId;
+        $this->employee = $employee;
 
         return $this;
     }
@@ -122,6 +124,53 @@ class Order
     public function setOrderStatus(string $orderStatus): static
     {
         $this->orderStatus = $orderStatus;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderItem>
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItem $orderItem): static
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems->add($orderItem);
+            $orderItem->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): static
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getOrders() === $this) {
+                $orderItem->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPayment(): ?Payment
+    {
+        return $this->payment;
+    }
+
+    public function setPayment(Payment $payment): static
+    {
+        // set the owning side of the relation if necessary
+        if ($payment->getOrderId() !== $this) {
+            $payment->setOrderId($this);
+        }
+
+        $this->payment = $payment;
 
         return $this;
     }

@@ -36,7 +36,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Order>
      */
-    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'employeeId')]
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'employee')]
     private Collection $orders;
 
     public function __construct()
@@ -73,7 +73,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
-     *
      * @return list<string>
      */
     public function getRoles(): array
@@ -131,7 +130,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->orders->contains($order)) {
             $this->orders->add($order);
-            $order->setEmployeeId($this);
+            $order->setEmployee($this);
         }
 
         return $this;
@@ -141,8 +140,8 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->orders->removeElement($order)) {
             // set the owning side to null (unless already changed)
-            if ($order->getEmployeeId() === $this) {
-                $order->setEmployeeId(null);
+            if ($order->getEmployee() === $this) {
+                $order->setEmployee(null);
             }
         }
 
