@@ -58,7 +58,11 @@ class Order
     {
         $this->orderDate = new \DateTimeImmutable();
     }
-
+    #[ORM\PrePersist]
+    public function setTotalAmountValue(): void
+    {
+        $this->totalAmount = 0;
+    }
 
     public function getId(): ?int
     {
