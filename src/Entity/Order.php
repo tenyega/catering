@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
+#[ORM\HasLifecycleCallbacks]
+
 class Order
 {
     #[ORM\Id]
@@ -50,6 +52,13 @@ class Order
     {
         $this->orderItems = new ArrayCollection();
     }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->orderDate = new \DateTimeImmutable();
+    }
+
 
     public function getId(): ?int
     {

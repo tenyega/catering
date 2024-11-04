@@ -25,7 +25,7 @@ class OrderItem
     private ?MenuItem $MenuItem = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $specialRequest = null;
+    private ?string $specialRequest = 'No special request';
 
     #[ORM\ManyToOne(inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]

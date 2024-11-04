@@ -29,7 +29,7 @@ class MenuItem
     private ?string $category = null;
 
     #[ORM\Column]
-    private ?bool $isAvailable = null;
+    private ?bool $isAvailable = false;
 
     /**
      * @var Collection<int, OrderItem>
