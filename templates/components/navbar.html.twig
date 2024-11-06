@@ -15,19 +15,21 @@
 				class="container flex items-center justify-between px-4 py-3 mx-auto">
 
 				<!-- Brand Name -->
-				<a href="#" class="text-2xl font-bold text-blue-500">MyWebsite</a>
+				<a href="{{path('app_home')}}" class="text-2xl font-bold text-blue-500">
+					<img src="./catering.png" alt="logo" class="w-16 h-16 border-2 border-gray-300 rounded-full">
+				</a>
 
 				<!-- Links (Hidden on mobile) -->
 				<div class="hidden space-x-8 md:flex">
-					<a href="{{path('starter')}}" class="text-gray-700 hover:text-blue-500">Starter</a>
-					<a href="{{ path('maincourse')}}" class="text-gray-700 hover:text-blue-500">Main course</a>
-					<a href="{{ path('dessert') }}" class="text-gray-700 hover:text-blue-500">Dessert</a>
-					<a href="{{ path('snacks')}}" class="text-gray-700 hover:text-blue-500">Snacks</a>
-					<a href="{{ path('beverage')}}" class="text-gray-700 hover:text-blue-500">Beverages</a>
-					<a href="#" class="text-gray-700 hover:text-blue-500">Panier</a>
+					<a href="{{path('starter')}}" class="text-[rgb(35,31,32)]  hover:text-blue-500">Starter</a>
+					<a href="{{ path('maincourse')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Main course</a>
+					<a href="{{ path('dessert') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">Dessert</a>
+					<a href="{{ path('snacks')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Snacks</a>
+					<a href="{{ path('beverage')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Beverages</a>
+					<a href="#" class="text-[rgb(35,31,32)] hover:text-blue-500">Panier</a>
 
 
-					<a href="#login" class="text-gray-700 hover:text-blue-500">Login</a>
+					<a href="#login" class="text-[rgb(35,31,32)] hover:text-blue-500">Login</a>
 				</div>
 
 				<!-- Hamburger Icon (Visible on mobile) -->
@@ -42,10 +44,13 @@
 
 			<!-- Mobile Menu (Hidden by default) -->
 			<div id="mobile-menu" class="hidden bg-white border-t border-gray-200 md:hidden">
-				<a href="#menu" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Starter</a>
-				<a href="#speciality" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Main Course</a>
-				<a href="#speciality" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dessert</a>
-				<a href="#speciality" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Snacks</a>
+				<a href="{{path('starter')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Starter</a>
+				<a href="{{path('maincourse')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Main Course</a>
+				<a href="{{path('dessert')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Dessert</a>
+				<a href="{{path('snacks')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Snacks</a>
+				<a href="#" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Panier</a>
+
+
 				<a href="#login" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Login</a>
 			</div>
 		</nav>
