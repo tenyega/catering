@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
         $menuItemArray = [];
         $employeeArray = [];
         $orderTotals = []; // Temporary array to store totals for each Order
-        $categoryArray = ['STARTER', 'MAIN COURSE', 'DESSERT'];
+        $categoryArray = ['STARTER', 'MAIN COURSE', 'DESSERT', 'SNACKS', 'BEVERAGE'];
         $totalSales = 0;
         $count = 0;
 
@@ -86,13 +86,14 @@ class AppFixtures extends Fixture
 
 
         //CREATING MENU ITEMS 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $menuItem = new MenuItem();
             $menuItem->setAvailable($faker->boolean(90))
                 ->setCategory($faker->randomElement($categoryArray))
                 ->setDescription($faker->paragraph(3, true))
                 ->setName($faker->name())
                 ->setPrice($faker->randomFloat(2, 0, 100))
+                ->setImg("img1.jpg")
             ;
             $menuItemArray[] = $menuItem;
             $manager->persist($menuItem);

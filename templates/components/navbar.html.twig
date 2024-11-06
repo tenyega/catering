@@ -19,8 +19,14 @@
 
 				<!-- Links (Hidden on mobile) -->
 				<div class="hidden space-x-8 md:flex">
-					<a href="#menu" class="text-gray-700 hover:text-blue-500">Menu</a>
-					<a href="#speciality" class="text-gray-700 hover:text-blue-500">Speciality</a>
+					<a href="{{path('starter')}}" class="text-gray-700 hover:text-blue-500">Starter</a>
+					<a href="{{ path('maincourse')}}" class="text-gray-700 hover:text-blue-500">Main course</a>
+					<a href="{{ path('dessert') }}" class="text-gray-700 hover:text-blue-500">Dessert</a>
+					<a href="{{ path('snacks')}}" class="text-gray-700 hover:text-blue-500">Snacks</a>
+					<a href="{{ path('beverage')}}" class="text-gray-700 hover:text-blue-500">Beverages</a>
+					<a href="#" class="text-gray-700 hover:text-blue-500">Panier</a>
+
+
 					<a href="#login" class="text-gray-700 hover:text-blue-500">Login</a>
 				</div>
 
@@ -36,8 +42,10 @@
 
 			<!-- Mobile Menu (Hidden by default) -->
 			<div id="mobile-menu" class="hidden bg-white border-t border-gray-200 md:hidden">
-				<a href="#menu" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Menu</a>
-				<a href="#speciality" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Speciality</a>
+				<a href="#menu" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Starter</a>
+				<a href="#speciality" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Main Course</a>
+				<a href="#speciality" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dessert</a>
+				<a href="#speciality" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Snacks</a>
 				<a href="#login" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Login</a>
 			</div>
 		</nav>

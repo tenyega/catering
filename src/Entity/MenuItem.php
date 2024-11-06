@@ -37,6 +37,9 @@ class MenuItem
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'MenuItem')]
     private Collection $orderItems;
 
+    #[ORM\Column(length: 120)]
+    private ?string $img = null;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
@@ -133,6 +136,18 @@ class MenuItem
                 $orderItem->setMenuItem(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(string $img): static
+    {
+        $this->img = $img;
 
         return $this;
     }

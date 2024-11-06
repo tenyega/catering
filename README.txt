@@ -76,6 +76,15 @@ Payment
 	createdAt datetime_immutable not null
 	updatedAt datetime_immutable not null
 
+
+ADDED IMAGE TO THE MENUITEM 
+	symfony console make:entity MenuItem
+	img varchar120 not null
+
+
+CREATED navbar and footer twigs as a components 
+and added different routes for starter, main course, dessert, snacks  and its corresponding templates 
+
 	
 	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
 	symfony console make:entity Report
