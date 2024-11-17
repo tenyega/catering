@@ -23,7 +23,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/starter', name: 'starter')]
+    #[Route('/starter', name: 'app_starter')]
     public function starter(MenuItemRepository $mir)
     {
         $starters = $mir->findBy([
@@ -34,7 +34,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/main_course', name: 'maincourse')]
+    #[Route('/main_course', name: 'app_maincourse')]
     public function maincourse(MenuItemRepository $mir)
     {
         $mainCourses = $mir->findBy([

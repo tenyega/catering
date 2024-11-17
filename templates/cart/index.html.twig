@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Menu Name</th>
+				<th>Price of Menu</th>
+
+				<th>category</th>
+				<th>quantity</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in items %}
+				<tr>
+					<td>
+						{{item.menuItem.name}}
+					</td>
+					<td>
+						{{item.menuItem.price}}
+					</td>
+
+					<td>
+						{{item.menuItem.category}}
+					</td>
+					<td>
+						{{item.qty}}
+					</td>
+					<td>
+						{{item.qty * item.menuItem.price}}
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="3">TOTAL and Quantity </td>
+				<td>{{total}} ---- {{totalQuantity}}</td>
+			</tr>
+		</tfoot>
+	</table>
+{% endblock %}

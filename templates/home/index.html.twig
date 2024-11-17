@@ -4,6 +4,22 @@
 {% endblock %}
 
 {% block body %}
+	<div x-data="{ localisationOpen: false }">
+
+		<div x-show="localisationOpen" @click.away="localisationOpen = false" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 z-50 flex-shrink-0 w-48 mt-2 origin-top-right rounded-md shadow-lg">
+			<div class="px-2 py-2 bg-white rounded-md shadow dark-mode:bg-gray-800 h-[30vh] overflow-auto">
+
+				<a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">
+					STARTER
+				</a>
+				<a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">MAIN COURSE</a>
+				<a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">DESSERT</a>
+				<a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">SNACKS</a>
+				<a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">BEVERAGE</a>
+
+			</div>
+		</div>
+	</div>
 	<h1 class="mt-8 mb-4 text-5xl font-bold text-center text-gray-800">
 		Catering Cash Register 🍕
 	</h1>
@@ -31,13 +47,26 @@
 					<!-- Price and Add Button -->
 					<div class="flex items-center justify-between mt-4">
 						<span class="text-lg font-semibold text-gray-800">{{ menuItem.price }}&euro;</span>
+						<form action="{{ path('cart_remove', {'id': menuItem.id}) }}" method="POST" class="inline-block">
+							<button type="submit" class="flex items-center justify-center w-10 h-10 text-red-600 border-2 border-red-600 rounded-full hover:text-red-800 hover:border-red-800">
+								<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd"/>
+								</svg>
+							</button>
+						</form>
+
 
 						<!-- Add to Menu Button with Plus Icon -->
-						<a href="#" class="flex items-center justify-center w-10 h-10 text-blue-600 border-2 border-blue-600 rounded-full hover:text-blue-800 hover:border-blue-800">
-							<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-								<path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
-							</svg>
-						</a>
+						<form action="{{ path('cart_add', {'id': menuItem.id}) }}" method="POST" class="inline-block">
+
+							<button type="submit" class="flex items-center justify-center w-10 h-10 text-blue-600 border-2 border-blue-600 rounded-full hover:text-blue-800 hover:border-blue-800">
+								<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
+								</svg>
+							</button>
+						</form>
+
+
 					</div>
 				</div>
 			</div>

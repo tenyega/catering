@@ -31,7 +31,6 @@ class AppFixtures extends Fixture
         $menuItemArray = [];
         $employeeArray = [];
         $orderTotals = []; // Temporary array to store totals for each Order
-        $categoryArray = ['STARTER', 'MAIN COURSE', 'DESSERT', 'SNACKS', 'BEVERAGE'];
         $totalSales = 0;
         $count = 0;
         $names = [

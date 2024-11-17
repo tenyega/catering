@@ -85,7 +85,15 @@ ADDED IMAGE TO THE MENUITEM
 CREATED navbar and footer twigs as a components 
 and added different routes for starter, main course, dessert, snacks  and its corresponding templates 
 
-	
+
+ADDED THE BUNDLE 
+	composer require symfony/security-core
+	 to be able to use it in the cart service 
+	 might need another table cart to be able to store the temperory cart details 
+
+
+ADDED CARTCONTROLLER 
+	symfony console make:controller Cart
 	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
 	symfony console make:entity Report
 Report
@@ -106,9 +114,6 @@ Symfony console d:d:c
 Symfony console make:migration
 Symfony console d:m:m
 Symfony console d:f:l
-
-
-
 
 
 

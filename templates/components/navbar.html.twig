@@ -21,12 +21,21 @@
 
 				<!-- Links (Hidden on mobile) -->
 				<div class="hidden space-x-8 md:flex">
-					<a href="{{path('starter')}}" class="text-[rgb(35,31,32)]  hover:text-blue-500">Starter</a>
-					<a href="{{ path('maincourse')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Main course</a>
-					<a href="{{ path('dessert') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">Dessert</a>
-					<a href="{{ path('snacks')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Snacks</a>
-					<a href="{{ path('beverage')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Beverages</a>
-					<a href="#" class="text-[rgb(35,31,32)] hover:text-blue-500">Panier</a>
+					{% set qtys = app.session.get('cart', []) %}
+					{% set totalQty = 0 %}
+					{# Initialize totalQty before summing #}
+
+					{% for key,  value in qtys %}
+						{% set totalQty = totalQty + value %}
+					{% endfor %}
+
+					<a href="{{ path('cart_show') }}" class="relative text-[rgb(35,31,32)] hover:text-blue-500">
+						Panier:
+						{# Circle for totalQty #}
+						<span class="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full -top-2 -right-3">
+							{{ totalQty }}
+						</span>
+					</a>
 
 
 					<a href="#login" class="text-[rgb(35,31,32)] hover:text-blue-500">Login</a>
@@ -44,10 +53,6 @@
 
 			<!-- Mobile Menu (Hidden by default) -->
 			<div id="mobile-menu" class="hidden bg-white border-t border-gray-200 md:hidden">
-				<a href="{{path('starter')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Starter</a>
-				<a href="{{path('maincourse')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Main Course</a>
-				<a href="{{path('dessert')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Dessert</a>
-				<a href="{{path('snacks')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Snacks</a>
 				<a href="#" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Panier</a>
 
 
@@ -62,6 +67,5 @@ const mobileMenu = document.getElementById('mobile-menu');
 mobileMenu.classList.toggle('hidden');
 });
 		</script>
-
 	</body>
-</html>
+</html></body></html>
