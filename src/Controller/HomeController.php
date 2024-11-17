@@ -13,6 +13,8 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(MenuItemRepository $mir): Response
     {
+        $title = "Catering Cash Register 🍕";
+
         $menuItems = $mir->findBy([
             "isAvailable" => true
         ]);
@@ -20,21 +22,46 @@ class HomeController extends AbstractController
         // $menuItems = $mir->findAll();
         return $this->render('home/index.html.twig', [
             'menuItems' => $menuItems,
+            'title' => $title
         ]);
     }
 
-    #[Route('/starter', name: 'app_starter')]
-    public function starter(MenuItemRepository $mir)
+    #[Route('/{filter}', name: 'app_filter')]
+    public function starter(string $filter, MenuItemRepository $mir)
     {
-        $starters = $mir->findBy([
-            'category' => 'STARTER'
+
+        switch ($filter) {
+            case 'STARTER':
+                $title = "Starters 🥗";
+                break;
+            case "MAIN COURSE":
+                $title = "Main Courses 🍝";
+                break;
+
+            case "DESSERT":
+                $title = "Desserts 🍩";
+                break;
+
+            case "BEVERAGE":
+                $title = "Beverages ☕";
+                break;
+            case "SNACKS":
+                $title = "Snacks 🍿";
+                break;
+            default:
+                $title = "Catering Cash Register 🍕";
+                break;
+        }
+        $menuItems = $mir->findBy([
+            'category' => $filter
         ]);
-        return $this->render('home/starter.html.twig', [
-            'starters' => $starters,
+        return $this->render('home/index.html.twig', [
+            'menuItems' => $menuItems,
+            'title' => $title
         ]);
     }
 
-    #[Route('/main_course', name: 'app_maincourse')]
+    #[Route('/m/main_course', name: 'app_maincourse')]
     public function maincourse(MenuItemRepository $mir)
     {
         $mainCourses = $mir->findBy([
@@ -45,7 +72,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/dessert', name: 'dessert')]
+    #[Route('/m/dessert', name: 'dessert')]
     public function dessert(MenuItemRepository $mir)
     {
         $desserts = $mir->findBy([
@@ -56,7 +83,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/snacks', name: 'snacks')]
+    #[Route('/m/snacks', name: 'snacks')]
     public function snacks(MenuItemRepository $mir)
     {
         $snacks = $mir->findBy([
@@ -68,7 +95,7 @@ class HomeController extends AbstractController
     }
 
 
-    #[Route('/beverage', name: 'beverage')]
+    #[Route('/m/beverage', name: 'beverage')]
     public function beverages(MenuItemRepository $mir)
     {
         $beverages = $mir->findBy([
