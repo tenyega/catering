@@ -61,7 +61,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/m/main_course', name: 'app_maincourse')]
+    /*    #[Route('/m/main_course', name: 'app_maincourse')]
     public function maincourse(MenuItemRepository $mir)
     {
         $mainCourses = $mir->findBy([
@@ -104,5 +104,5 @@ class HomeController extends AbstractController
         return $this->render('home/beverage.html.twig', [
             'beverages' => $beverages,
         ]);
-    }
+    } */
 }

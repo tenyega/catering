@@ -24,7 +24,7 @@ class CartController extends AbstractController
 
 
     #[Route('/cart/add/{id}', name: 'cart_add', requirements: ['id' => '\d+'])]
-    public function addToCart($id,  MenuItemRepository $mir, SessionInterface $sessionInterface)
+    public function addToCart($id,  MenuItemRepository $mir, SessionInterface $sessionInterface, Request $request)
     {
 
         $menuItem = $mir->find($id);
@@ -39,20 +39,27 @@ class CartController extends AbstractController
         }
 
         $sessionInterface->set('cart', $cart);
+
+        $referer = $request->headers->get('referer');
+
+        // If referer is not empty, redirect to it, otherwise, redirect to a default route
+        if ($referer) {
+            return $this->redirect($referer);
+        }
         return $this->redirectToRoute('app_home');
     }
 
     #[Route('/cart/remove/{id}', name: 'cart_remove', requirements: ['id' => '\d+'])]
-    public function removeFromCart($id,  MenuItemRepository $mir, SessionInterface $sessionInterface)
+    public function removeFromCart($id,  MenuItemRepository $mir, SessionInterface $sessionInterface, Request $request)
     {
 
         $menuItem = $mir->find($id);
         if (!$menuItem) {
             throw $this->createNotFoundException("The MenuItem doesn't exist. Sorry");
         }
-        
+
         $cart = $sessionInterface->get('cart', []);
-        
+
         // Check if the item exists in the cart
         if (array_key_exists($id, $cart)) {
             // If the quantity is greater than 0, decrement it
@@ -63,12 +70,18 @@ class CartController extends AbstractController
                 unset($cart[$id]);
             }
         }
-        
+
         // Update the session with the modified cart
         $sessionInterface->set('cart', $cart);
-        
-        return $this->redirectToRoute('app_home');
+        $referer = $request->headers->get('referer');
+
+        // If referer is not empty, redirect to it, otherwise, redirect to a default route
+        if ($referer) {
+            return $this->redirect($referer);
         }
+
+        return $this->redirectToRoute('app_home');
+    }
 
 
 
