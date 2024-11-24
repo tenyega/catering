@@ -59,12 +59,17 @@
 						<td colspan="4" class="px-4 py-2 font-bold text-right text-gray-700 border border-gray-300">TOTAL:</td>
 						<td class="px-4 py-2 font-bold text-gray-700 border border-gray-300">{{ total }}
 							€</td>
-						<td class="px-4 py-2 text-center border border-gray-300">
-							<form action="#" method="POST">
-								<button type="submit" class="px-6 py-2 text-white bg-green-500 rounded hover:bg-green-600">
-									Pay Now
-								</button>
-							</form>
+						<td
+							class="px-4 py-2 text-center border border-gray-300">
+							<!--<form action="{{ path('cart_pay') }}" method="POST">
+																						<input type="hidden" name="_token" value="{{ csrf_token('cart_pay') }}">
+																						<button type="submit" class="px-6 py-2 text-white bg-green-500 rounded hover:bg-green-600">
+																							Pay Now
+																						</button>
+																					</form>-->
+							<a href="{{ path('cart_pay') }}" class="px-6 py-2 text-white bg-green-500 rounded hover:bg-green-600">
+								Pay
+							</a>
 						</td>
 					</tr>
 				</tfoot>

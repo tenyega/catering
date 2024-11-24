@@ -6,15 +6,15 @@ use App\Repository\MenuItemRepository;
 use App\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(MenuItemRepository $mir): Response
+    public function index(MenuItemRepository $mir, SessionInterface $sessionInterface): Response
     {
         $title = "Catering Cash Register 🍕";
-
         $menuItems = $mir->findBy([
             "isAvailable" => true
         ]);

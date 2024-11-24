@@ -2,9 +2,15 @@
 // src/Controller/CartController.php
 namespace App\Controller;
 
+use App\Entity\Order;
+use App\Entity\OrderItem;
+use App\Repository\CustomerRepository;
+use App\Repository\EmployeeRepository;
 use App\Repository\MenuItemRepository;
 use App\Repository\OrderRepository;
 use App\Service\CartService;
+use App\Service\PaymentService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -42,10 +48,13 @@ class CartController extends AbstractController
 
         $referer = $request->headers->get('referer');
 
+
         // If referer is not empty, redirect to it, otherwise, redirect to a default route
         if ($referer) {
+
             return $this->redirect($referer);
         }
+
         return $this->redirectToRoute('app_home');
     }
 

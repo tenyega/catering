@@ -94,6 +94,46 @@ ADDED THE BUNDLE
 
 ADDED CARTCONTROLLER 
 	symfony console make:controller Cart
+
+	Added the cart items in the sessions and displayed it in a seperate route cart_show at this stage m not using the CartService 
+	total Quantity and total amount is calculated at cartcontroller and then only its passed to the twig files 
+	Its the index.html.twig under the cart which displays the actual cart items ( until this stage the values of the cart are not affected inside the database at all )
+
+
+INCLUDING PAYMENT 
+	symfony console make: controller Payment
+	added PaymentService  to the service folder and STRIPE KEYS INSIDE THE env.local and also as a parameter inside the service.yaml 
+
+	INTEGRATED STRIPE 
+	 composer require stripe/stripe-php
+
+CRUD MENUITEM
+symfony console make:controller MenuItem 
+
+symfony console make:form MenuItem
+
+CREATED TWIG EXTENSION UNDER Twig folder called FileExistsExtension.php which checks if the image exist on the server or not 
+and then register the twig extension inside the services.yaml 
+	services:
+  	# default configuration for services in *this* file
+  		App\Service\PaymentService: ~
+  		App\Twig\FileExistsExtension:
+        	tags: [ 'twig.extension' ]
+	now that the extension is registered in the service.yaml, u can use it like 
+		<img class="object-cover w-full h-48" src="{{ file_exists('img/' ~ menuItem.name ~ '.jpg') ? asset('img/' ~ menuItem.name ~ '.jpg') : asset('img/default.jpg') }}" alt="Menu Image">
+
+
+CRUD Customer
+symfony console make:controller Customer
+symfony console make:form Customer
+
+
+CRUD Employee
+symfony console make:controller Employee
+symfony console make:form Employee
+ADMIN RIGHTS 
+	- CRUD MENUITEM
+	- CRUD Custormer
 	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
 	symfony console make:entity Report
 Report

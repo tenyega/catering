@@ -1,0 +1,42 @@
+{% extends "base.html.twig" %}
+{% block title %}
+	Payment
+
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="https://js.stripe.com/v3/"></script>
+	<script>
+		const clientSecret = "{{ clientSecret }}";
+const stripePublicKey ='{{ stripePublicKey }}';
+const redirectAfterSuccessURL = "{{ url('pay', {'id': purchase.getId()}) }}";
+	</script>
+	<script src="./js/payment.js"></script>
+
+{% endblock %}
+{% block body %}
+	<h1>Payment with Stripe</h1>
+
+	{# <form id="payment-form">
+				<div id="card-element"><!--Stripe.js injects the Card Element--></div>
+				<button id="submit" class='btn btn-success'>
+					<div class="hidden spinner" id="spinner"></div>
+					<span id="button-text">Pay now</span>
+				</button>
+				<p id="card-error" role="alert"></p>
+		
+			</form> #}
+	<form id="payment-form">
+		<div
+			id="payment-element"><!--Stripe.js injects the Payment Element-->
+		</div>
+		<button id="submit" class="btn btn-success">
+			<div class="hidden spinner" id="spinner"></div>
+			<span id="button-text">Pay now</span>
+		</button>
+		<div id="payment-message" class="hidden"></div>
+	</form>
+
+{% endblock %}

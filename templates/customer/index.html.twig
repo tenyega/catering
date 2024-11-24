@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Customer List Page
+{% endblock %}
+
+{% block body %}
+	<a href="{{ path('customer_add') }}" class="px-3 py-1 text-white bg-green-500 rounded hover:bg-green-600">
+		Add new Customer
+	</a>
+	<div class="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-3">
+		{% for customer in customers %}
+
+			<!-- Example Menu Item Card -->
+			<div class="overflow-hidden bg-white rounded-lg shadow-md">
+
+				<div class="p-4">
+					<h3 class="mb-2 text-lg font-bold">{{customer.firstName}}
+						{{customer.lastName}}</h3>
+
+					<p class="text-sm text-gray-600">
+						Email:
+						{{customer.email}}</p>
+					<p class="text-sm text-gray-600" type='password'>
+						Password:
+						<em>Not Displayed for Security Reasons</em>
+					</p>
+					<p class="text-sm text-gray-600">
+						Phone:
+						{{customer.phone}}</p>
+					<p class="text-sm text-gray-600">
+						Address:
+						{{customer.address}}</p>
+				</div>
+				<div class="flex justify-between px-4 py-2 bg-gray-100">
+					<a href="{{ path('customer_edit', { 'id': customer.id }) }}" class="px-3 py-1 text-white bg-yellow-500 rounded hover:bg-yellow-600">
+						Edit
+					</a>
+
+					<a href="{{ path('customer_delete', { 'id': customer.id }) }}" class="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600">
+						Delete
+					</a>
+				</div>
+			</div>
+		{% endfor %}
+
+	</div>
+
+
+{% endblock %}
