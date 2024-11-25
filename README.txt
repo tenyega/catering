@@ -98,6 +98,22 @@ Symfony console d:f:l
 
 
 
+
+FIXTURES 
+	composer require orm-fixtures --dev
+	composer require fakerphp/faker
+	symfony console make:fixtures
+
+
+
+Symfony console d:d:c
+Symfony console make:migration
+Symfony console d:m:m
+Symfony console d:f:l
+
+
+
+
 CREATED navbar and footer twigs as a components 
 and added different routes for starter, main course, dessert, snacks  and its corresponding templates 
 
@@ -154,10 +170,16 @@ ADMIN RIGHTS
 
 
 REPORT TABLE 
+	- CRUD Employee
+
+
+REPORT TABLE 
 	symfony console make:entity Report
+Report 
 Report 
 	id int unique not null
 	reportDate datetime immutable not null
+	totalSalesAmount decimal not null(precision 10, scale 2)
 	totalSalesAmount decimal not null(precision 10, scale 2)
 	totalOrders int not null
 
