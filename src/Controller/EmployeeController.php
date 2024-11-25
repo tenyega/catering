@@ -29,7 +29,13 @@ class EmployeeController extends AbstractController
     public function index(EmployeeRepository $er): Response
     {
 
-        $employees = $er->findBy([], ['email' => 'ASC']);
+        $qb = $er->createQueryBuilder('e');
+        $qb->where('e.roles LIKE :role')
+            ->setParameter('role', '%ROLE_EMPLOYEE%')
+            ->orderBy('e.email', 'ASC');
+
+        $employees = $qb->getQuery()->getResult();
+
         return $this->render('employee/index.html.twig', [
             'employees' => $employees,
         ]);
@@ -76,7 +82,7 @@ class EmployeeController extends AbstractController
 
     #[Route('/add', name: 'employee_add')]
 
-    public function addEmployee(Request $request): Response
+    public function addEmployee(Request $request, EmployeeRepository $er): Response
     {
 
 
@@ -85,14 +91,21 @@ class EmployeeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $employee = new Employee();
-            $employee->setEmail($form->get('email')->getData())
-                ->setPassword($this->hasher->hashPassword($employee, $form->get('password')->getData()))
-                ->setRoles(['ROLE_EMPLOYEE']);
-            $this->entityManager->persist($employee);
-            $this->entityManager->flush();
-            $this->addFlash("success", "A new Employee has been added Successfully");
-            return $this->redirectToRoute('app_employee');
+            $email = $form->get('email')->getData();
+            $emailExist = $er->findOneBy(['email' => $email]);
+            if ($emailExist) {
+                $this->addFlash("error", "An Employee already exist with this email id");
+                return $this->redirectToRoute('app_employee');
+            } else {
+                $employee = new Employee();
+                $employee->setEmail($form->get('email')->getData())
+                    ->setPassword($this->hasher->hashPassword($employee, $form->get('password')->getData()))
+                    ->setRoles(['ROLE_EMPLOYEE']);
+                $this->entityManager->persist($employee);
+                $this->entityManager->flush();
+                $this->addFlash("success", "A new Employee has been added Successfully");
+                return $this->redirectToRoute('app_employee');
+            }
         }
 
         return $this->render('employee/edit.html.twig', [

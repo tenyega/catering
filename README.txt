@@ -82,6 +82,22 @@ ADDED IMAGE TO THE MENUITEM
 	img varchar120 not null
 
 
+
+FIXTURES 
+	composer require orm-fixtures --dev
+	composer require fakerphp/faker
+	symfony console make:fixtures
+
+
+
+Symfony console d:d:c
+Symfony console make:migration
+Symfony console d:m:m
+Symfony console d:f:l
+
+
+
+
 CREATED navbar and footer twigs as a components 
 and added different routes for starter, main course, dessert, snacks  and its corresponding templates 
 
@@ -134,38 +150,37 @@ symfony console make:form Employee
 ADMIN RIGHTS 
 	- CRUD MENUITEM
 	- CRUD Custormer
-	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
+	- CRUD Employee
+
+
+REPORT TABLE 
 	symfony console make:entity Report
-Report
+Report 
 	id int unique not null
 	reportDate datetime immutable not null
-	totalSalesAmount decimal not null
+	totalSalesAmount decimal not null(precision 10, scale 2)
 	totalOrders int not null
 
 
-FIXTURES 
-	composer require orm-fixtures --dev
-	composer require fakerphp/faker
-	symfony console make:fixtures
+DROPPED THE DATABASE VIA PHPMYADMIN
+	 symfony console d:d:c 
+	 symfony console d:m:m
+	symfony console d:f:l  
+
+OneToMany relation of order table with WeeklyReport
+	symfony console make:entity order
+	report related(ManyToOne) to table Report 
+	Order.reportId nullable? yes
+	report->getOrders() ? yes 
+	orders column inside report ? yes 
+	
+	
+	symfony console make:migration
+	 symfony console d:m:m
+
+	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
 
 
-
-Symfony console d:d:c
-Symfony console make:migration
-Symfony console d:m:m
-Symfony console d:f:l
-
-
-
-
-	symfony console make:User
-User 
-	id int unique not null
-	firstName varchar180 not null
-	lastName varchar180 not null
-	password varchar180  not null
-	role varchar180 not null
-	paymentStatus varchar180 not null
 
 
 symfony console make:security:form-login 

@@ -48,8 +48,8 @@ class CustomerController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {               
-            $customer ->setPassword($this->hasher->hashPassword($customer, $form->get('password')->getData()));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $customer->setPassword($this->hasher->hashPassword($customer, $form->get('password')->getData()));
 
 
             $this->entityManager->flush();
@@ -75,7 +75,7 @@ class CustomerController extends AbstractController
 
     #[Route('/customer/add', name: 'customer_add')]
 
-    public function addCustomer(Request $request): Response
+    public function addCustomer(Request $request, CustomerRepository $cr): Response
     {
 
 
@@ -84,18 +84,25 @@ class CustomerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $customer = new Customer();
-            $customer->setEmail($form->get('email')->getData())
-                ->setPassword($this->hasher->hashPassword($customer, $form->get('password')->getData()))
-                ->setFirstName($form->get('firstName')->getData())
-                ->setLastName($form->get('lastName')->getData())
-                ->setAddress($form->get('address')->getData())
-                ->setPhone($form->get('phone')->getData())
-                ->setRoles(['ROLE_USER']);
-            $this->entityManager->persist($customer);
-            $this->entityManager->flush();
-            $this->addFlash("success", "A new Customer has been added Successfully");
-            return $this->redirectToRoute('app_customer');
+            $email = $form->get('email')->getData();
+            $emailExist = $cr->findOneBy(['email' => $email]);
+            if ($emailExist) {
+                $this->addFlash("error", "This email is already in use, please use another email address");
+                return $this->redirectToRoute('app_customer');
+            } else {
+                $customer = new Customer();
+                $customer->setEmail($form->get('email')->getData())
+                    ->setPassword($this->hasher->hashPassword($customer, $form->get('password')->getData()))
+                    ->setFirstName($form->get('firstName')->getData())
+                    ->setLastName($form->get('lastName')->getData())
+                    ->setAddress($form->get('address')->getData())
+                    ->setPhone($form->get('phone')->getData())
+                    ->setRoles(['ROLE_USER']);
+                $this->entityManager->persist($customer);
+                $this->entityManager->flush();
+                $this->addFlash("success", "A new Customer has been added Successfully");
+                return $this->redirectToRoute('app_customer');
+            }
         }
 
         return $this->render('customer/edit.html.twig', [
