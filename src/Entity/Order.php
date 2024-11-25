@@ -48,6 +48,10 @@ class Order
     #[ORM\OneToOne(mappedBy: 'orderId', cascade: ['persist', 'remove'])]
     private ?Payment $payment = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?Report $report = null;
+
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
@@ -183,4 +187,17 @@ class Order
 
         return $this;
     }
+
+    public function getReport(): ?Report
+    {
+        return $this->report;
+    }
+
+    public function setReport(?Report $report): static
+    {
+        $this->report = $report;
+
+        return $this;
+    }
+
 }

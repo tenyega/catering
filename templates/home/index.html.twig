@@ -5,22 +5,22 @@
 
 {% block body %}
 
-	<div x-show="localisationOpen" @click.away="localisationOpen = false" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="fixed z-50 w-48 bg-transparent rounded-md shadow-lg top-10 right-5">
+	<div class="fixed z-50 w-48 bg-transparent rounded-md shadow-lg top-15 right-5">
 
-		<div class="px-2 py-2 rounded-md overflow-auto max-h-[30vh] backdrop-blur-none">
-			<a class="block px-4 py-2 text-sm font-semibold text-gray-600 rounded-lg dark:text-gray-300 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none dark:hover:text-gray-200 dark:focus:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600" href="{{path('app_filter', {'filter': 'STARTER'})}}">
+		<div class="px-2 py-2 rounded-md overflow-auto max-h-[35vh]">
+			<a class="block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:focus:text-white dark:hover:bg-gray-700" href="{{path('app_filter', {'filter': 'STARTER'})}}">
 				STARTER
 			</a>
-			<a class="block px-4 py-2 text-sm font-semibold text-gray-600 rounded-lg dark:text-gray-300 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none dark:hover:text-gray-200 dark:focus:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600" href="{{path('app_filter', {'filter': 'MAIN COURSE'})}}">
+			<a class="block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:focus:text-white dark:hover:bg-gray-700" href="{{path('app_filter', {'filter': 'MAIN COURSE'})}}">
 				MAIN COURSE
 			</a>
-			<a class="block px-4 py-2 text-sm font-semibold text-gray-600 rounded-lg dark:text-gray-300 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none dark:hover:text-gray-200 dark:focus:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600" href="{{path('app_filter', {'filter': 'DESSERT'})}}">
+			<a class="block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:focus:text-white dark:hover:bg-gray-700" href="{{path('app_filter', {'filter': 'DESSERT'})}}">
 				DESSERT
 			</a>
-			<a class="block px-4 py-2 text-sm font-semibold text-gray-600 rounded-lg dark:text-gray-300 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none dark:hover:text-gray-200 dark:focus:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600" href="{{path('app_filter', {'filter': 'SNACKS'})}}">
+			<a class="block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:focus:text-white dark:hover:bg-gray-700" href="{{path('app_filter', {'filter': 'SNACKS'})}}">
 				SNACKS
 			</a>
-			<a class="block px-4 py-2 text-sm font-semibold text-gray-600 rounded-lg dark:text-gray-300 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none dark:hover:text-gray-200 dark:focus:text-gray-200 dark:hover:bg-gray-600 dark:focus:bg-gray-600" href="{{path('app_filter', {'filter': 'BEVERAGE'})}}">
+			<a class="block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:focus:text-white dark:hover:bg-gray-700" href="{{path('app_filter', {'filter': 'BEVERAGE'})}}">
 				BEVERAGE
 			</a>
 		</div>

@@ -16,7 +16,16 @@
 	<body>
 		{{ include('components/navbar.html.twig') }}
 		{% for label, messages in app.flashes %}
-			<div class="alert alert-{{ label }} mb-4">
+			<div class="mb-4 p-4 rounded-lg
+										        {% if label == 'success' %}
+										            bg-green-100 text-green-800 border border-green-300
+										        {% elseif label == 'error' %}
+										            bg-red-100 text-red-800 border border-red-300
+										        {% elseif label == 'warning' %}
+										            bg-yellow-100 text-yellow-800 border border-yellow-300
+										        {% else %}
+										            bg-gray-100 text-gray-800 border border-gray-300
+										        {% endif %}">
 				{% for message in messages %}
 					<p>{{ message }}</p>
 				{% endfor %}
