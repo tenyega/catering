@@ -20,14 +20,14 @@ const redirectAfterSuccessURL = "{{ url('pay', {'id': purchase.getId()}) }}";
 	<h1>Payment with Stripe</h1>
 
 	{# <form id="payment-form">
-				<div id="card-element"><!--Stripe.js injects the Card Element--></div>
-				<button id="submit" class='btn btn-success'>
-					<div class="hidden spinner" id="spinner"></div>
-					<span id="button-text">Pay now</span>
-				</button>
-				<p id="card-error" role="alert"></p>
-		
-			</form> #}
+					<div id="card-element"><!--Stripe.js injects the Card Element--></div>
+					<button id="submit" class='btn btn-success'>
+						<div class="hidden spinner" id="spinner"></div>
+						<span id="button-text">Pay now</span>
+					</button>
+					<p id="card-error" role="alert"></p>
+			
+				</form> #}
 	<form id="payment-form">
 		<div
 			id="payment-element"><!--Stripe.js injects the Payment Element-->

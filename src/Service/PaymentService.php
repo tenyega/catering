@@ -32,6 +32,7 @@ class PaymentService
         $this->em = $entityManagerInterface;
     }
 
+
     //generate une demande de paiement vers stripe. 
     /**
      * askCheckout()
@@ -72,6 +73,9 @@ class PaymentService
                 'enabled' => true,
             ],
         ]);
+        dump(
+            'hi'
+        );
         $this->addPayment($id);
         return $checkoutSession;
     }

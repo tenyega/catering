@@ -178,6 +178,15 @@ OneToMany relation of order table with WeeklyReport
 	symfony console make:migration
 	 symfony console d:m:m
 
+
+CREATED A NEW TWIG EXTENSION TO CLEAR THE SESSION AT TWIG LEVEL (SessionExtension.php ) 
+CHANGES in Service.yaml under service
+		   App\Twig\SessionExtension:
+        arguments:
+            $session: '@session'
+        tags: ['twig.extension']
+
+	USAGE {% do set_session('cart', []) %} inside twig file 
 	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
 
 

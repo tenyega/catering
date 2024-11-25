@@ -62,7 +62,7 @@ class PaymentController extends AbstractController
             //         ->htmlTemplate('payment/paymentConfirmationMail.html.twig')
             // );
 
-            return $this->render('payment-success.html.twig');
+            return $this->render('payment/payment-success.html.twig');
         } else {
             $this->addFlash('error', "You can't take a reservation without a payment");
             return $this->redirectToRoute('app_payment');
@@ -76,7 +76,7 @@ class PaymentController extends AbstractController
     public function paymentCancel(Request $request): Response
     {
         if ($request->headers->get('referer') === 'https://checkout.stripe.com/') {
-            return $this->render('payment-cancel.html.twig');
+            return $this->render('payment/payment-cancel.html.twig');
         } else {
             $this->addFlash('error', "You can't do the reservation without a payment");
             return $this->redirectToRoute('app_reservation_index');
@@ -124,7 +124,7 @@ class PaymentController extends AbstractController
     #[Route('/c/pay', name: 'cart_pay')]
     public function cart_pay(SessionInterface $sessionInterface, MenuItemRepository $mir, EmployeeRepository $er, CustomerRepository $cr, EntityManagerInterface $entityManagerInterface, PaymentService $ps)
     {
-        
+
 
 
         $total = 0.0; // Start as a float
@@ -147,8 +147,8 @@ class PaymentController extends AbstractController
         $order->setTotalAmount((float) $total)
             ->setPaymentStatus('NOT PAID')
             ->setOrderStatus('RECEIVED')
-            ->setCustomer($cr->findOneBy(['id' => '151']))
-            ->setEmployee($er->findOneBy(['id' => '21']));
+            ->setCustomer($cr->findOneBy(['id' => '30']))
+            ->setEmployee($er->findOneBy(['id' => '1']));
 
         // Persist and flush to save in the database
         $entityManagerInterface->persist($order);
@@ -168,6 +168,7 @@ class PaymentController extends AbstractController
             $entityManagerInterface->persist($orderItem);
         }
         $entityManagerInterface->flush();
+        $sessionInterface->set('cart', []);
         return $this->redirect($ps->askCheckout($order->getId())->url);
     }
 }
