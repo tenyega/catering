@@ -26,8 +26,8 @@ class AppFixtures extends Fixture
         $faker = Factory::create();
         $paymentMethod = ['CARD', 'CASH'];
         $customerArray = [];
-        $paymentStatus = ['PAID', 'PENDING', 'CANCELLED'];
-        $orderStatus = ['RECEIVED', 'PENDING', 'PROCESSED', 'PROCESSING'];
+        $paymentStatus = ['PAID', 'PENDING', 'FAILED'];
+        $orderStatus = ['DELIVERED', 'SHIPPED', 'CANCELLED', 'PROCESSING'];
         $menuItemArray = [];
         $employeeArray = [];
         $orderTotals = []; // Temporary array to store totals for each Order

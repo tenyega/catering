@@ -1,0 +1,18 @@
+
+
+CRUD ( validation of the forms are not done till 04/12/2024)
+custommer (/customer)                           show + edit -     DONE 
+MenuItem (/menu/item)                           Show + edit -     DONE ( image is a simple text field for the moment)
+Employee (/employee)                            Show + edit -     DONE ( password needs to be handled properly)
+Order (/orders )                                Show  filter      DONE  ( route destined to be a part admin to have the visual on the order details )
+Order Customer side (/customer/order)           show  filter            DONE
+
+NEEDED as per the resume of the PROJECT
+- CRUD customer             
+- CRUD order  and OrderItem
+- CRUD MenuItem
+- CRUD employee
+- CRUD order 
+
+
+

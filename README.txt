@@ -139,6 +139,7 @@ INCLUDING PAYMENT
 	INTEGRATED STRIPE 
 	 composer require stripe/stripe-php
 
+
 CRUD MENUITEM
 symfony console make:controller MenuItem 
 
@@ -155,7 +156,7 @@ and then register the twig extension inside the services.yaml
 		<img class="object-cover w-full h-48" src="{{ file_exists('img/' ~ menuItem.name ~ '.jpg') ? asset('img/' ~ menuItem.name ~ '.jpg') : asset('img/default.jpg') }}" alt="Menu Image">
 
 
-CRUD Customer
+CRUD Customer 
 symfony console make:controller Customer
 symfony console make:form Customer
 
@@ -167,10 +168,7 @@ ADMIN RIGHTS
 	- CRUD MENUITEM
 	- CRUD Custormer
 	- CRUD Employee
-
-
-REPORT TABLE 
-	- CRUD Employee
+	
 
 
 REPORT TABLE 
@@ -209,6 +207,14 @@ CHANGES in Service.yaml under service
         tags: ['twig.extension']
 
 	USAGE {% do set_session('cart', []) %} inside twig file 
+
+
+CRUD ORDER
+	symfony console make:controller Order    // kept report inside the order as a comment coz i was not able to get this at the front side. 
+
+
+
+
 	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
 
 
@@ -221,8 +227,6 @@ symfony console make:registration-form
 		 composer require symfonycasts/verify-email-bundle 
 
 	
-
-
 
 
 ADMIN

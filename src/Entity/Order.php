@@ -48,9 +48,9 @@ class Order
     #[ORM\OneToOne(mappedBy: 'orderId', cascade: ['persist', 'remove'])]
     private ?Payment $payment = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
+   /** #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Report $report = null;
-
+ */
 
     public function __construct()
     {
@@ -187,8 +187,8 @@ class Order
 
         return $this;
     }
-
-    public function getReport(): ?Report
+/*
+   public function getReport(): ?Report
     {
         return $this->report;
     }
@@ -198,6 +198,6 @@ class Order
         $this->report = $report;
 
         return $this;
-    }
+    }*/
 
 }
