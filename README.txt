@@ -213,14 +213,16 @@ CRUD ORDER
 	symfony console make:controller Order    // kept report inside the order as a comment coz i was not able to get this at the front side. 
 
 
+Logins 
+
 
 
 	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
 
 
 
+	symfony console make:security:form-login 
 
-symfony console make:security:form-login 
 		SecurityController with /logout and no phpUnit 
 
 symfony console make:registration-form
