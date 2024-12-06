@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\CustomerRepository;
+use App\Repository\UserRepository; 
 use App\Repository\OrderRepository;
 use App\Repository\OrderItemRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,16 +24,16 @@ class OrderController extends AbstractController
     }
 
 
-    // this lists the orders of the customer connected, here i have taken the customerid 16  
-    #[Route('/customer/order', name: 'app_order')]
-    public function index(Request $request,OrderRepository $or, CustomerRepository  $cr, OrderItemRepository $oir): Response
+    // this lists the orders of the user connected, here i have taken the userid 5  
+    #[Route('/user/order', name: 'app_order')]
+    public function index(Request $request,OrderRepository $or, UserRepository  $cr, OrderItemRepository $oir): Response
     {  
-        $customer = $cr->find(16);
+        $user = $cr->find(5);
 
         $orderStatus = $request->query->get('orderStatus'); // Get filter value for orderStatus
         $paymentStatus = $request->query->get('paymentStatus'); // Get filter value for paymentStatus
     
-        $criteria = ['customer' => $customer];
+        $criteria = ['user' => $user];
 
 if ($orderStatus) {
     $criteria['orderStatus'] = $orderStatus;
@@ -44,14 +44,14 @@ if ($paymentStatus) {
 $orders = $or->findBy($criteria);
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
-            'customer'=>$customer,
+            'user'=>$user,
             'route'=>'app_order'
         ]);
     }
    
      // this lists all the orders  
      #[Route('/orders', name: 'app_orderList')]
-     public function orderList(Request $request, OrderRepository $or, CustomerRepository  $cr, OrderItemRepository $oir): Response
+     public function orderList(Request $request, OrderRepository $or, UserRepository  $cr, OrderItemRepository $oir): Response
      {  
         $orderStatus = $request->query->get('orderStatus'); // Get filter value for orderStatus
         $paymentStatus = $request->query->get('paymentStatus'); // Get filter value for paymentStatus

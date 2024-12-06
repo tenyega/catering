@@ -5,8 +5,7 @@ namespace App\Service;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\MenuItem;
-use App\Repository\CustomerRepository;
-use App\Repository\EmployeeRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security as SecurityBundleSecurity;
 use Symfony\Component\Security\Core\Security;
@@ -15,31 +14,27 @@ class CartService
 {
     private $em;
     private $security;
-    private $customerRepo;
-    private $employeeRepo;
-    public function __construct(EntityManagerInterface $em, SecurityBundleSecurity $security, CustomerRepository $cr, EmployeeRepository $er)
+    private $userRepo;
+    public function __construct(EntityManagerInterface $em, SecurityBundleSecurity $security,UserRepository $cr)
     {
         $this->em = $em;
         $this->security = $security;
-        $this->customerRepo = $cr;
-        $this->employeeRepo = $er;
+        $this->userRepo = $cr;
     }
 
     public function addItemToCart(MenuItem $menuItem, int $quantity): Order
     {
         // Get the current user
-        //$customer = $this->security->getUser();
-        $customer = $this->customerRepo->findOneBy(['id' => "151"]);
-        $employee = $this->employeeRepo->findOneBy(['id' => "22"]);
+        //$user = $this->security->getUser();
+        $user = $this->userRepo->findOneBy(['id' => "151"]);
         // Fetch or create a "cart" order
-        $cart = $this->getCartForCustomer($customer);
+        $cart = $this->getCartForUser($user);
         if (!$cart) {
             $cart = new Order();
 
-            $cart->setCustomer($customer);
+            $cart->setUser($user);
             $cart->setOrderDate(new \DateTimeImmutable());
             $cart->setOrderStatus("INCART");
-            $cart->setEmployee($employee);
             $cart->setPaymentStatus("PROCESSING");
             $this->em->persist($cart);
         }
@@ -73,10 +68,10 @@ class CartService
         return $cart;
     }
 
-    private function getCartForCustomer($customer): ?Order
+    private function getCartForUser($user): ?Order
     {
         return $this->em->getRepository(Order::class)->findOneBy([
-            'customer' => $customer,
+            'user' => $user,
             'orderStatus' => 'cart'
         ]);
     }

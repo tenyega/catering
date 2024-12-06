@@ -214,16 +214,56 @@ CRUD ORDER
 
 
 Logins 
+	symfony console make:security:form-login 
+	SecurityController with /logout and no phpUnit 
 
+
+
+	email unique
+	password hashed and Role added automatically
+
+USER 
+	symfony console make:user User
+	id int unique not null
+	firstName varchar120 not null	
+	lastName varchar120 not null
+	phone varchar120 not null
+	address varchar255 not null
+
+
+Created UserController 
+	symfony console make:controller User
+
+registration
+	symfony console make:registration-form
+			 By default, users are required to be authenticated when they click the verification link that is emailed to them.
+ This prevents the user from registering on their laptop, then clicking the link on their phone, without
+ having to log in. To allow multi device email verification, we can embed a user id in the verification link.
+
+	 Would you like to include the user id in the verification link to allow anonymous email verification? (yes/no) [no]: YES
+	 
+ 	What email address will be used to send registration confirmations? (e.g. mailer@your-domain.com):
+ 				> mdolma@ymail.com
+	 What "name" should be associated with that email address? (e.g. Acme Mail Bot):
+				 > Catering
+	 Do you want to automatically authenticate the user after registration? (yes/no) [yes]: No
+	 After Registration redirect the user to Login Page 
+	  Do you want to generate PHPUnit tests? [Experimental] (yes/no) [no]: No
+
+Email Bundle required for the registration form. 
+	composer require symfonycasts/verify-email-bundle
+	
+	Needed 
+		symfony console make:migration to generate a migration for the newly added User::isVerified property.
+		symfony console d:m:m   // needed to reflect the changes stored in the migration to our database; 
 
 
 	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
 
 
 
-	symfony console make:security:form-login 
 
-		SecurityController with /logout and no phpUnit 
+	
 
 symfony console make:registration-form
 		 composer require symfonycasts/verify-email-bundle 

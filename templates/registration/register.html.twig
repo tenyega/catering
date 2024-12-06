@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 bg-white p-6 shadow-lg rounded-lg">
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger text-red-600 border border-red-500 rounded-lg p-3 mb-4">
+                    {{ flash_error }}
+                </div>
+            {% endfor %}
+
+            <h1 class="text-2xl font-bold text-center text-gray-800">Register</h1>
+
+            {{ form_errors(registrationForm) }}
+
+            {{ form_start(registrationForm, {'attr': {'class': 'space-y-4'}}) }}
+             <div>
+                    {{ form_row(registrationForm.firstName, {
+                        label: 'First name',
+                        'attr': {'class': 'w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'}
+                    }) }}
+                </div>
+                 <div>
+                    {{ form_row(registrationForm.lastName, {
+                        label: 'Last name',
+                        'attr': {'class': 'w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'}
+                    }) }}
+                </div>
+                 <div>
+                    {{ form_row(registrationForm.phone, {
+                        label: 'Phone #',
+                        'attr': {'class': 'w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'}
+                    }) }}
+                </div>
+                 <div>
+                    {{ form_row(registrationForm.address, {
+                        label: 'Address',
+                        'attr': {'class': 'w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'}
+                    }) }}
+                </div>
+                <div>
+                    {{ form_row(registrationForm.email, {
+                        'attr': {'class': 'w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'}
+                    }) }}
+                </div>
+                <div>
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Password',
+                        'attr': {'class': 'w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none'}
+                    }) }}
+                </div>
+               
+                <div>
+                    {{ form_row(registrationForm.agreeTerms, {
+                        'attr': {'class': 'w-5 h-5 text-blue-500 m-4 focus:ring-blue-400'}
+                    }) }}
+                </div>
+
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    Register
+                </button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+{% endblock %}

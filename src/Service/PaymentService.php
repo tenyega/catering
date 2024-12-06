@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Payment;
-use App\Repository\CustomerRepository;
+use App\Repository\UserRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ReservationRepository;
 use Stripe\Stripe;
@@ -61,7 +61,7 @@ class PaymentService
                     'tax_behavior' => 'exclusive',
                     'unit_amount' => $amountInCents, // Stripe utilise des centimes
                     'product_data' => [ // Les informations du produit sont personnalisables
-                        'name' => $order->getCustomer()->getFirstName(),
+                        'name' => $order->getUser()->getFirstName(),
                     ],
                 ],
                 'quantity' => 1,

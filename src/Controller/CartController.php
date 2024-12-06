@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Entity\OrderItem;
-use App\Repository\CustomerRepository;
-use App\Repository\EmployeeRepository;
+
 use App\Repository\MenuItemRepository;
 use App\Repository\OrderRepository;
 use App\Service\CartService;

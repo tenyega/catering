@@ -27,11 +27,8 @@ class Order
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Customer $customer = null;
+    private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Employee $employee = null;
 
     #[ORM\Column(length: 255)]
     private ?string $paymentStatus = null;
@@ -93,30 +90,19 @@ class Order
         return $this;
     }
 
-    public function getCustomer(): ?Customer
+    public function getUser(): ?User
     {
-        return $this->customer;
+        return $this->user;
     }
 
-    public function setCustomer(?Customer $customer): static
+    public function setUser(?User $user): static
     {
-        $this->customer = $customer;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getEmployee(): ?Employee
-    {
-        return $this->employee;
-    }
-
-    public function setEmployee(?Employee $employee): static
-    {
-        $this->employee = $employee;
-
-        return $this;
-    }
-
+    
     public function getPaymentStatus(): ?string
     {
         return $this->paymentStatus;
