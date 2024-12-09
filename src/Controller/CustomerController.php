@@ -7,6 +7,7 @@ use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -78,19 +79,21 @@ class CustomerController extends AbstractController
     public function addCustomer(Request $request, CustomerRepository $cr): Response
     {
 
+        $errorMsg = "";
 
         $form = $this->createForm(CustomerType::class);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $customer = new Customer();
+            $customer = $form->getdata();
+
             $email = $form->get('email')->getData();
             $emailExist = $cr->findOneBy(['email' => $email]);
             if ($emailExist) {
-                $this->addFlash("error", "This email is already in use, please use another email address");
-                return $this->redirectToRoute('app_customer');
+                $this->addFlash("error", "Email exist already");
             } else {
-                $customer = new Customer();
                 $customer->setEmail($form->get('email')->getData())
                     ->setPassword($this->hasher->hashPassword($customer, $form->get('password')->getData()))
                     ->setFirstName($form->get('firstName')->getData())
@@ -107,6 +110,7 @@ class CustomerController extends AbstractController
 
         return $this->render('customer/edit.html.twig', [
             'form' => $form->createView(),
+            'errorMsg' => $errorMsg
         ]);
     }
 }
