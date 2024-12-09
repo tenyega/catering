@@ -4,9 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Entity\OrderItem;
-use App\Repository\CustomerRepository;
-use App\Repository\EmployeeRepository;
 use App\Repository\MenuItemRepository;
+use App\Repository\UserRepository;
 use Stripe\Webhook;
 use App\Security\EmailVerifier;
 use App\Service\HourCalculator;
@@ -24,27 +23,9 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-// #[IsGranted('IS_AUTHENTICATED_FULLY')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class PaymentController extends AbstractController
 {
-    /* public function __construct(private EmailVerifier $emailVerifier) {}
-
-    #[Route('/payment/{id}', name: 'app_payment', methods: ['GET'])]
-    public function time(HourCalculator $hourCalculator, ReservationRepository $rr, PaymentService $ps, int $id): Response
-    {
-        $reservaton = $rr->find(['id' => $id]);
-        $totalTime = $hourCalculator->calculateTotalHours($reservaton->getStartDate()->format('Y-m-d'), $reservaton->getEndDate()->format('Y-m-d'), $reservaton->getStartTime()->format('H:i:s'), $reservaton->getEndTime()->format('H:i:s'));
-
-        $ps->askCheckout($id);
-        $payment = $ps->addPayment($id);
-
-        return $this->render('payment/pay.html.twig', [
-            'totalTime' => $totalTime,
-            'payment' => $payment
-
-        ]);
-    }
-*/
     // Route lorsque le paiement est réussi
     #[Route('/payment-success/{id}', name: 'app_payment_success', methods: ['GET'])]
     public function paymentSuccess(Request $request, PaymentService $ps, int $id): Response
@@ -122,7 +103,7 @@ class PaymentController extends AbstractController
     }
 
     #[Route('/c/pay', name: 'cart_pay')]
-    public function cart_pay(SessionInterface $sessionInterface, MenuItemRepository $mir, EmployeeRepository $er, CustomerRepository $cr, EntityManagerInterface $entityManagerInterface, PaymentService $ps)
+    public function cart_pay(SessionInterface $sessionInterface, MenuItemRepository $mir, UserRepository $cr, EntityManagerInterface $entityManagerInterface, PaymentService $ps)
     {
 
 
@@ -145,10 +126,10 @@ class PaymentController extends AbstractController
 
         $order = new Order;
         $order->setTotalAmount((float) $total)
-            ->setPaymentStatus('NOT PAID')
-            ->setOrderStatus('RECEIVED')
-            ->setCustomer($cr->findOneBy(['id' => '30']))
-            ->setEmployee($er->findOneBy(['id' => '1']));
+            ->setPaymentStatus('PENDING')
+            ->setOrderStatus('PROCCESSING')
+            ->setUser($cr->findOneBy(['id' => '30']));
+            
 
         // Persist and flush to save in the database
         $entityManagerInterface->persist($order);

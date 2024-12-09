@@ -26,7 +26,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/{filter}', name: 'app_filter')]
+    #[Route('/search/{filter}', name: 'app_filter')]
     public function starter(string $filter, MenuItemRepository $mir)
     {
 

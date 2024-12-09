@@ -2,8 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Customer;
-use App\Entity\Employee;
+use App\Entity\User;
 use App\Entity\MenuItem;
 use App\Entity\Order;
 use App\Entity\OrderItem;
@@ -25,9 +24,9 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create();
         $paymentMethod = ['CARD', 'CASH'];
-        $customerArray = [];
-        $paymentStatus = ['PAID', 'PENDING', 'CANCELLED'];
-        $orderStatus = ['RECEIVED', 'PENDING', 'PROCESSED', 'PROCESSING'];
+        $userArray = [];
+        $paymentStatus = ['PAID', 'PENDING', 'FAILED'];
+        $orderStatus = ['DELIVERED', 'SHIPPED', 'CANCELLED', 'PROCESSING'];
         $menuItemArray = [];
         $employeeArray = [];
         $orderTotals = []; // Temporary array to store totals for each Order
@@ -236,55 +235,35 @@ class AppFixtures extends Fixture
         ];
 
 
-
+// CREATING 30 different USERS 
         for ($i = 0; $i < 30; $i++) {
-            $customer = new Customer();
-            $customer->setFirstName($faker->firstName())
+            $user = new user();
+            $user->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName())
                 ->setAddress($faker->address())
                 ->setPhone($faker->phoneNumber())
-                ->setEmail("cus" . $i . "@email.com")
-                ->setPassword($this->hasher->hashPassword($customer, 'cus' . $i))
+                ->setEmail("user" . $i . "@email.com")
+                ->setPassword($this->hasher->hashPassword($user, 'user' . $i))
                 ->setRoles(['ROLE_USER']);
-            $customerArray[] = $customer;
-            $manager->persist($customer);
+            $userArray[] = $user;
+            $manager->persist($user);
         }
 
-        // CREATING 3 different employees
-        $employee1 = new Employee();
-        $employee1->setEmail("em1@email.com")
-            ->setPassword($this->hasher->hashPassword($employee1, 'em1'))
-            ->setRoles(['ROLE_EMPLOYEE'])
-        ;
-        $employeeArray[] = $employee1;
-        $manager->persist($employee1);
+        // CREATING 5 different Employees
+        for ($i = 0; $i <5; $i++) {
+            $user = new user();
+            $user->setFirstName($faker->firstName())
+                ->setLastName($faker->lastName())
+                ->setAddress($faker->address())
+                ->setPhone($faker->phoneNumber())
+                ->setEmail("em" . $i . "@email.com")
+                ->setPassword($this->hasher->hashPassword($user, 'em' . $i))
+                ->setRoles(['ROLE_EMPLOYEE']);
+            $employeeArray[] = $user;
+            $manager->persist($user);
+        }
 
-        $employee2 = new Employee();
-        $employee2->setEmail("em2@email.com")
-            ->setPassword($this->hasher->hashPassword($employee2, 'em2'))
-            ->setRoles(['ROLE_EMPLOYEE'])
-        ;
-        $employeeArray[] = $employee2;
-        $manager->persist($employee2);
-
-        $employee3 = new Employee();
-        $employee3->setEmail("em3@email.com")
-            ->setPassword($this->hasher->hashPassword($employee3, 'em3'))
-            ->setRoles(['ROLE_EMPLOYEE'])
-        ;
-        $employeeArray[] = $employee3;
-        $manager->persist($employee3);
-
-
-        $admin = new Employee();
-        $admin->setEmail("admin@email.com")
-            ->setPassword($this->hasher->hashPassword($admin, 'admin'))
-            ->setRoles(['ROLE_ADMIN'])
-        ;
-        $employeeArray[] = $admin;
-        $manager->persist($admin);
-
-
+        
 
         //CREATING MENU ITEMS 
         // for ($i = 0; $i < 100; $i++) {
@@ -318,8 +297,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 30; $i++) {
             $order = new Order();
             $order
-                ->setCustomer($faker->randomElement($customerArray))
-                ->setEmployee($faker->randomElement($employeeArray))
+                ->setUser($faker->randomElement($userArray))
                 ->setPaymentStatus($faker->randomElement($paymentStatus))
                 ->setOrderStatus($faker->randomElement($orderStatus))
             ;
@@ -357,7 +335,7 @@ class AppFixtures extends Fixture
             $orderId = spl_object_id($order);
             $order->setTotalAmount($orderTotals[$orderId]); // Update Order with accumulated total
             if ($order->getTotalAmount() == 0) {
-                $order->setPaymentStatus("RECEIVED");
+                $order->setPaymentStatus("PAID");
             }
         }
 
