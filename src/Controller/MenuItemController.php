@@ -77,7 +77,9 @@ class MenuItemController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $menuItem = new MenuItem();
+           
             $isAvailable = $form->get('isAvailable')->getData();
+            dd($form->get('img')->getData()); 
             $menuItem->setName($form->get('name')->getData())
                 ->setCategory($form->get('category')->getData())
                 ->setDescription($form->get('description')->getData())

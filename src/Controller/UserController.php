@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Repository\UserRepository;
-use App\Form\UserType; 
+use App\Form\UserType;
 use App\Entity\User;
 
 class UserController extends AbstractController
@@ -106,6 +106,17 @@ class UserController extends AbstractController
 
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+    #[Route('/user/view/{id}', name: 'user_view')]
+
+    public function viewUser(User $user): Response
+    {
+
+        // Logic to show the user 
+
+        return $this->render('user/view.html.twig', [
+            'user' => $user
         ]);
     }
 }

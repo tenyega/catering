@@ -49,11 +49,12 @@
 
 
 					{% if app.user %}
-
+						<a href="{{path('user_edit', {'id': 1})}}" class="text-[rgb(35,31,32)] hover:text-blue-500">My Profile</a>
+						<a href="{{path('app_order')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">My Orders</a>
 						<a href="{{path('app_logout')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Logout</a>
 					{% else %}
-					
-					<a href="{{path('app_register')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Register</a>
+
+						<a href="{{path('app_register')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Register</a>
 						<a href="{{path('app_login')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Login</a>
 					{% endif %}
 				</div>

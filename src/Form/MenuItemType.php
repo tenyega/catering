@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\MenuItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,8 +23,11 @@ class MenuItemType extends AbstractType
                 'required' => false
 
             ])
-            ->add('img')
-        ;
+            ->add('img', FileType::class, [
+                'label' => 'Image (JPG/PNG file)',
+                'mapped' => false, // Not mapped to the entity
+                'required' => false,
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
