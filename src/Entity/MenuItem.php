@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MenuItemRepository::class)]
 class MenuItem
@@ -16,15 +17,21 @@ class MenuItem
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: "Name is required.")]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Assert\NotBlank(message: "Description is required.")]
+    #[Assert\Length(max: 255, maxMessage: "Description cannot exceed 255 characters.")]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Assert\NotBlank(message: "Price is required.")]
+    #[Assert\Positive(message: "Price must be a positive number.")]
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     private ?string $price = null;
 
+    #[Assert\NotBlank(message: "Category is required.")]
     #[ORM\Column(length: 120)]
     private ?string $category = null;
 
