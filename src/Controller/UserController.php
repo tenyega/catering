@@ -11,6 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Repository\UserRepository;
 use App\Form\UserType;
 use App\Entity\User;
+use App\Form\ChangePasswordType;
 
 class UserController extends AbstractController
 {
@@ -113,10 +114,44 @@ class UserController extends AbstractController
     public function viewUser(User $user): Response
     {
 
-        // Logic to show the user 
-
         return $this->render('user/view.html.twig', [
             'user' => $user
+        ]);
+    }
+
+    #[Route('/user/change/pwd', name: 'user_pwd_change')]
+    public function changePwd(Request $request): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(ChangePasswordType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $currentPassword = $form->get('currentPassword')->getData();
+            $newPassword = $form->get('newPassword')->getData();
+
+            // Verify the current password
+            if (!$this->hasher->isPasswordValid($user, $currentPassword)) {
+                $this->addFlash("error", "Actual password is not correct");
+                return $this->redirectToRoute('app_home');
+            }
+
+            // Hash and update the new password
+            $hashedNewPassword = $this->hasher->hashPassword($user, $newPassword);
+            $user->setPassword($hashedNewPassword);
+
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            $this->addFlash("success", "Your password has been changed successfully");
+            return $this->redirectToRoute('app_home'); // Redirect to a relevant route
+        }
+
+
+
+        return $this->render('user/user_pwd_change.html.twig', [
+            'form' => $form
         ]);
     }
 }

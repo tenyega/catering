@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container px-4 py-8 mx-auto">
+		<h1 class="mb-6 text-3xl font-bold">Change Password</h1>
+
+		<div class="p-6 bg-white rounded-lg shadow-md">
+			{{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+
+			<!-- Current Password Field -->
+			<div>
+				<label for="current_password" class="block mb-2 text-sm font-medium text-gray-700">Current Password</label>
+				{{ form_widget(form.currentPassword, {'attr': {'class': 'w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+				{{ form_errors(form.currentPassword) }}
+			</div>
+
+			<!-- New Password Field -->
+			<div>
+				<label for="new_password" class="block mb-2 text-sm font-medium text-gray-700">New Password</label>
+				{{ form_widget(form.newPassword, {'attr': {'class': 'w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+				{{ form_errors(form.newPassword) }}
+			</div>
+
+			<!-- Confirm New Password Field -->
+			<div>
+				<label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-700">Confirm New Password</label>
+				{{ form_widget(form.confirmPassword, {'attr': {'class': 'w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+				{{ form_errors(form.confirmPassword) }}
+			</div>
+
+			<!-- Save Button -->
+			<div class="flex justify-end">
+				<button type="submit" class="px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-600">
+					Save Changes
+				</button>
+			</div>
+
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}
