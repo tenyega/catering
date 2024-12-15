@@ -8,6 +8,7 @@ use App\Form\MenuItemType;
 use App\Repository\MenuItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -77,15 +78,44 @@ class MenuItemController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $menuItem = new MenuItem();
-           
+
+
+            $uploadedFile = $form->get('img')->getData();
+
+            if ($uploadedFile) {
+                // Generate a custom name for the file
+                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $customFilename = $form->get('name')->getData() . '.' . $uploadedFile->guessExtension();
+
+                // Define the path to the public folder
+                $publicDirectory = $this->getParameter('kernel.project_dir') . '/public/img';
+                //dd($publicDirectory);
+                // Move the file to the public/uploads directory
+                try {
+                    $uploadedFile->move($publicDirectory, $customFilename);
+                } catch (FileException $e) {
+                    // Handle exception if something happens during file upload
+                    throw new \Exception('Failed to upload the file: ' . $e->getMessage());
+                }
+
+                // (Optional) Save the custom filename to the database if needed
+                // $menuItem = $form->getData();
+                $menuItem->setImg($customFilename); // Assuming 'setImage' exists in your entity
+            }
+
+
+
+
             $isAvailable = $form->get('isAvailable')->getData();
-            dd($form->get('img')->getData()); 
+
             $menuItem->setName($form->get('name')->getData())
                 ->setCategory($form->get('category')->getData())
                 ->setDescription($form->get('description')->getData())
-                ->setImg($form->get('img')->getData())
                 ->setPrice($form->get('price')->getData())
                 ->setAvailable($isAvailable);
+
+
+            // dd($menuItem);
             $this->entityManager->persist($menuItem);
             $this->entityManager->flush();
             $this->addFlash("success", "A new Menu Item has been added Successfully");
