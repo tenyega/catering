@@ -258,20 +258,24 @@ Email Bundle required for the registration form.
 		symfony console d:m:m   // needed to reflect the changes stored in the migration to our database; 
 
 
-	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
-
-
-
 
 	
 
 symfony console make:registration-form
 		 composer require symfonycasts/verify-email-bundle 
 
-	
+
+Added sending email to the user ones the payment is successful. 
 
 
-ADMIN
-	composer req easycorp/easyadmin-bundle
-	symfony console make:admin:dashboard	
-	symfony console make:admin:crud 
+
+
+
+	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
+
+
+
+
+
+To launch the mailer service 
+symfony console messenger:consume async -vv

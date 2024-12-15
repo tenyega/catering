@@ -18,11 +18,23 @@ class MenuItemType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'required' => false,
+                'row_attr' => ['class' => 'form-group mb-4'],
+                'attr' => [
+
+                    'placeholder' => 'Enter the name',
+                ],
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Name is required.']),
                 ],
             ])
             ->add('description', TextType::class, [
+                'required' => false,
+                'row_attr' => ['class' => 'form-group mb-4'],
+                'attr' => [
+
+                    'placeholder' => 'Enter a description',
+                ],
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Description is required.']),
                     new Assert\Length([
@@ -32,12 +44,25 @@ class MenuItemType extends AbstractType
                 ],
             ])
             ->add('price', TextType::class, [
+                'required' => false,
+                'row_attr' => ['class' => 'form-group mb-4'],
+                'attr' => [
+
+                    'placeholder' => 'Enter the price',
+                ],
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Price is required.']),
-                    new Assert\Positive(['message' => ' Price must be positive'])
+                    new Assert\Positive(['message' => 'Price must be positive']),
+                    new Assert\Regex([
+                        'pattern' => '/^\d+(\.\d+)?$/',
+                        'message' => 'Please enter a valid numeric price.',
+                    ]),
                 ],
             ])
             ->add('category', ChoiceType::class, [
+                'required' => false,
+                'row_attr' => ['class' => 'form-group mb-4'],
+
                 'choices' => [
                     'Starter' => 'STARTER',
                     'Beverage' => 'BEVERAGE',
@@ -45,22 +70,25 @@ class MenuItemType extends AbstractType
                     'Main Course' => 'MAIN COURSE',
                     'Dessert' => 'DESSERT',
                 ],
-                'placeholder' => 'Select a category', // Optional: Placeholder for dropdown
+                'placeholder' => 'Select a category',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Category is required.']),
                 ],
             ])
             ->add('isAvailable', CheckboxType::class, [
-                'mapped' => false, // Not bound to the entity
+
+                'attr' => ['class' => 'mr-2 rounded'],
                 'required' => false,
+                'mapped' => false,
             ])
             ->add('img', FileType::class, [
                 'label' => 'Image (JPG/PNG file)',
-                'mapped' => false, // Not bound to the entity
+
+                'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new Assert\File([
-                        'maxSize' => '2M', // Optional: Set file size limit
+                        'maxSize' => '2M',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -75,10 +103,7 @@ class MenuItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => MenuItem::class, // Replace with your entity class
-            'attr' => [
-                'novalidate' => 'novalidate', // Disable HTML5 validation
-            ],
+            'data_class' => MenuItem::class,
         ]);
     }
 }
