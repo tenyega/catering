@@ -267,8 +267,12 @@ symfony console make:registration-form
 
 Added sending email to the user ones the payment is successful. 
 
-
-
+404 page added the template under home and created a route inside the homeController with a name app_404. Along with which changed inside the routes.yaml to make this a default route when no routes are found 
+app_default:
+    path: /{any}
+    controller: App\Controller\HomeController::pageNotFound
+    requirements:
+        any: .*
 
 
 	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::

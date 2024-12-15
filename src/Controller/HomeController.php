@@ -105,4 +105,10 @@ class HomeController extends AbstractController
             'beverages' => $beverages,
         ]);
     } */
+
+    #[Route('/404', name: 'app_404')]
+    public function pageNotFound(): Response
+    {
+        return $this->render('home/404.html.twig', []);
+    }
 }
