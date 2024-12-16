@@ -275,6 +275,8 @@ app_default:
         any: .*
 
 
+Added changing pwd option: in which i have a remarque that we can do the comparison of the hashed pwd directly. we can use the $this->hasher->isPasswordValid($user, $currentPassword) in which the $user here is the connected user  and the currentPassword is the entered currentPassword in the form 
+
 	/////////////////////////////// THIS TABLE IS NOT ADDED YET /////////////////////////////////////////////////////////////////::
 
 

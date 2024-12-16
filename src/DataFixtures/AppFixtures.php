@@ -26,7 +26,7 @@ class AppFixtures extends Fixture
         $paymentMethod = ['CARD', 'CASH'];
         $userArray = [];
         $paymentStatus = ['PAID', 'PENDING', 'FAILED'];
-        $orderStatus = ['DELIVERED', 'SHIPPED', 'CANCELLED', 'PROCESSING'];
+        $orderStatus = ['DELIVERED', 'RECEIVED', 'CANCELLED', 'PROCESSING', 'DELIVERY'];
         $menuItemArray = [];
         $employeeArray = [];
         $orderTotals = []; // Temporary array to store totals for each Order
@@ -235,7 +235,7 @@ class AppFixtures extends Fixture
         ];
 
 
-// CREATING 30 different USERS 
+        // CREATING 30 different USERS 
         for ($i = 0; $i < 30; $i++) {
             $user = new user();
             $user->setFirstName($faker->firstName())
@@ -250,7 +250,7 @@ class AppFixtures extends Fixture
         }
 
         // CREATING 5 different Employees
-        for ($i = 0; $i <5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $user = new user();
             $user->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName())
@@ -263,7 +263,7 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
-        
+
 
         //CREATING MENU ITEMS 
         // for ($i = 0; $i < 100; $i++) {

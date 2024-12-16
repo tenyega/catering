@@ -59,9 +59,28 @@
 								</div>
 							</div>
 						</div>
-						<a href="{{path('app_order')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">My Orders</a>
+						<div class="relative group">
+							<a href="#" class="text-[rgb(35,31,32)] hover:text-blue-500 flex items-center">
+								Orders
+								<!-- Dropdown Icon -->
+								<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+								</svg>
+							</a>
+							<!-- Dropdown Menu -->
+							<div class="absolute hidden pt-2 group-hover:block">
+								<div class="w-48 bg-white border border-gray-200 rounded-md shadow-md">
+									<a href="{{ path('order_recent') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+										Track Order</a>
+									<a href="{{ path('app_order')}}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Order History
+									</a>
+
+								</div>
+							</div>
+						</div>
 						<a href="{{path('app_logout')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Logout</a>
 					{% else %}
+					
 						<a href="{{path('app_register')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Register</a>
 						<a href="{{path('app_login')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Login</a>
 					{% endif %}

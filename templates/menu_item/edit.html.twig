@@ -1,33 +1,57 @@
-{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-{{ form_label(form.name) }}
-{{ form_widget(form.name) }}
-{{ form_errors(form.name) }}
+{% extends 'base.html.twig' %}
 
-{{ form_widget(form.description) }}
-{{ form_label(form.description) }}
-{{ form_errors(form.description) }}
+{% block body %}
+	<div class="container px-4 py-8 mx-auto">
+		<h1 class="mb-6 text-3xl font-bold">Add a New Menu Item</h1>
 
-{{ form_label(form.price) }}
-{{ form_widget(form.price) }}
-{{ form_errors(form.price) }}
+		<div class="p-6 bg-white rounded-lg shadow-md">
+			{{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
 
+			<!-- Current Password Field -->
+			<div>
+				<label for="name" class="block mb-2 text-sm font-medium text-gray-700">{{ form_label(form.name) }}</label>
+				{{ form_widget(form.name, {'attr': {'class': 'w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+				{{ form_errors(form.name) }}
+			</div>
 
-{{ form_label(form.category) }}
-{{ form_widget(form.category) }}
-{{ form_errors(form.category) }}
+			<!-- New Password Field -->
+			<div>
+				<label for="description" class="block mb-2 text-sm font-medium text-gray-700">{{ form_label(form.description) }}</label>
+				{{ form_widget(form.description, {'attr': {'class': 'w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+				{{ form_errors(form.description) }}
+			</div>
 
+			<!-- Confirm New Password Field -->
+			<div>
+				<label for="price" class="block mb-2 text-sm font-medium text-gray-700">{{ form_label(form.price) }}</label>
+				{{ form_widget(form.price, {'attr': {'class': 'w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+				{{ form_errors(form.price) }}
+			</div>
 
-{{ form_label(form.isAvailable) }}
-{{ form_widget(form.isAvailable) }}
-{{ form_errors(form.isAvailable) }}
+			<div>
+				<label for="category" class="block mb-2 text-sm font-medium text-gray-700">{{ form_label(form.category) }}</label>
+				{{ form_widget(form.category, {'attr': {'class': 'w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+				{{ form_errors(form.category) }}
+			</div>
+		
+			<div>
+				<label for="isAvailable" class="block mb-2 text-sm font-medium text-gray-700">{{ form_label(form.isAvailable) }}</label>
+				{{ form_widget(form.isAvailable, {'attr': {'class': 'w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+				{{ form_errors(form.isAvailable) }}
+			</div>
+			<div>
+				<label for="img" class="block mb-2 text-sm font-medium text-gray-700">{{ form_label(form.img) }}</label>
+				{{ form_widget(form.img, {'attr': {'class': 'w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-indigo-500'}}) }}
+				{{ form_errors(form.img) }}
+			</div>
+			<!-- Save Button -->
+			<div class="flex justify-end">
+				<button type="submit" class="px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-600">
+					Save Changes
+				</button>
+			</div>
 
-
-{{ form_label(form.img) }}
-{{ form_widget(form.img) }}
-{{ form_errors(form.img) }}
-<button type="submit" class="w-full px-4 py-2 mt-4 text-white bg-blue-600 rounded hover:bg-blue-700">
-	Submit
-</button>
-
-
-{{ form_end(form) }}
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}

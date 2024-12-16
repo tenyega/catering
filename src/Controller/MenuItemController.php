@@ -8,6 +8,7 @@ use App\Form\MenuItemType;
 use App\Repository\MenuItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
@@ -76,54 +77,76 @@ class MenuItemController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $menuItem = new MenuItem();
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+
+                $menuItem = new MenuItem();
 
 
-            $uploadedFile = $form->get('img')->getData();
+                $uploadedFile = $form->get('img')->getData();
 
-            if ($uploadedFile) {
-                // Generate a custom name for the file
-                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $customFilename = $form->get('name')->getData() . '.' . $uploadedFile->guessExtension();
+                if ($uploadedFile) {
+                    // Generate a custom name for the file
+                    $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    $customFilename = $form->get('name')->getData() . '.' . $uploadedFile->guessExtension();
 
-                // Define the path to the public folder
-                $publicDirectory = $this->getParameter('kernel.project_dir') . '/public/img';
-                //dd($publicDirectory);
-                // Move the file to the public/uploads directory
-                try {
-                    $uploadedFile->move($publicDirectory, $customFilename);
-                } catch (FileException $e) {
-                    // Handle exception if something happens during file upload
-                    throw new \Exception('Failed to upload the file: ' . $e->getMessage());
+                    // Define the path to the public folder
+                    $publicDirectory = $this->getParameter('kernel.project_dir') . '/public/img';
+                    //dd($publicDirectory);
+                    // Move the file to the public/uploads directory
+                    try {
+                        $uploadedFile->move($publicDirectory, $customFilename);
+                    } catch (FileException $e) {
+                        // Handle exception if something happens during file upload
+                        throw new \Exception('Failed to upload the file: ' . $e->getMessage());
+                    }
+
+                    // (Optional) Save the custom filename to the database if needed
+                    // $menuItem = $form->getData();
+                    $menuItem->setImg($customFilename); // Assuming 'setImage' exists in your entity
                 }
 
-                // (Optional) Save the custom filename to the database if needed
-                // $menuItem = $form->getData();
-                $menuItem->setImg($customFilename); // Assuming 'setImage' exists in your entity
+
+
+
+                $isAvailable = $form->get('isAvailable')->getData();
+
+                $menuItem->setName($form->get('name')->getData())
+                    ->setCategory($form->get('category')->getData())
+                    ->setDescription($form->get('description')->getData())
+                    ->setPrice($form->get('price')->getData())
+                    ->setAvailable($isAvailable);
+
+
+                // dd($menuItem);
+                $this->entityManager->persist($menuItem);
+                $this->entityManager->flush();
+                $this->addFlash("success", "A new Menu Item has been added Successfully");
+                return $this->redirectToRoute('app_menu_item');
+            } else {
+                // dd('inside else ');
+                // Extract errors and add them as flash messages
+                $errors = $this->getFormErrors($form);
+                foreach ($errors as $error) {
+                    $this->addFlash('error', $error);
+                }
             }
-
-
-
-
-            $isAvailable = $form->get('isAvailable')->getData();
-
-            $menuItem->setName($form->get('name')->getData())
-                ->setCategory($form->get('category')->getData())
-                ->setDescription($form->get('description')->getData())
-                ->setPrice($form->get('price')->getData())
-                ->setAvailable($isAvailable);
-
-
-            // dd($menuItem);
-            $this->entityManager->persist($menuItem);
-            $this->entityManager->flush();
-            $this->addFlash("success", "A new Menu Item has been added Successfully");
-            return $this->redirectToRoute('app_menu_item');
         }
 
         return $this->render('menu_item/edit.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * Helper method to extract form errors.
+     */
+    private function getFormErrors(FormInterface $form): array
+    {
+        $errors = [];
+        foreach ($form->getErrors(true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+        return $errors;
     }
 }
