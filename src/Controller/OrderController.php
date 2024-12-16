@@ -54,8 +54,10 @@ class OrderController extends AbstractController
     public function recentOrder(Request $request, OrderRepository $or, UserRepository  $ur): Response
     {
         $user = $this->getUser();
-        $recentOrder = $or->findOneBy(['user' => $user], ['orderDate' => 'DESC']);
-
+        $recentOrder = $or->findOneBy(
+            ['user' => $user, 'paymentStatus' => 'PAID'],
+            ['orderDate' => 'DESC']
+        );
         return $this->render('order/recent.html.twig', [
             'order' => $recentOrder,
         ]);
