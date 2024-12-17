@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use App\Repository\OrderRepository;
 use App\Repository\OrderItemRepository;
+use App\Repository\PaymentRepository;
 use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -58,6 +59,7 @@ class OrderController extends AbstractController
             ['user' => $user, 'paymentStatus' => 'PAID'],
             ['orderDate' => 'DESC']
         );
+      
         return $this->render('order/recent.html.twig', [
             'order' => $recentOrder,
         ]);
@@ -91,4 +93,23 @@ class OrderController extends AbstractController
 
         ]);
     }
+
+      // To cancel the order from the user side 
+      #[Route('/user/order/cancel', name: 'order_cancel')]
+      public function cancelOrder(Request $request, OrderRepository $or, UserRepository  $ur, PaymentRepository $pr): Response
+      {
+          $user = $this->getUser();
+          $recentOrder = $or->findOneBy(
+              ['user' => $user, 'paymentStatus' => 'PAID'],
+              ['orderDate' => 'DESC']
+          );
+
+        $recentOrder->setPaymentStatus('REFUND IN PROCESS'); 
+       
+        $this->entityManager->flush(); 
+        $this->addFlash('success', "Your order is cancelled sucessfully");
+          return $this->render('order/cancel.html.twig', [
+              'order' => $recentOrder,
+          ]);
+      }
 }

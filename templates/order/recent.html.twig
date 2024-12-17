@@ -4,6 +4,9 @@
 {% endblock %}
 
 {% block body %}
+{% if order== null %}
+	<h1 class="mb-6 text-3xl font-bold text-gray-800 text-center mt-20 mb-20">No recent order to show </h1>
+{% else %}
 	<div class="container p-6 mx-auto ">
 		<h1 class="mb-6 text-2xl font-bold text-gray-800">Track Your Order</h1>
 		<div
@@ -70,7 +73,7 @@
 				</div>
 			</div>
 			<!-- Second Div -->
-			<div class="w-full p-6 space-y-6 bg-white bg-[#231f20] border border-gray-200 rounded-lg shadow-sm lg:w-1/2 dark:border-gray-700 dark:bg-gray-800">
+			<div class="w-full p-6 space-y-6 bg-white bg-[#22427c] border border-gray-200 rounded-lg shadow-sm lg:w-1/2 dark:border-gray-700 dark:bg-gray-800">
 				<h3 class="text-xl font-semibold text-gray-900 dark:text-white">Order Tracking</h3>
 
 				<ol
@@ -142,10 +145,12 @@
 				</ol>
 
 				<div class="gap-4 sm:flex sm:items-center">
-					<button type="button" class="w-full rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Cancel the order</button>
+					<a href="{{ path('order_cancel')}}" class="w-full rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Cancel the order</a>
 
 				</div>
 			</div>
 		</div>
 	</div>
-</div>{% endblock %}
+</div>
+{% endif %}
+{% endblock %}

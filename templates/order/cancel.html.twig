@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order Cancelled
+{% endblock %}
+
+{% block body %}
+
+	<div class="container p-6 mx-auto ">
+		<h1 class="mb-6 text-2xl font-bold text-gray-800 text-center">Details of the cancelled Order </h1>
+		<div
+			class="flex justify-center gap-4 mx-4 lg:mx-8">
+			<!-- First Div -->
+			<div
+				class="w-full p-6 transition-shadow duration-300 ease-in-out transform bg-white rounded-lg shadow-lg lg:w-1/2 hover:shadow-2xl hover:-translate-y-2">
+				<!-- Loop through orders -->
+				<div class="p-6 transition-shadow duration-300 ease-in-out transform bg-white rounded-lg shadow-lg hover:shadow-2xl hover:-translate-y-2">
+					<div
+						class="grid grid-cols-2 gap-4">
+						<!-- Order ID and Date -->
+						<div>
+							<p class="text-sm text-gray-500">Date:
+								<span class="font-semibold text-gray-800">{{ order.orderDate|date('Y-m-d H:i') }}</span>
+							</p>
+						</div>
+						<!-- Payment and Order Status -->
+						<div>
+							<p class="text-gray-700 font-xl medium text-">
+								<span class="{% if order.paymentStatus == 'PAID' %}text-green-600{% else %}text-red-600{% endif %} font-semibold">
+									{{ order.paymentStatus }}
+								</span>
+							</p>
+
+						</div>
+					</div>
+
+					<!-- User Info -->
+					<div class="mt-4">
+						<p class="text-sm text-gray-700">
+							<span class="font-semibold">User:</span>
+							{{ order.getUser().getFirstName() }}
+						</p>
+					</div>
+
+					<!-- Order Items -->
+					<div class="mt-6">
+						<h3 class="pb-2 text-lg font-semibold text-gray-700 border-b border-gray-300">Order Items</h3>
+						<ul class="mt-4 space-y-2">
+							{% for orderItem in order.getOrderItems() %}
+								<li class="flex items-center justify-between">
+									<div class="flex-1 min-w-0">
+										<span class="block font-medium truncate">{{ orderItem.getMenuItem().getName() }}
+											x{{ orderItem.getQuantity() }}</span>
+									</div>
+									<div class="w-24 text-sm text-center text-gray-700">
+										<span>${{ orderItem.getMenuItem().getPrice() }}</span>
+									</div>
+									<div class="w-32 text-sm text-right text-gray-500">
+										<span class="text-gray-500">Subtotal:</span>
+										<span class="font-semibold">${{ orderItem.getItemPrice() }}</span>
+									</div>
+								</li>
+
+							{% endfor %}
+						</ul>
+					</div>
+
+					<!-- Total Amount -->
+					<div class="mt-6">
+						<p class="text-xl font-bold text-gray-800">Total: ${{ order.totalAmount }}</p>
+					</div>
+				</div>
+			</div>
+		
+	</div>
+</div>
+
+{% endblock %}
