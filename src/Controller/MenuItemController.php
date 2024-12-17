@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+
 class MenuItemController extends AbstractController
 {
 
@@ -26,6 +27,9 @@ class MenuItemController extends AbstractController
     #[Route('/menu/item', name: 'app_menu_item')]
     public function index(MenuItemRepository $mir): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
+            return $this->render('home/access_denied.html.twig');
+        }
         $menuItems = $mir->findBy([], ['name' => 'ASC']);
         return $this->render('menu_item/index.html.twig', [
             'menuItems' => $menuItems,
@@ -37,6 +41,9 @@ class MenuItemController extends AbstractController
     public function editMenuItem(int $id, MenuItemRepository $mir, Request $request): Response
     {
 
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
+            return $this->render('home/access_denied.html.twig');
+        }
         $menuItem = $mir->findOneBy(['id' => $id]);
         if (!$menuItem) {
             throw $this->createNotFoundException('Menu item not found');
@@ -61,6 +68,9 @@ class MenuItemController extends AbstractController
     public function deleteMenuItem(MenuItem $menuItem): Response
     {
 
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->render('home/access_denied.html.twig');
+        }
         $this->entityManager->remove($menuItem);
         $this->entityManager->flush();
         $this->addFlash("success", "Your Menu Item has been deleted Successfully");
@@ -71,7 +81,9 @@ class MenuItemController extends AbstractController
 
     public function addMenuItem(Request $request): Response
     {
-
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->render('home/access_denied.html.twig');
+        }
 
         $form = $this->createForm(MenuItemType::class);
 
