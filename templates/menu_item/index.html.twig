@@ -4,9 +4,11 @@
 {% endblock %}
 
 {% block body %}
-	<a href="{{ path('menu_item_add') }}" class="px-3 py-1 text-white bg-green-500 rounded hover:bg-green-600">
-		Add new Menu Item
-	</a>
+	{% if is_granted('ROLE_ADMIN') %}
+		<a href="{{ path('menu_item_add') }}" class="px-3 py-1 text-white bg-green-500 rounded hover:bg-green-600">
+			Add new Menu Item
+		</a>
+	{% endif %}
 	<div class="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-3">
 		{% for menuItem in menuItems %}
 
@@ -27,15 +29,15 @@
 					<a href="{{ path('menu_item_edit', { 'id': menuItem.id }) }}" class="px-3 py-1 text-white bg-yellow-500 rounded hover:bg-yellow-600">
 						Edit
 					</a>
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('menu_item_delete', { 'id': menuItem.id }) }}" class="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600">
+							Delete
+						</a>
+					{% endif %}
 
-					<a href="{{ path('menu_item_delete', { 'id': menuItem.id }) }}" class="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600">
-						Delete
-					</a>
+
 				</div>
 			</div>
 		{% endfor %}
-
 	</div>
-
-
 {% endblock %}

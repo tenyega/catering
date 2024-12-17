@@ -60,6 +60,13 @@
 								</div>
 							</div>
 						</div>
+						{% if is_granted('ROLE_EMPLOYEE') or  is_granted('ROLE_ADMIN')%}
+							<a href="{{ path('app_menu_item') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">
+								Menu Item
+							</a>
+						{% endif %}
+
+
 						<div class="relative group">
 							<a href="#" class="text-[rgb(35,31,32)] hover:text-blue-500 flex items-center">
 								Orders
@@ -75,7 +82,10 @@
 										Track Order</a>
 									<a href="{{ path('app_order')}}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Order History
 									</a>
-
+									{% if is_granted('ROLE_EMPLOYEE') or is_granted('ROLE_ADMIN') %}
+										<a href="{{ path('app_orderList')}}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">All Orders
+										</a>
+									{% endif %}
 								</div>
 							</div>
 						</div>

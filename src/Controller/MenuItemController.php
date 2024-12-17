@@ -18,7 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MenuItemController extends AbstractController
 {
-
+    /**
+     * Here the employee is given access only to view and edit the menu items 
+     * and Admin has the extra right of add; delete 
+     */
     private $entityManager;
     public function __construct(EntityManagerInterface $entityManager)
     {
