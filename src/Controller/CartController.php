@@ -2,6 +2,7 @@
 // src/Controller/CartController.php
 namespace App\Controller;
 
+use Amp\Http\Client\Response;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 
@@ -113,11 +114,53 @@ class CartController extends AbstractController
         }
 
 
+        if (in_array('ROLE_ADMIN', $this->getUser()->getRoles()) || in_array('ROLE_EMPLOYEE', $this->getUser()->getRoles())) {
 
-        return $this->render('cart/index.html.twig', [
-            'items' => $detailedCart,
-            'total' => $total,
-            'totalQuantity' => $totalQuantity
-        ]);
+
+            return $this->render('cart/employeeCart.html.twig', [
+                'items' => $detailedCart,
+                'total' => $total,
+                'totalQuantity' => $totalQuantity
+            ]);
+        } else {
+            return $this->render('cart/index.html.twig', [
+                'items' => $detailedCart,
+                'total' => $total,
+                'totalQuantity' => $totalQuantity
+            ]);
+        }
+    }
+
+
+
+    // This route is only for the admin and employee to do the encaissement sur place. 
+    #[Route('/employee/order/payment', name: 'employee_pay')]
+    public function employeePay(Request $request)
+    {
+        dd('inside the employee encaissement');
+        $paymentMethod = $request->request->get('payment_method');
+
+        if (!$paymentMethod) {
+            $this->addFlash('error', 'Please select a payment method.');
+            return $this->redirectToRoute('cart_details');
+        }
+
+        // Handle payment logic based on the selected method
+        switch ($paymentMethod) {
+            case 'CASH':
+                return $this->redirectToRoute('cash_payment');
+                break;
+
+            case 'CARD':
+                return $this->redirectToRoute('cart_details');
+                break;
+
+            case 'TICKET_RESTAURANT':
+                return $this->redirectToRoute('tr_payment');
+                break;
+
+            default:
+                $this->addFlash('error', 'Invalid payment method selected.');
+        }
     }
 }

@@ -27,8 +27,12 @@
 					{% endfor %}
 
 					<div class="flex flex-row items-center">
+
+
 						<a
 							href="{{ path('cart_show') }}" class="relative text-[rgb(35,31,32)] hover:text-blue-500 flex items-center">
+
+
 							<!-- Cart SVG -->
 							<svg class="w-6 h-6 text-gray-800 hover:text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 								<path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 7M7 13l-2 7h14m-4-7a2 2 0 10-4 0 2 2 0 004 0z"></path>
@@ -60,11 +64,6 @@
 								</div>
 							</div>
 						</div>
-						{% if is_granted('ROLE_EMPLOYEE') or  is_granted('ROLE_ADMIN')%}
-							<a href="{{ path('app_menu_item') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">
-								Menu Item
-							</a>
-						{% endif %}
 
 
 						<div class="relative group">
@@ -89,6 +88,11 @@
 								</div>
 							</div>
 						</div>
+						{% if is_granted('ROLE_EMPLOYEE') or  is_granted('ROLE_ADMIN')%}
+							<a href="{{ path('app_menu_item') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">
+								Menu Item
+							</a>
+						{% endif %}
 						<a href="{{path('app_logout')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Logout</a>
 					{% else %}
 
@@ -126,4 +130,4 @@ mobileMenu.classList.toggle('hidden');
 });
 		</script>
 	</body>
-</html>
+</html></body></html>

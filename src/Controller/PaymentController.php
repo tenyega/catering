@@ -171,4 +171,19 @@ Encoding issues
         echo "<script>window.location.href = '" . htmlspecialchars($fullUrl) . "';</script>";
         return new Response(); // this statement was important coz with out this i m getting a error msg at the back even with the checkout session. so i need to return HTTP Response object  from the controller  
     }
+
+
+    #[Route('/pay/cash', name: 'pay_cash', methods: ['GET', 'POST'])]
+    public function payCash(Request $request): Response
+    {
+        return $this->render('payment/cash_payment.html.twig');
+    }
+
+
+
+    #[Route('/pay/tr', name: 'tr_payment', methods: ['GET', 'POST'])]
+    public function trPayment(Request $request): Response
+    {
+        return $this->render('payment/tr_payment.html.twig');
+    }
 }

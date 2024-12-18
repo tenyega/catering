@@ -14,6 +14,7 @@ use App\Entity\Order;
 use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -124,7 +125,7 @@ class OrderController extends AbstractController
 
     // this lists all the orders  
     #[Route('/order/status/{id}', name: 'order_status')]
-    public function orderStatus(Request $request, OrderRepository $or, Order $order, OrderItemRepository $oir): Response
+    public function orderStatus(Request $request, OrderRepository $or, Order $order, SessionInterface $session): Response
     {
         if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
             return $this->render('home/access_denied.html.twig');
@@ -147,11 +148,9 @@ class OrderController extends AbstractController
         // Update the order status
         $order->setOrderStatus($newStatus);
         $this->entityManager->flush();
-        $this->entityManager->refresh($order);
-        // Add success flash message
+        $orders = $or->findAll();
         $this->addFlash('success', "The order status has been updated successfully");
 
-        $orders = $or->findAll();
         // Redirect to the orders list
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
@@ -159,4 +158,7 @@ class OrderController extends AbstractController
 
         ]);
     }
+
+
+   
 }
