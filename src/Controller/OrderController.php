@@ -125,7 +125,6 @@ class OrderController extends AbstractController
       #[Route('/user/save/SR', name: 'saveSR')]
       public function specialRequest(Request $request, OrderRepository $or, UserRepository  $ur, PaymentRepository $pr): Response
       {
-        dd('inside the save method'); 
         $data = json_decode($request->getContent(), true);
         $specialRequest = $data['special_request'] ?? null;
           $user = $this->getUser();
@@ -139,7 +138,7 @@ class OrderController extends AbstractController
        
       }
        
-    }
+ 
 
 
 
@@ -147,6 +146,7 @@ class OrderController extends AbstractController
     #[Route('/order/status/{id}', name: 'order_status')]
     public function orderStatus(Request $request, OrderRepository $or, Order $order, SessionInterface $session): Response
     {
+
         if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
             return $this->render('home/access_denied.html.twig');
         }
@@ -161,16 +161,17 @@ class OrderController extends AbstractController
         // Get the new status from the form data
         $newStatus = $request->request->get('orderStatus');
         if (!$newStatus) {
-            $this->addFlash('error', 'Invalid order status');
+            $this->addFlash('error', "Invalid order status");
             return $this->redirectToRoute('order_list'); // Redirect back to the order list
         }
+        $this->addFlash('success', "The order status has been updated successfully");
 
         // Update the order status
         $order->setOrderStatus($newStatus);
         $this->entityManager->flush();
         $orders = $or->findAll();
         $this->addFlash('success', "The order status has been updated successfully");
-
+        
         // Redirect to the orders list
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
