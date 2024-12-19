@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -22,6 +23,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank(message="Email is required.")
      * @Assert\Email(message="Please enter a valid email address.")
      */
+    #[Assert\NotBlank(message: 'Email is required.')]
+    #[Assert\Email(message: 'Please enter a valid email address.')]
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
@@ -47,6 +50,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     maxMessage="First name cannot be longer than {{ limit }} characters."
      * )
      */
+    #[Assert\NotBlank(message: 'First Name is required.')]
+    #[Assert\Length(min: 2, max: 50, minMessage:"First name must be at least 3 characters long.",  maxMessage:"First name cannot be longer than 50 characters." )]
     #[ORM\Column(length: 120)]
     private ?string $firstName = null;
 
@@ -59,6 +64,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     maxMessage="Last name cannot be longer than {{ limit }} characters."
      * )
      */
+    #[Assert\NotBlank(message: 'Last Name  is required.')]
+    #[Assert\Length(min: 2, max: 50, minMessage:"Last name must be at least 3 characters long.",  maxMessage:"Last name cannot be longer than 50 characters." )]
     #[ORM\Column(length: 120)]
     private ?string $lastName = null;
 
@@ -70,6 +77,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     message="Please enter a valid phone number."
      * )
      */
+    #[Assert\NotBlank(message: 'Phone number is required.')]
+    #[Assert\Regex( pattern:"/^\+?[0-9\s\-]{7,15}$/" , message:"Please enter a valid phone number.")]
     #[ORM\Column(length: 120)]
     private ?string $phone = null;
 
@@ -82,6 +91,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     maxMessage="Address cannot be longer than {{ limit }} characters."
      * )
      */
+    #[Assert\NotBlank(message: 'Address  is required.')]
+    #[Assert\Length(min: 10, max: 200, minMessage:"Address must be at least 3 characters long.",  maxMessage:"Address cannot be longer than 200 characters." )]
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 

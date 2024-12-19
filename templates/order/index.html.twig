@@ -7,20 +7,14 @@
 {% block body %}
 	{% include 'orderFilter.html.twig' with {'route': route} %}
 
-{% for label, messages in app.flashes %}
-   
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    
-{% endfor %}
+
 
 	{% if orders == null %}
 		<h1 class="mb-6 text-3xl font-bold text-gray-800 text-center mt-20 mb-20">
 			No orders to show
 		</h1>
 	{% else %}
-		<h1 class="mb-6 text-3xl font-bold text-gray-800 text-center">Total Orders:
+		<h1 class="text-3xl font-bold text-gray-800 text-center">Total Orders:
 			{{ orders | length }}</h1>
 
 		<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">

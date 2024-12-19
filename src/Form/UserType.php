@@ -7,19 +7,31 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType; 
 
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            ->add('firstName')
-            ->add('lastName')
-            ->add('phone')
+            ->add('email', EmailType::class, [
+                'required' => false,
+            ])
+            ->add('firstName', TextType::class, [
+                'required' => false,
+            ])
+            ->add('lastName', TextType::class, [
+                'required' => false,
+            ])
+            ->add('phone', TextType::class, [
+                'required' => false,
+            ])
             ->add('address', TextareaType::class, [
-                'label' => 'Address'
-            ]);
+                'label' => 'Address',
+                'required' => false,
+            ])
+            ->setAttribute('novalidate', 'novalidate');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
