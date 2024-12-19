@@ -77,14 +77,6 @@ class PaymentController extends AbstractController
      * Cela nous donne accès à la méthos redirect qui génère la requête
      * à partir de la session initié avec PaymentService->askCheckout()
      *
-    #[Route('/payment/checkout', name: 'app_payment_checkout', methods: ['GET'])]
-    public function checkout(PaymentService $ps, SessionInterface $sessionInterface): RedirectResponse
-    {
-        dd($sessionInterface->get('cart'));
-        return $this->redirect($ps->askCheckout($id)->url);
-    }
-     */
-    /**
      * Check du statut de paiement
      */
     #[Route('/payment-webhook', name: 'app_stripe_webhook', methods: ['GET', 'POST'])]
@@ -108,6 +100,7 @@ class PaymentController extends AbstractController
         }
     }
 
+    // payment By card 
     #[Route('/c/pay', name: 'cart_pay')]
     public function cart_pay(SessionInterface $sessionInterface, MenuItemRepository $mir, UserRepository $ur, EntityManagerInterface $entityManagerInterface, PaymentService $ps, Request $request)
     {
@@ -225,7 +218,7 @@ public function cash_close(
         // Create Order
         $order = new Order();
         $order->setTotalAmount((float) $total)
-            ->setPaymentStatus('PENDING')
+            ->setPaymentStatus('PAID')
             ->setOrderStatus('PROCESSING')
             ->setUser($ur->findOneBy(['id' => $this->getUser()->getId()]));
 
@@ -267,9 +260,11 @@ public function cash_close(
     }
 }
 
-    #[Route('/pay/tr', name: 'tr_payment', methods: ['GET', 'POST'])]
-    public function trPayment(Request $request): Response
+    #[Route('/pay/tr/{total}', name: 'tr_payment', methods: ['GET', 'POST'])]
+    public function trPayment(Request $request, $total): Response
     {
-        return $this->render('payment/tr_payment.html.twig');
+        return $this->render('payment/tr_payment.html.twig', [
+            'total'=>$total
+        ]);
     }
 }

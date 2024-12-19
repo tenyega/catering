@@ -1,2 +1,52 @@
-TR
-TR 
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mx-auto p-6">
+
+    <!-- Title Section -->
+    <h1 class="text-3xl font-bold text-center mb-6">Restaurant Ticket Calculation</h1>
+
+    <!-- Form Section -->
+    <form method="POST" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
+
+        <div class="mb-4">
+            <label for="ticket_value" class="block text-lg font-medium text-gray-700">Ticket Restaurant Value (in currency):</label>
+            <input type="text" id="ticket_value" name="ticket_value" step="0.01" required class="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div class="mb-4">
+            <label for="num_tickets" class="block text-lg font-medium text-gray-700">Number of Tickets:</label>
+            <input type="number" id="num_tickets" name="num_tickets" min="1" required class="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+       
+
+    </form>
+
+    <!-- Subtotal and Final Total Section -->
+    {% if ticket_value is defined and num_tickets is defined %}
+        {% set subtotal = ticket_value * num_tickets %}
+        <div class="mt-6 text-center">
+            <p class="text-xl font-semibold">Subtotal: <span class="font-bold text-blue-600">{{ subtotal | number_format(2) }}</span></p>
+        </div>
+
+        <div class="mt-4 text-center">
+            <p class="text-xl font-semibold">Final Total (after applying ticket restaurant): <span class="font-bold text-blue-600">{{ total - subtotal | number_format(2) }}</span></p>
+        </div>
+    {% endif %}
+
+    <!-- Total Display and Payment Section -->
+    <div class="mt-12 flex flex-col items-center justify-center bg-gray-100 p-6 rounded-lg shadow-xl">
+        <h2 class="text-2xl font-bold mb-4">Total</h2>
+        <p id="total_display" class="text-4xl font-extrabold text-blue-600 mb-4">${{ total | number_format(2) }}</p>
+        <span id="payment_detail" class="text-lg text-gray-600 mb-6"></span>
+        
+        <a href="{{ path('cash_close', {'total': total}) }}" 
+           id="card_payment_btn"
+           class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition duration-200">
+            Pay
+        </a>
+    </div>
+
+</div>
+{% endblock %}
