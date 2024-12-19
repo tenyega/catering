@@ -108,10 +108,10 @@ class PaymentController extends AbstractController
     }
 
     #[Route('/c/pay', name: 'cart_pay')]
-    public function cart_pay(SessionInterface $sessionInterface, MenuItemRepository $mir, UserRepository $cr, EntityManagerInterface $entityManagerInterface, PaymentService $ps)
+    public function cart_pay(SessionInterface $sessionInterface, MenuItemRepository $mir, UserRepository $cr, EntityManagerInterface $entityManagerInterface, PaymentService $ps, Request $request)
     {
-
-
+       $specialRequest = $request->request->get('specialRequest');
+       
 
         $total = 0.0; // Start as a float
         $totalQuantity = 0;
@@ -133,6 +133,7 @@ class PaymentController extends AbstractController
         $order->setTotalAmount((float) $total)
             ->setPaymentStatus('PENDING')
             ->setOrderStatus('PROCCESSING')
+            ->setSpecialRequest($specialRequest)
             ->setUser($cr->findOneBy(['id' => $this->getUser()->getId()]));
 
 
@@ -149,8 +150,7 @@ class PaymentController extends AbstractController
             $orderItem->setQuantity($qty)
                 ->setMenuItem($menuItm)
                 ->setOrders($order)
-                ->setItemPrice($menuItm->getPrice() * $qty)
-                ->setSpecialRequest('No');
+                ->setItemPrice($menuItm->getPrice() * $qty);
             $entityManagerInterface->persist($orderItem);
         }
         $entityManagerInterface->flush();
@@ -167,8 +167,10 @@ Web server (Apache/Nginx) URL length restrictions
 Framework-specific routing limitations
 Encoding issues
 */
+
         $fullUrl = $ps->askCheckout($orderID)->url;
         echo "<script>window.location.href = '" . htmlspecialchars($fullUrl) . "';</script>";
-        return new Response(); // this statement was important coz with out this i m getting a error msg at the back even with the checkout session. so i need to return HTTP Response object  from the controller  
+
+    
     }
 }

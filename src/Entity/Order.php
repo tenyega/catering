@@ -45,6 +45,9 @@ class Order
     #[ORM\OneToOne(mappedBy: 'orderId', cascade: ['persist', 'remove'])]
     private ?Payment $payment = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $specialRequest = 'No special request';
+
    /** #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Report $report = null;
  */
@@ -185,5 +188,17 @@ class Order
 
         return $this;
     }*/
+
+    public function getSpecialRequest(): ?string
+    {
+        return $this->specialRequest;
+    }
+
+    public function setSpecialRequest(?string $specialRequest): static
+    {
+        $this->specialRequest = $specialRequest;
+
+        return $this;
+    }
 
 }

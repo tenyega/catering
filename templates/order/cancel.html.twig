@@ -63,7 +63,16 @@
 							{% endfor %}
 						</ul>
 					</div>
-
+			<div class="mt-4">
+    <p class="text-sm text-gray-700">
+        <span class="font-semibold">Special Request:</span>
+    </p>
+    <div class="mt-2 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+        <p class="text-sm text-gray-700 italic">
+            {{ order.getSpecialRequest() }}
+        </p>
+    </div>
+</div>
 					<!-- Total Amount -->
 					<div class="mt-6">
 						<p class="text-xl font-bold text-gray-800">Total: ${{ order.totalAmount }}</p>

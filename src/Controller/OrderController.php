@@ -42,7 +42,8 @@ class OrderController extends AbstractController
         if ($paymentStatus) {
             $criteria['paymentStatus'] = $paymentStatus;
         }
-        $orders = $or->findBy($criteria);
+       
+        $orders = $or->findBy($criteria, ['orderDate' => 'DESC']);
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
             'user' => $user,
@@ -111,5 +112,22 @@ class OrderController extends AbstractController
           return $this->render('order/cancel.html.twig', [
               'order' => $recentOrder,
           ]);
+      }
+
+      #[Route('/user/save/SR', name: 'saveSR')]
+      public function specialRequest(Request $request, OrderRepository $or, UserRepository  $ur, PaymentRepository $pr): Response
+      {
+        dd('inside the save method'); 
+        $data = json_decode($request->getContent(), true);
+        $specialRequest = $data['special_request'] ?? null;
+          $user = $this->getUser();
+          $recentOrder = $or->findOneBy(
+              ['user' => $user, 'paymentStatus' => 'PAID'],
+              ['orderDate' => 'DESC']
+          );
+          $recentOrder->setSpecialRequest($specialRequest); 
+    
+        $this->entityManager->flush(); 
+       
       }
 }

@@ -24,8 +24,7 @@ class OrderItem
     #[ORM\JoinColumn(nullable: false)]
     private ?MenuItem $MenuItem = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $specialRequest = 'No special request';
+    
 
     #[ORM\ManyToOne(inversedBy: 'orderItems')]
     #[ORM\JoinColumn(nullable: false)]
@@ -72,19 +71,7 @@ class OrderItem
         return $this;
     }
 
-    public function getSpecialRequest(): ?string
-    {
-        return $this->specialRequest;
-    }
-
-    public function setSpecialRequest(?string $specialRequest): static
-    {
-        $this->specialRequest = $specialRequest;
-
-        return $this;
-    }
-
-    public function getOrders(): ?Order
+      public function getOrders(): ?Order
     {
         return $this->orders;
     }

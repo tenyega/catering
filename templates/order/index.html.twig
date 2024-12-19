@@ -8,6 +8,9 @@
 
 	{% include 'orderFilter.html.twig' with {'route': route} %}
 
+{% if orders == null  %} <h1 class="mb-6 text-3xl font-bold text-gray-800 text-center mt-20 mb-20">No order to show </h1>
+{% else %}
+	
 
 	<h1>Orders:
 		{{ orders | length }}</h1>
@@ -71,6 +74,16 @@
 						{% endfor %}
 					</ul>
 				</div>
+			<div class="mt-4">
+    <p class="text-sm text-gray-700">
+        <span class="font-semibold">Special Request:</span>
+    </p>
+    <div class="mt-2 bg-gray-50 border border-gray-200 p-4 rounded-lg">
+        <p class="text-sm text-gray-700 italic">
+            {{ order.getSpecialRequest() }}
+        </p>
+    </div>
+</div>
 				<!-- Total Amount -->
 				<div class="mt-4">
 					<p class="text-xl font-bold text-gray-800">Total: ${{ order.totalAmount }}</p>
@@ -80,5 +93,5 @@
 
 		{% endfor %}
 	</div>
-
+{% endif %}
 {% endblock %}
