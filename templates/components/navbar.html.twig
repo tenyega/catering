@@ -93,6 +93,13 @@
 								Menu Item
 							</a>
 						{% endif %}
+
+						{% if is_granted('ROLE_ADMIN')%}
+							<a href="{{ path('app_user') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">
+								Users
+							</a>
+						{% endif %}
+						
 						<a href="{{path('app_logout')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Logout</a>
 					{% else %}
 

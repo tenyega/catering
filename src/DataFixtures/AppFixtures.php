@@ -264,6 +264,18 @@ class AppFixtures extends Fixture
         }
 
 
+        // CREATING AN ADMIN
+        $user = new user();
+        $user->setFirstName($faker->firstName())
+            ->setLastName($faker->lastName())
+            ->setAddress($faker->address())
+            ->setPhone($faker->phoneNumber())
+            ->setEmail("admin@email.com")
+            ->setPassword($this->hasher->hashPassword($user, 'admin'))
+            ->setRoles(['ROLE_ADMIN']);
+        $employeeArray[] = $user;
+        $manager->persist($user);
+
 
         //CREATING MENU ITEMS 
         // for ($i = 0; $i < 100; $i++) {

@@ -11,15 +11,22 @@ NEEDED as per the resume of the PROJECT
 - CRUD MenuItem
 - CRUD order 
 - CRUD User
+Blockage des route pour les different utilisateur 
+Special request for the user also needs to be done at the orde entity instead of orderItems
+
+
+User add   delete is only with adminn right 
+
+
+
+///  TODO
 
 
 
 For USER SIDE 
 Validations of form
 
-Blockage des route pour les different utilisateur 
 
-Special request for the user also needs to be done at the orde entity instead of orderItems
 
 map integration for to check the status of the delivery guy 
 

@@ -13,6 +13,7 @@ use App\Form\UserType;
 use App\Entity\User;
 use App\Form\ChangePasswordType;
 
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class UserController extends AbstractController
 {
     private $entityManager;
@@ -27,6 +28,9 @@ class UserController extends AbstractController
     #[Route('/user', name: 'app_user')]
     public function index(UserRepository $ur): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->render('home/access_denied.html.twig');
+        }
 
         $users = $ur->findBy([], ['firstName' => 'ASC']);
         return $this->render('user/index.html.twig', [
@@ -39,9 +43,14 @@ class UserController extends AbstractController
     public function editUser(int $id, UserRepository $ur, Request $request): Response
     {
 
+      
         $user = $ur->findOneBy(['id' => $id]);
         if (!$user) {
             throw $this->createNotFoundException('user not found');
+        }
+
+        if($user != $this->getUser() && !$this->isGranted('ROLE_ADMIN')){
+            return $this->render('home/access_denied.html.twig');
         }
 
         $form = $this->createForm(UserType::class, $user);
@@ -49,12 +58,12 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($this->hasher->hashPassword($user, $form->get('password')->getData()));
+            $user->setPassword($this->hasher->hashPassword($user, $user->getPassword()));
 
 
             $this->entityManager->flush();
             $this->addFlash("success", "Your user has been updated Successfully");
-            return $this->redirectToRoute('app_user');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('user/edit.html.twig', [
@@ -66,6 +75,9 @@ class UserController extends AbstractController
 
     public function deleteUser(User $user): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') ) {
+            return $this->render('home/access_denied.html.twig');
+        }
 
         $this->entityManager->remove($user);
         $this->entityManager->flush();
@@ -78,7 +90,9 @@ class UserController extends AbstractController
     public function addUser(Request $request, UserRepository $ur): Response
     {
 
-
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
+            return $this->render('home/access_denied.html.twig');
+        }
         $form = $this->createForm(UserType::class);
 
         $form->handleRequest($request);
@@ -92,7 +106,7 @@ class UserController extends AbstractController
             } else {
                 $user = new user();
                 $user->setEmail($form->get('email')->getData())
-                    ->setPassword($this->hasher->hashPassword($user, $form->get('password')->getData()))
+                    ->setPassword($this->hasher->hashPassword($user, $form->get('firstName')->getData()))
                     ->setFirstName($form->get('firstName')->getData())
                     ->setLastName($form->get('lastName')->getData())
                     ->setAddress($form->get('address')->getData())
@@ -113,6 +127,9 @@ class UserController extends AbstractController
 
     public function viewUser(User $user): Response
     {
+        if($user != $this->getUser() && !$this->isGranted('ROLE_ADMIN')){
+            return $this->render('home/access_denied.html.twig');
+        }
 
         return $this->render('user/view.html.twig', [
             'user' => $user
@@ -125,6 +142,9 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordType::class);
 
+        if($user != $this->getUser()){
+            return $this->render('home/access_denied.html.twig');
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
