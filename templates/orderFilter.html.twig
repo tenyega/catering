@@ -1,36 +1,35 @@
+<div class="p-4 mt-4 mb-6 bg-gray-100 rounded-lg shadow">
+	<form
+		method="GET" action="{{ path(route) }}" class="flex items-center space-x-4">
+		<!-- Order Status Dropdown -->
+		<div>
+			<label for="orderStatus" class="block text-sm font-medium text-gray-700">Order Status</label>
+			<select id="orderStatus" name="orderStatus" class="block w-full mt-1 text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+				<option value="">All</option>
+				<option value="SHIPPED" {% if app.request.get('orderStatus') == 'SHIPPED' %} selected {% endif %}>Received</option>
+				<option value="PROCESSING" {% if app.request.get('orderStatus') == 'PROCESSING' %} selected {% endif %}>Processing</option>
+				<option value="SHIPPED" {% if app.request.get('orderStatus') == 'SHIPPED' %} selected {% endif %}>Delivery</option>
+				<option value="DELIVERED" {% if app.request.get('orderStatus') == 'DELIVERED' %} selected {% endif %}>Delivered</option>
+				<option value="CANCELLED" {% if app.request.get('orderStatus') == 'CANCELLED' %} selected {% endif %}>Cancelled</option>
+			</select>
+		</div>
 
+		<!-- Payment Status Dropdown -->
+		<div>
+			<label for="paymentStatus" class="block text-sm font-medium text-gray-700">Payment Status</label>
+			<select id="paymentStatus" name="paymentStatus" class="block w-full mt-1 text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+				<option value="">All</option>
+				<option value="PAID" {% if app.request.get('paymentStatus') == 'PAID' %} selected {% endif %}>Paid</option>
+				<option value="PENDING" {% if app.request.get('paymentStatus') == 'PENDING' %} selected {% endif %}>Pending</option>
+				<option value="FAILED" {% if app.request.get('paymentStatus') == 'FAILED' %} selected {% endif %}>Failed</option>
+			</select>
+		</div>
 
-<div class="mt-4 mb-6 bg-gray-100 p-4 rounded-lg shadow">
-    <form method="GET" action="{{ path(route) }}" class="flex items-center space-x-4">
-        <!-- Order Status Dropdown -->
-        <div>
-            <label for="orderStatus" class="block text-sm font-medium text-gray-700">Order Status</label>
-            <select id="orderStatus" name="orderStatus" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
-                <option value="">All</option>
-                <option value="PROCESSING" {% if app.request.get('orderStatus') == 'PROCESSING' %}selected{% endif %}>Processing</option>
-                <option value="SHIPPED" {% if app.request.get('orderStatus') == 'SHIPPED' %}selected{% endif %}>Shipped</option>
-                <option value="DELIVERED" {% if app.request.get('orderStatus') == 'DELIVERED' %}selected{% endif %}>Delivered</option>
-                <option value="CANCELLED" {% if app.request.get('orderStatus') == 'CANCELLED' %}selected{% endif %}>Cancelled</option>
-            </select>
-        </div>
-
-        <!-- Payment Status Dropdown -->
-        <div>
-            <label for="paymentStatus" class="block text-sm font-medium text-gray-700">Payment Status</label>
-            <select id="paymentStatus" name="paymentStatus" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
-                <option value="">All</option>
-                <option value="PAID" {% if app.request.get('paymentStatus') == 'PAID' %}selected{% endif %}>Paid</option>
-                <option value="PENDING" {% if app.request.get('paymentStatus') == 'PENDING' %}selected{% endif %}>Pending</option>
-                <option value="FAILED" {% if app.request.get('paymentStatus') == 'FAILED' %}selected{% endif %}>Failed</option>
-            </select>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="mt-6">
-            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                Filter
-            </button>
-        </div>
-    </form>
+		<!-- Submit Button -->
+		<div class="mt-6">
+			<button type="submit" class="px-4 py-2 font-semibold text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+				Filter
+			</button>
+		</div>
+	</form>
 </div>
-

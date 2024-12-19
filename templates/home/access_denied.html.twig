@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Access Denied
+{% endblock %}
+
+{% block body %}
+	<div style="text-align: center; margin: 50px auto;">
+		<h1 style="color: #d9534f;">Access Denied</h1>
+		<p style="font-size: 1.2rem; color: #555;">
+			Sorry, you do not have permission to access this page.
+		</p>
+		<img src="{{ asset('img/access_denied.jpg') }}" alt="Access Denied" style="margin: 20px auto; display: block;  width: 250px; height: 250px;">
+
+		<p>
+			Please contact the administrator if you believe this is a mistake.
+		</p>
+		<a href="{{ path('app_home') }}" style="display: inline-block; margin-top: 20px; padding: 10px 20px;
+																								                  background-color: #337ab7; color: #fff; text-decoration: none;
+																								                  border-radius: 5px;">
+			Return to Home
+		</a>
+	</div>
+{% endblock %}

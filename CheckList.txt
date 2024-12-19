@@ -56,3 +56,8 @@ Can include chat features
 
 
 
+changing the order status is working but with out a flash message. 
+
+i need the facility to add to the favorite also for the user 
+
+i need to handle this special request also when i enter the /cart

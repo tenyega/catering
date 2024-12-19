@@ -111,4 +111,10 @@ class HomeController extends AbstractController
     {
         return $this->render('home/404.html.twig', []);
     }
+
+    #[Route('/403', name: 'access_denied')]
+    public function access_denied(): Response
+    {
+        return $this->render('home/access_denied.html.twig', []);
+    }
 }

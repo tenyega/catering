@@ -173,4 +173,19 @@ Encoding issues
 
     
     }
+
+
+    #[Route('/pay/cash', name: 'pay_cash', methods: ['GET', 'POST'])]
+    public function payCash(Request $request): Response
+    {
+        return $this->render('payment/cash_payment.html.twig');
+    }
+
+
+
+    #[Route('/pay/tr', name: 'tr_payment', methods: ['GET', 'POST'])]
+    public function trPayment(Request $request): Response
+    {
+        return $this->render('payment/tr_payment.html.twig');
+    }
 }
