@@ -1,1 +1,96 @@
-CASH
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div
+		class="flex justify-between items-start p-6">
+   <div class="w-full grid grid-cols-4 gap-4 p-4">
+    {% set currencies = {
+        '200': 'img/200.png',
+        '100': 'img/100.png',
+        '50': 'img/50.png',
+        '20': 'img/20.png',
+        '10': 'img/10.png',
+        '5': 'img/5.png',
+        '1': 'img/1.png',
+        '50c': 'img/50c.png',
+        '20c': 'img/20c.png',
+        '10c': 'img/10c.png',
+        '5c': 'img/5c.png',
+        '2c': 'img/2c.png',
+        '1c': 'img/1c.png'
+    } %}
+
+    {% for value, image in currencies %}
+        <button 
+            class="currency-btn bg-gray-100 hover:bg-gray-200 rounded-lg shadow-md transition duration-200 focus:outline-none flex items-center justify-center"
+            data-value="{{ value }}"
+        >
+            <img src="{{ asset(image) }}" alt="{{ value }} currency" class="w-24 h-24 object-contain">
+        </button>
+    {% endfor %}
+</div>
+
+
+
+
+
+		<!-- Right Side: Total Display -->
+		<div class="w-1/2 flex flex-col items-center justify-center bg-gray-100 rounded-lg p-6 shadow-lg">
+			<h2 class="text-2xl font-bold mb-4">Total</h2>
+			<p id="total_display" class="text-4xl font-extrabold text-blue-600">${{total}}</p>
+            <span id="payment_detail"></span>
+             <a href='{{ path('cash_close', {'total': total})}}' 
+                    id="card_payment_btn"
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                    Pay 
+                </a>
+		</div>
+        
+	</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+    // Get initial total value, remove the '$' and convert to number
+    let total = parseFloat(document.getElementById('total_display').innerText.replace('$', ''));
+    const totalDisplay = document.getElementById('total_display');
+    const paymentDetail = document.getElementById('payment_detail');
+
+    document.querySelectorAll('.currency-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            // Get the value and handle different formats (e.g., '50c', '200')
+            let value = this.getAttribute('data-value');
+            let amount;
+            
+            if (value.endsWith('c')) {
+                // Handle cents: convert '50c' to 0.50
+                amount = parseFloat(value.replace('c', '')) / 100;
+            } else {
+                // Handle dollars
+                amount = parseFloat(value);
+            }
+
+            // Update total
+            if (total >= amount) {
+                total -= amount;
+                totalDisplay.textContent = `$${total.toFixed(2)}`;
+                // Display the payment detail
+                paymentDetail.innerHTML += `<div>-$${amount.toFixed(2)}</div>`;
+            } else {
+                // Calculate change to return
+                let change = amount - total;
+                total = 0; // Set remaining total to 0
+                totalDisplay.textContent = `$${total.toFixed(2)}`;
+                
+                // Display both the payment and the change
+                paymentDetail.innerHTML += `
+                    <div>-$${amount.toFixed(2)} (Paid)</div>
+                    <div class="text-red-500">$${change.toFixed(2)} (Balance)</div>
+                `;
+            }
+        });
+    });
+});
+	</script>
+
+{% endblock %}

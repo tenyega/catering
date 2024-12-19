@@ -31,10 +31,12 @@ i need the facility to add to the favorite also for the user
 
 
 
+
+
 ///  TODO
 
 For USER SIDE 
-Validations of form
+Validations of form  GROS PROBLEM !!!!
 
 map integration for to check the status of the delivery guy 
 
@@ -48,6 +50,7 @@ for admin side check the password to put when hes adding a new user.
 
 Monitor all orders in real time.
 
+cash and tr payment for employee and admin
 
 Revenue Management:
 Track platform revenue 

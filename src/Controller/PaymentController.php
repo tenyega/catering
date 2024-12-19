@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Entity\OrderItem;
+use App\Entity\Payment;
 use App\Repository\MenuItemRepository;
 use App\Repository\UserRepository;
 use Stripe\Webhook;
@@ -108,9 +109,9 @@ class PaymentController extends AbstractController
     }
 
     #[Route('/c/pay', name: 'cart_pay')]
-    public function cart_pay(SessionInterface $sessionInterface, MenuItemRepository $mir, UserRepository $cr, EntityManagerInterface $entityManagerInterface, PaymentService $ps, Request $request)
+    public function cart_pay(SessionInterface $sessionInterface, MenuItemRepository $mir, UserRepository $ur, EntityManagerInterface $entityManagerInterface, PaymentService $ps, Request $request)
     {
-       $specialRequest = $request->request->get('specialRequest');
+       $specialRequest = $request->request->get('specialRequest')?? "No Special needs ";
        
 
         $total = 0.0; // Start as a float
@@ -134,7 +135,7 @@ class PaymentController extends AbstractController
             ->setPaymentStatus('PENDING')
             ->setOrderStatus('PROCCESSING')
             ->setSpecialRequest($specialRequest)
-            ->setUser($cr->findOneBy(['id' => $this->getUser()->getId()]));
+            ->setUser($ur->findOneBy(['id' => $this->getUser()->getId()]));
 
 
         // Persist and flush to save in the database
@@ -174,14 +175,97 @@ Encoding issues
     
     }
 
-
-    #[Route('/pay/cash', name: 'pay_cash', methods: ['GET', 'POST'])]
-    public function payCash(Request $request): Response
+// this route is to get to the page where we can choose the different notes of the currency 
+    #[Route('/pay/cash/{total}', name: 'pay_cash', methods: ['GET', 'POST'])]
+    public function payCash(Request $request, $total): Response
     {
-        return $this->render('payment/cash_payment.html.twig');
+        return $this->render('payment/cash_payment.html.twig', [
+            'total'=>$total
+        ]);
     }
 
+// this route is ones the currency is choosen 
+#[Route('/pay/cash/close/{total}', name: 'cash_close', methods: ['GET', 'POST'])]
+public function cash_close(
+    $total, 
+    SessionInterface $sessionInterface,
+    EntityManagerInterface $entityManagerInterface, 
+    MenuItemRepository $mir, 
+    UserRepository $ur
+): Response {
+    // Check if cart is empty
+    $cart = $sessionInterface->get('cart', []);
+    if (empty($cart)) {
+        $this->addFlash('error', 'Cart is empty');
+        return $this->redirectToRoute('app_home');
+    }
 
+    // Calculate total from cart items
+    $total = 0.0;
+    $totalQuantity = 0;
+    $detailedCart = [];
+
+    foreach ($cart as $id => $qty) {
+        $menuItem = $mir->find($id);
+        if (!$menuItem) {
+            continue;
+        }
+        $detailedCart[] = [
+            'menuItem' => $menuItem,
+            'qty' => $qty,
+        ];
+        $totalQuantity += $qty;
+        $total += ($menuItem->getPrice() * $qty);
+    }
+
+    // Begin transaction
+    $entityManagerInterface->beginTransaction();
+
+    try {
+        // Create Order
+        $order = new Order();
+        $order->setTotalAmount((float) $total)
+            ->setPaymentStatus('PENDING')
+            ->setOrderStatus('PROCESSING')
+            ->setUser($ur->findOneBy(['id' => $this->getUser()->getId()]));
+
+        $entityManagerInterface->persist($order);
+
+        // Create Order Items
+        foreach ($cart as $menuItemID => $qty) {
+            $menuItem = $mir->find($menuItemID);
+            $orderItem = new OrderItem();
+            $orderItem->setQuantity($qty)
+                ->setMenuItem($menuItem)
+                ->setOrders($order)
+                ->setItemPrice($menuItem->getPrice() * $qty);
+            $entityManagerInterface->persist($orderItem);
+        }
+
+        // Create Payment
+        $payment = new Payment();
+        $payment->setAmount($total)
+            ->setOrderId($order)
+            ->setPaymentMethod('CASH');
+        $entityManagerInterface->persist($payment);
+
+        // Commit transaction
+        $entityManagerInterface->flush();
+        $entityManagerInterface->commit();
+
+        // Clear cart only after successful transaction
+        $sessionInterface->set('cart', []);
+        
+        $this->addFlash('success', 'Your payment in cash has been registered');
+        return $this->redirectToRoute('app_home');
+
+    } catch (\Exception $e) {
+        // Rollback transaction on error
+        $entityManagerInterface->rollback();
+        $this->addFlash('error', 'An error occurred while processing your order');
+        return $this->redirectToRoute('app_home');
+    }
+}
 
     #[Route('/pay/tr', name: 'tr_payment', methods: ['GET', 'POST'])]
     public function trPayment(Request $request): Response
