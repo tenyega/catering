@@ -18,6 +18,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+     /**
+     * @Assert\NotBlank(message="Email is required.")
+     * @Assert\Email(message="Please enter a valid email address.")
+     */
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
@@ -33,15 +37,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+
+     /**
+     * @Assert\NotBlank(message="First name is required.")
+     * @Assert\Length(
+     *     min=2,
+     *     max=50,
+     *     minMessage="First name must be at least {{ limit }} characters long.",
+     *     maxMessage="First name cannot be longer than {{ limit }} characters."
+     * )
+     */
     #[ORM\Column(length: 120)]
     private ?string $firstName = null;
 
+      /**
+     * @Assert\NotBlank(message="Last name is required.")
+     * @Assert\Length(
+     *     min=2,
+     *     max=50,
+     *     minMessage="Last name must be at least {{ limit }} characters long.",
+     *     maxMessage="Last name cannot be longer than {{ limit }} characters."
+     * )
+     */
     #[ORM\Column(length: 120)]
     private ?string $lastName = null;
 
+
+     /**
+     * @Assert\NotBlank(message="Phone number is required.")
+     * @Assert\Regex(
+     *     pattern="/^\+?[0-9\s\-]{7,15}$/",
+     *     message="Please enter a valid phone number."
+     * )
+     */
     #[ORM\Column(length: 120)]
     private ?string $phone = null;
 
+     /**
+     * @Assert\NotBlank(message="Address is required.")
+     * @Assert\Length(
+     *     min=10,
+     *     max=200,
+     *     minMessage="Address must be at least {{ limit }} characters long.",
+     *     maxMessage="Address cannot be longer than {{ limit }} characters."
+     * )
+     */
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 

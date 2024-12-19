@@ -29,9 +29,9 @@ i need to handle this special request also when i enter the /cart
 
 i need the facility to add to the favorite also for the user 
 
+
+
 ///  TODO
-
-
 
 For USER SIDE 
 Validations of form
@@ -43,7 +43,7 @@ may be an sms notification  also if possible
 FOR Admin Panel Features
 The admin panel helps oversee and manage the platform’s operations.
 
-
+for admin side check the password to put when hes adding a new user. 
 
 
 Monitor all orders in real time.

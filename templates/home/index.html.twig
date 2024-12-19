@@ -12,23 +12,24 @@
 
 <!-- Top right corner button to show the menu -->
 <div id='filter_menu' class="fixed top-15 right-5 w-48 bg-transparent rounded-md shadow-lg opacity-0 z-50 pointer-events-none transition-all duration-300 ease-in-out">
-    <div class="px-2 py-2 rounded-md overflow-auto max-h-[35vh]">
-        <a class="block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:focus:text-white dark:hover:bg-gray-700" href="{{path('app_filter', {'filter': 'STARTER'})}}">
-            STARTER
-        </a>
-        <a class="block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:focus:text-white dark:hover:bg-gray-700" href="{{path('app_filter', {'filter': 'MAIN COURSE'})}}">
-            MAIN COURSE
-        </a>
-        <a class="block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:focus:text-white dark:hover:bg-gray-700" href="{{path('app_filter', {'filter': 'DESSERT'})}}">
-            DESSERT
-        </a>
-        <a class="block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:focus:text-white dark:hover:bg-gray-700" href="{{path('app_filter', {'filter': 'SNACKS'})}}">
-            SNACKS
-        </a>
-        <a class="block px-4 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:focus:text-white dark:hover:bg-gray-700" href="{{path('app_filter', {'filter': 'BEVERAGE'})}}">
-            BEVERAGE
-        </a>
-    </div>
+   <div class="px-2 py-2 rounded-md overflow-auto max-h-[35vh] bg-gray-800">
+    <a class="block px-4 py-2 rounded-lg text-gray-300 hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'STARTER'})}}">
+        STARTER
+    </a>
+    <a class="block px-4 py-2 rounded-lg text-gray-300 hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'MAIN COURSE'})}}">
+        MAIN COURSE
+    </a>
+    <a class="block px-4 py-2 rounded-lg text-gray-300 hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'DESSERT'})}}">
+        DESSERT
+    </a>
+    <a class="block px-4 py-2 rounded-lg text-gray-300 hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'SNACKS'})}}">
+        SNACKS
+    </a>
+    <a class="block px-4 py-2 rounded-lg text-gray-300 hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'BEVERAGE'})}}">
+        BEVERAGE
+    </a>
+</div>
+
 </div>
 
 
@@ -92,43 +93,58 @@
 <script>
 // When the page is loaded, check the favorite status and update the UI
 document.addEventListener('DOMContentLoaded', function () {
-    // Get the favorite items from localStorage (parse as array, or empty array if none)
-    const favoriteItems = JSON.parse(localStorage.getItem('favorite')) || [];
+      // Function to update favorite buttons
+    function updateFavoriteButtons() {
+        console.log('Updating favorite buttons...');
+        // Get the favorite items from localStorage (parse as array, or empty array if none)
+        const favoriteItems = JSON.parse(localStorage.getItem('favorite')) || [];
 
-    // Check each favorite button to see if the associated menu item is a favorite
-    document.querySelectorAll('.favorite-btn').forEach(button => {
-        const menuId = button.getAttribute('data-menu-id');
-        
-        // Check if this menu item is in the favorites list
-        if (favoriteItems.includes(menuId)) {
-            // If it's a favorite, set the star to filled
-            button.querySelector('.star-path').setAttribute('fill', 'currentColor');
-        } else {
-            // If it's not a favorite, keep the star unfilled
-            button.querySelector('.star-path').setAttribute('fill', 'none');
-        }
+        // Check each favorite button to see if the associated menu item is a favorite
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+            const menuId = button.getAttribute('data-menu-id');
 
-        // Add event listener to toggle favorite status on click
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // Toggle favorite status
+            // Check if this menu item is in the favorites list
             if (favoriteItems.includes(menuId)) {
-                // Remove from favorites
-                favoriteItems.splice(favoriteItems.indexOf(menuId), 1);
-                // Change star to unfilled
-                button.querySelector('.star-path').setAttribute('fill', 'none');
-            } else {
-                // Add to favorites
-                favoriteItems.push(menuId);
-                // Change star to filled
+                // If it's a favorite, set the star to filled
                 button.querySelector('.star-path').setAttribute('fill', 'currentColor');
+            } else {
+                // If it's not a favorite, keep the star unfilled
+                button.querySelector('.star-path').setAttribute('fill', 'none');
             }
 
-            // Update localStorage with the new favorite list
-            localStorage.setItem('favorite', JSON.stringify(favoriteItems));
+            // Ensure only one click listener is added (optional safety)
+            if (!button.hasAttribute('data-listener-added')) {
+                button.setAttribute('data-listener-added', 'true');
+
+                // Add event listener to toggle favorite status on click
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // Toggle favorite status
+                    if (favoriteItems.includes(menuId)) {
+                        // Remove from favorites
+                        favoriteItems.splice(favoriteItems.indexOf(menuId), 1);
+                        // Change star to unfilled
+                        button.querySelector('.star-path').setAttribute('fill', 'none');
+                    } else {
+                        // Add to favorites
+                        favoriteItems.push(menuId);
+                        // Change star to filled
+                        button.querySelector('.star-path').setAttribute('fill', 'currentColor');
+                    }
+
+                    // Update localStorage with the new favorite list
+                    localStorage.setItem('favorite', JSON.stringify(favoriteItems));
+                });
+            }
         });
-    });
+    }
+
+    // Initial update on DOMContentLoaded
+    updateFavoriteButtons();
+
+    // Set up periodic updates with setInterval
+    setInterval(updateFavoriteButtons, 1000); // Adjust the interval time as needed (5000ms = 5 seconds)
 });
 
 document.getElementById('filter_toggle').addEventListener('click', function(e) {
