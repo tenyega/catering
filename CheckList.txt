@@ -17,7 +17,14 @@ Special request for the user also needs to be done at the orde entity instead of
 
 User add   delete is only with adminn right 
 
+Manage customers,
+Order  Management:
 
+Send notifications or emails to users.
+
+changing the order status is working but with out a flash message. 
+
+i need to handle this special request also when i enter the /cart
 
 ///  TODO
 
@@ -35,36 +42,24 @@ may be an sms notification  also if possible
 FOR Admin Panel Features
 The admin panel helps oversee and manage the platform’s operations.
 
-User Management:
 
-Manage customers, delivery partners, and restaurant accounts.
-Handle account activation, suspension, and support requests.
-Order and Delivery Management:
+
 
 Monitor all orders in real time.
-Handle escalations and refunds.
+
+
 Revenue Management:
+Track platform revenue 
 
-Manage commission rates for restaurants and delivery partners.
-Track platform revenue and payouts.
-Promotions and Marketing:
 
-Launch promo codes, discounts, and campaigns.
-Send notifications or emails to users.
 Analytics and Reporting:
 
-Track platform performance metrics: order volume, active users, and popular restaurants.
-Analyze customer trends and delivery efficiency.
-Content Moderation:
 
-Approve/reject restaurant listings, menu items, and reviews.
 
 Can include chat features 
 
 
 
-changing the order status is working but with out a flash message. 
 
 i need the facility to add to the favorite also for the user 
 
-i need to handle this special request also when i enter the /cart
