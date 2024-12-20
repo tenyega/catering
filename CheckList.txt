@@ -44,22 +44,13 @@ turbo links are used to do the partial reloading of the page as for the js which
 For USER SIDE 
 Validations of form  GROS PROBLEM !!!!
 
-
 captcha
 
 map integration for to check the status of the delivery guy 
 
-
-
 Monitor all orders in real time.
 
 tr payment for employee and admin
-
-Revenue Management:
-Track platform revenue 
-
-
-Analytics and Reporting:
 
 Can include chat features 
 

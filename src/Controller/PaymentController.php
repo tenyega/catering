@@ -267,4 +267,89 @@ public function cash_close(
             'total'=>$total
         ]);
     }
+
+
+    // this route is for the TR payment method 
+    #[Route('/pay/tr/close/{total}', name: 'tr_close', methods: ['GET', 'POST'])]
+public function tr_close(
+    $total, 
+    SessionInterface $sessionInterface,
+    EntityManagerInterface $entityManagerInterface, 
+    MenuItemRepository $mir, 
+    UserRepository $ur
+): Response {
+    // Check if cart is empty
+    $cart = $sessionInterface->get('cart', []);
+    if (empty($cart)) {
+        $this->addFlash('error', 'Cart is empty');
+        return $this->redirectToRoute('app_home');
+    }
+
+    // Calculate total from cart items
+    $total = 0.0;
+    $totalQuantity = 0;
+    $detailedCart = [];
+
+    foreach ($cart as $id => $qty) {
+        $menuItem = $mir->find($id);
+        if (!$menuItem) {
+            continue;
+        }
+        $detailedCart[] = [
+            'menuItem' => $menuItem,
+            'qty' => $qty,
+        ];
+        $totalQuantity += $qty;
+        $total += ($menuItem->getPrice() * $qty);
+    }
+
+    // Begin transaction
+    $entityManagerInterface->beginTransaction();
+
+    try {
+        // Create Order
+        $order = new Order();
+        $order->setTotalAmount((float) $total)
+            ->setPaymentStatus('PAID')
+            ->setOrderStatus('PROCESSING')
+            ->setUser($ur->findOneBy(['id' => $this->getUser()->getId()]));
+
+        $entityManagerInterface->persist($order);
+
+        // Create Order Items
+        foreach ($cart as $menuItemID => $qty) {
+            $menuItem = $mir->find($menuItemID);
+            $orderItem = new OrderItem();
+            $orderItem->setQuantity($qty)
+                ->setMenuItem($menuItem)
+                ->setOrders($order)
+                ->setItemPrice($menuItem->getPrice() * $qty);
+            $entityManagerInterface->persist($orderItem);
+        }
+
+        // Create Payment
+        $payment = new Payment();
+        $payment->setAmount($total)
+            ->setOrderId($order)
+            ->setPaymentMethod('Ticket Restaurent');
+        $entityManagerInterface->persist($payment);
+
+        // Commit transaction
+        $entityManagerInterface->flush();
+        $entityManagerInterface->commit();
+
+        // Clear cart only after successful transaction
+        $sessionInterface->set('cart', []);
+        
+        $this->addFlash('success', 'Your payment in Ticket resturent paper has been registered');
+        return $this->redirectToRoute('app_home');
+
+    } catch (\Exception $e) {
+        // Rollback transaction on error
+        $entityManagerInterface->rollback();
+        $this->addFlash('error', 'An error occurred while processing your order');
+        return $this->redirectToRoute('app_home');
+    }
+}
+
 }

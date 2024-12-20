@@ -41,7 +41,7 @@
         <p id="total_display" class="text-4xl font-extrabold text-blue-600 mb-4">${{ total | number_format(2) }}</p>
         <span id="payment_detail" class="text-lg text-gray-600 mb-6"></span>
         
-        <a href="{{ path('cash_close', {'total': total}) }}" 
+        <a href="{{ path('tr_close', {'total': total}) }}" 
            id="card_payment_btn"
            class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition duration-200">
             Pay
@@ -49,4 +49,5 @@
     </div>
 
 </div>
+
 {% endblock %}
