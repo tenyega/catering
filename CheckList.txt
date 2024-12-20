@@ -29,7 +29,7 @@ i need to handle this special request also when i enter the /cart
 
 i need the facility to add to the favorite also for the user 
 
-
+cash payment for the admin and employee
 
 
 
@@ -50,15 +50,12 @@ for admin side check the password to put when hes adding a new user.
 
 Monitor all orders in real time.
 
-cash and tr payment for employee and admin
+tr payment for employee and admin
 
 Revenue Management:
 Track platform revenue 
 
-
 Analytics and Reporting:
-
-
 
 Can include chat features 
 
