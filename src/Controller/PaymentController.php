@@ -172,6 +172,9 @@ Encoding issues
     #[Route('/pay/cash/{total}', name: 'pay_cash', methods: ['GET', 'POST'])]
     public function payCash(Request $request, $total): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
+            return $this->render('home/access_denied.html.twig');
+        }
         return $this->render('payment/cash_payment.html.twig', [
             'total'=>$total
         ]);
@@ -187,6 +190,9 @@ public function cash_close(
     UserRepository $ur
 ): Response {
     // Check if cart is empty
+    if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
+        return $this->render('home/access_denied.html.twig');
+    }
     $cart = $sessionInterface->get('cart', []);
     if (empty($cart)) {
         $this->addFlash('error', 'Cart is empty');
@@ -263,6 +269,9 @@ public function cash_close(
     #[Route('/pay/tr/{total}', name: 'tr_payment', methods: ['GET', 'POST'])]
     public function trPayment(Request $request, $total): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
+            return $this->render('home/access_denied.html.twig');
+        }
         return $this->render('payment/tr_payment.html.twig', [
             'total'=>$total
         ]);
@@ -278,6 +287,10 @@ public function tr_close(
     MenuItemRepository $mir, 
     UserRepository $ur
 ): Response {
+
+    if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
+        return $this->render('home/access_denied.html.twig');
+    }
     // Check if cart is empty
     $cart = $sessionInterface->get('cart', []);
     if (empty($cart)) {

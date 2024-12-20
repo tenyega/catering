@@ -39,6 +39,9 @@ Report generation for admin , over all Total Sales value is taken
 NOTES 
 turbo links are used to do the partial reloading of the page as for the js which didnt worked on route redirection. ( for favorite icons and the graph reloads)
 
+tr payment for employee and admin
+
+
 ///  TODO
 
 For USER SIDE 
@@ -50,7 +53,6 @@ map integration for to check the status of the delivery guy
 
 Monitor all orders in real time.
 
-tr payment for employee and admin
 
 Can include chat features 
 
