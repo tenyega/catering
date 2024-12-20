@@ -92,12 +92,17 @@
 							<a href="{{ path('app_menu_item') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">
 								Menu Item
 							</a>
+							
 						{% endif %}
 
 						{% if is_granted('ROLE_ADMIN')%}
 							<a href="{{ path('app_user') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">
 								Users
 							</a>
+							<a href="{{ path('admin_report') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">
+								Sales Report
+							</a>
+							
 						{% endif %}
 						
 						<a href="{{path('app_logout')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Logout</a>
