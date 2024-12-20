@@ -46,8 +46,61 @@
            class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition duration-200">
             Pay
         </a>
+          <span id="payment_detail"></span>
     </div>
 
 </div>
+<script>
+// Get the ticket value and number of tickets from the input fields
+const ticket_value = document.getElementById('ticket_value');
+const num_tickets = document.getElementById('num_tickets');
+const payment_detail = document.getElementById('payment_detail');
+const total_display = document.getElementById('total_display');
+
+// Get the total value from Twig (this should be passed to the script)
+const total = parseFloat("{{ total | number_format(2, '.', '') }}");
+
+// Function to update the payment details with the current values
+function updatePaymentDetail() {
+    const ticketValue = parseFloat(ticket_value.value);
+    const numTickets = parseInt(num_tickets.value);
+
+    // Clear previous child elements inside payment_detail
+    while (payment_detail.firstChild) {
+        payment_detail.removeChild(payment_detail.firstChild);
+    }
+
+    if (!isNaN(ticketValue) && !isNaN(numTickets)) {
+        const subtotal = ticketValue * numTickets;
+        const remainingAmount = total - subtotal;
+
+        // Display ticket value, number of tickets, and subtotal
+        payment_detail.innerText = `${ticketValue.toFixed(2)} X ${numTickets} = ${subtotal.toFixed(2)}`;
+
+        // Create a new element to show how much change needs to be returned or the insufficient funds message
+        const resultMessage = document.createElement('p');
+        
+        // Check if the remaining amount is negative
+      
+            // Otherwise, show the remaining amount (change)
+            resultMessage.innerText = `Your balance is  ${remainingAmount.toFixed(2)}. Sorry we dont return on the ticket restaurent!!!`;
+            resultMessage.style.color = 'green';  // Optional styling for the change amount
+       
+
+        // Append the result message as a child to the payment_detail element
+        payment_detail.appendChild(resultMessage);
+    }
+}
+
+// Event listeners to trigger the update when either input changes
+ticket_value.addEventListener('input', updatePaymentDetail);
+num_tickets.addEventListener('input', updatePaymentDetail);
+
+// Initial update to set the correct message based on initial values
+updatePaymentDetail();
+</script>
+
+
+
 
 {% endblock %}
