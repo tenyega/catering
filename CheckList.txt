@@ -35,17 +35,20 @@ for admin side check the password to put when hes adding a new user.  // Added t
 
 Report generation for admin , over all Total Sales value is taken 
 
+tr payment for employee and admin
+
 
 NOTES 
 turbo links are used to do the partial reloading of the page as for the js which didnt worked on route redirection. ( for favorite icons and the graph reloads)
-
-tr payment for employee and admin
+CAPTCHAs (Completely Automated Public Turing tests to tell Computers and Humans Apart), benefits Preventing Spam, Protecting User Accounts, Preventing Fraudulent Activities, Ensuring Fair Use, Reducing Server Load; 
 
 
 ///  TODO
 
 For USER SIDE 
-Validations of form  GROS PROBLEM !!!!
+Validations of form  GROS PROBLEM !!!! 
+PROBLEM 
+with order status flash message is  not showing 
 
 captcha
 
@@ -53,11 +56,6 @@ map integration for to check the status of the delivery guy
 
 Monitor all orders in real time.
 
-
 Can include chat features 
 
 
-
-
-PROBLEM 
-with order status flash message is  not showing 

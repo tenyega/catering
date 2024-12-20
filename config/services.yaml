@@ -7,6 +7,7 @@ parameters:
   app.global_variable: "totalQty"
   STRIPE_API_PK: "%env(STRIPE_API_PK)%"
   STRIPE_API_SK: "%env(STRIPE_API_SK)%"
+  RECAPTCHA_KEY: "%env(RECAPTCHA_KEY)%"
 services:
   # default configuration for services in *this* file
   App\Service\PaymentService: ~
