@@ -4,34 +4,33 @@
 {% endblock %}
 
 {% block body %}
-<div class="fixed top-5 right-5 z-50">
-    <button class="text-white w-12 h-12 rounded-full hover:bg-gray-500 focus:outline-none flex justify-center items-center" id="filter_toggle">
-        <img src="{{ asset('img/filter.png') }}" alt="Filter Icon" class="w-6 h-6">
-    </button>
-</div>
+	<div class="fixed z-50 top-15 right-5">
+		<button class="flex items-center justify-center w-12 h-12 text-white rounded-full hover:bg-gray-500 focus:outline-none" id="filter_toggle">
+			<img src="{{ asset('img/filter.png') }}" alt="Filter Icon" class="w-6 h-6">
+		</button>
+	</div>
 
-<!-- Top right corner button to show the menu -->
-<div id='filter_menu' class="fixed top-15 right-5 w-48 bg-transparent rounded-md shadow-lg opacity-0 z-50 pointer-events-none transition-all duration-300 ease-in-out">
-   <div class="px-2 py-2 rounded-md overflow-auto max-h-[35vh] bg-gray-800">
-    <a class="block px-4 py-2 rounded-lg text-gray-300 hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'STARTER'})}}">
-        STARTER
-    </a>
-    <a class="block px-4 py-2 rounded-lg text-gray-300 hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'MAIN COURSE'})}}">
-        MAIN COURSE
-    </a>
-    <a class="block px-4 py-2 rounded-lg text-gray-300 hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'DESSERT'})}}">
-        DESSERT
-    </a>
-    <a class="block px-4 py-2 rounded-lg text-gray-300 hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'SNACKS'})}}">
-        SNACKS
-    </a>
-    <a class="block px-4 py-2 rounded-lg text-gray-300 hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'BEVERAGE'})}}">
-        BEVERAGE
-    </a>
-</div>
+	<!-- Top right corner button to show the menu -->
+	<div id='filter_menu' class="fixed z-50 w-48 transition-all duration-300 ease-in-out bg-transparent rounded-md shadow-lg opacity-0 pointer-events-none top-35 right-5">
+		<div class="px-2 py-2 rounded-md overflow-auto max-h-[35vh] bg-gray-800">
+			<a class="block px-4 py-2 text-gray-300 rounded-lg hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'STARTER'})}}">
+				STARTER
+			</a>
+			<a class="block px-4 py-2 text-gray-300 rounded-lg hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'MAIN COURSE'})}}">
+				MAIN COURSE
+			</a>
+			<a class="block px-4 py-2 text-gray-300 rounded-lg hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'DESSERT'})}}">
+				DESSERT
+			</a>
+			<a class="block px-4 py-2 text-gray-300 rounded-lg hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'SNACKS'})}}">
+				SNACKS
+			</a>
+			<a class="block px-4 py-2 text-gray-300 rounded-lg hover:text-gray-50 hover:bg-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600" href="{{path('app_filter', {'filter': 'BEVERAGE'})}}">
+				BEVERAGE
+			</a>
+		</div>
 
-</div>
-
+	</div>
 
 
 	<h1 class="mt-8 mb-4 text-5xl font-bold text-center text-gray-800">
@@ -39,130 +38,124 @@
 	</h1>
 
 	<div class="flex flex-row flex-wrap justify-center gap-4 p-5 m-5">
-    {% for menuItem in menuItems %}
-        <div class="w-[280px] h-[300px] bg-white rounded-lg shadow-lg overflow-hidden flex flex-col justify-between relative">
-            <!-- Favorite Star Icon -->
-       <button 
-    class="absolute top-2 right-2 text-yellow-500 hover:text-yellow-700 focus:outline-none favorite-btn" 
-    data-menu-id="{{ menuItem.id }}">
-    <svg class="w-6 h-6 star-icon" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-        <path class="star-path" fill="none" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.946a1 1 0 00.95.69h4.15c.969 0 1.371 1.24.588 1.81l-3.357 2.44a1 1 0 00-.364 1.118l1.287 3.945c.3.922-.755 1.688-1.54 1.118l-3.356-2.44a1 1 0 00-1.175 0l-3.356 2.44c-.784.57-1.838-.196-1.54-1.118l1.286-3.945a1 1 0 00-.364-1.118L2.328 9.374c-.783-.57-.38-1.81.588-1.81h4.15a1 1 0 00.95-.69l1.286-3.946z"/>
-    </svg>
-</button>
+		{% for menuItem in menuItems %}
+			<div
+				class="w-[280px] h-[300px] bg-white rounded-lg shadow-lg overflow-hidden flex flex-col justify-between relative">
+				<!-- Favorite Star Icon -->
+				<button class="absolute text-yellow-500 top-2 right-2 hover:text-yellow-700 focus:outline-none favorite-btn" data-menu-id="{{ menuItem.id }}">
+					<svg class="w-6 h-6 star-icon" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20">
+						<path class="star-path" fill="none" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.946a1 1 0 00.95.69h4.15c.969 0 1.371 1.24.588 1.81l-3.357 2.44a1 1 0 00-.364 1.118l1.287 3.945c.3.922-.755 1.688-1.54 1.118l-3.356-2.44a1 1 0 00-1.175 0l-3.356 2.44c-.784.57-1.838-.196-1.54-1.118l1.286-3.945a1 1 0 00-.364-1.118L2.328 9.374c-.783-.57-.38-1.81.588-1.81h4.15a1 1 0 00.95-.69l1.286-3.946z"/>
+					</svg>
+				</button>
 
-            <!-- Image Section -->
-            <div class="flex justify-center mt-4">
-                <img src="../img/{{menuItem.name}}.jpg" alt="Food Image" class="w-32 h-32 border-2 border-gray-300 rounded-full"/>
-            </div>
-            <!-- Content Section -->
-            <div class="flex flex-col flex-grow p-6 text-center">
-                <!-- Name -->
-                <h2 class="text-lg font-semibold text-gray-800">{{ menuItem.name }}</h2>
+				<!-- Image Section -->
+				<div class="flex justify-center mt-4">
+					<img src="../img/{{menuItem.name}}.jpg" alt="Food Image" class="w-32 h-32 border-2 border-gray-300 rounded-full"/>
+				</div>
+				<!-- Content Section -->
+				<div
+					class="flex flex-col flex-grow p-6 text-center">
+					<!-- Name -->
+					<h2 class="text-lg font-semibold text-gray-800">{{ menuItem.name }}</h2>
 
-                <!-- Category and Availability -->
-                <div class="flex justify-center gap-2 mt-2 text-sm text-gray-600">
-                    <span class="px-2 py-1 text-green-600 bg-green-100 rounded-full">{{ menuItem.category }}</span>
-                </div>
+					<!-- Category and Availability -->
+					<div class="flex justify-center gap-2 mt-2 text-sm text-gray-600">
+						<span class="px-2 py-1 text-green-600 bg-green-100 rounded-full">{{ menuItem.category }}</span>
+					</div>
 
-                <!-- Price and Add Button -->
-                <div class="flex items-center justify-between mt-4">
-                    <span class="text-lg font-semibold text-gray-800">{{ menuItem.price }}&euro;</span>
-                    
-                    <!-- Remove from Cart Button -->
-                    <form action="{{ path('cart_remove', {'id': menuItem.id}) }}" method="POST" class="inline-block">
-                        <button type="submit" class="flex items-center justify-center w-10 h-10 text-red-600 border-2 border-red-600 rounded-full hover:text-red-800 hover:border-red-800">
-                            <svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-                    </form>
+					<!-- Price and Add Button -->
+					<div class="flex items-center justify-between mt-4">
+						<span class="text-lg font-semibold text-gray-800">{{ menuItem.price }}&euro;</span>
 
-                    <!-- Add to Menu Button -->
-                    <form action="{{ path('cart_add', {'id': menuItem.id}) }}" method="POST" class="inline-block">
-                        <button type="submit" class="flex items-center justify-center w-10 h-10 text-blue-600 border-2 border-blue-600 rounded-full hover:text-blue-800 hover:border-blue-800">
-                            <svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-</div>
-{% block javascripts %}
-<script>
+						<!-- Remove from Cart Button -->
+						<form action="{{ path('cart_remove', {'id': menuItem.id}) }}" method="POST" class="inline-block">
+							<button type="submit" class="flex items-center justify-center w-10 h-10 text-red-600 border-2 border-red-600 rounded-full hover:text-red-800 hover:border-red-800">
+								<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd"/>
+								</svg>
+							</button>
+						</form>
 
-// When the page is loaded, check the favorite status and update the UI
-document.addEventListener('DOMContentLoaded', function () {
-      // Function to update favorite buttons
-    function updateFavoriteButtons() {
-        // Get the favorite items from localStorage (parse as array, or empty array if none)
-        const favoriteItems = JSON.parse(localStorage.getItem('favorite')) || [];
+						<!-- Add to Menu Button -->
+						<form action="{{ path('cart_add', {'id': menuItem.id}) }}" method="POST" class="inline-block">
+							<button type="submit" class="flex items-center justify-center w-10 h-10 text-blue-600 border-2 border-blue-600 rounded-full hover:text-blue-800 hover:border-blue-800">
+								<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
+								</svg>
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	{% block javascripts %}
+		<script>
 
-        // Check each favorite button to see if the associated menu item is a favorite
-        document.querySelectorAll('.favorite-btn').forEach(button => {
-            const menuId = button.getAttribute('data-menu-id');
+			// When the page is loaded, check the favorite status and update the UI
+document.addEventListener('DOMContentLoaded', function () { // Function to update favorite buttons
+function updateFavoriteButtons() { // Get the favorite items from localStorage (parse as array, or empty array if none)
+const favoriteItems = JSON.parse(localStorage.getItem('favorite')) || [];
 
-            // Check if this menu item is in the favorites list
-            if (favoriteItems.includes(menuId)) {
-                // If it's a favorite, set the star to filled
-                button.querySelector('.star-path').setAttribute('fill', 'currentColor');
-            } else {
-                // If it's not a favorite, keep the star unfilled
-                button.querySelector('.star-path').setAttribute('fill', 'none');
-            }
+// Check each favorite button to see if the associated menu item is a favorite
+document.querySelectorAll('.favorite-btn').forEach(button => {
+const menuId = button.getAttribute('data-menu-id');
 
-            // Ensure only one click listener is added (optional safety)
-            if (!button.hasAttribute('data-listener-added')) {
-                button.setAttribute('data-listener-added', 'true');
+// Check if this menu item is in the favorites list
+if (favoriteItems.includes(menuId)) { // If it's a favorite, set the star to filled
+button.querySelector('.star-path').setAttribute('fill', 'currentColor');
+} else { // If it's not a favorite, keep the star unfilled
+button.querySelector('.star-path').setAttribute('fill', 'none');
+}
 
-                // Add event listener to toggle favorite status on click
-                button.addEventListener('click', function (e) {
-                    e.preventDefault();
+// Ensure only one click listener is added (optional safety)
+if (!button.hasAttribute('data-listener-added')) {
+button.setAttribute('data-listener-added', 'true');
 
-                    // Toggle favorite status
-                    if (favoriteItems.includes(menuId)) {
-                        // Remove from favorites
-                        favoriteItems.splice(favoriteItems.indexOf(menuId), 1);
-                        // Change star to unfilled
-                        button.querySelector('.star-path').setAttribute('fill', 'none');
-                    } else {
-                        // Add to favorites
-                        favoriteItems.push(menuId);
-                        // Change star to filled
-                        button.querySelector('.star-path').setAttribute('fill', 'currentColor');
-                    }
+// Add event listener to toggle favorite status on click
+button.addEventListener('click', function (e) {
+e.preventDefault();
 
-                    // Update localStorage with the new favorite list
-                    localStorage.setItem('favorite', JSON.stringify(favoriteItems));
-                });
-            }
-        });
-    }
-document.addEventListener('turbolinks:load', updateFavoriteButtons); // Runs on Turbolinks page change
+// Toggle favorite status
+if (favoriteItems.includes(menuId)) { // Remove from favorites
+favoriteItems.splice(favoriteItems.indexOf(menuId), 1);
+// Change star to unfilled
+button.querySelector('.star-path').setAttribute('fill', 'none');
+} else { // Add to favorites
+favoriteItems.push(menuId);
+// Change star to filled
+button.querySelector('.star-path').setAttribute('fill', 'currentColor');
+}
 
-    // Initial update on DOMContentLoaded
-    updateFavoriteButtons();
+// Update localStorage with the new favorite list
+localStorage.setItem('favorite', JSON.stringify(favoriteItems));
+});
+}
+});
+}
+document.addEventListener('turbolinks:load', updateFavoriteButtons);
+// Runs on Turbolinks page change
 
-    // Set up periodic updates with setInterval
-    setInterval(updateFavoriteButtons, 1000); // Adjust the interval time as needed (5000ms = 5 seconds)
+// Initial update on DOMContentLoaded
+updateFavoriteButtons();
+
+// Set up periodic updates with setInterval
+setInterval(updateFavoriteButtons, 1000); // Adjust the interval time as needed (5000ms = 5 seconds)
 });
 
-document.getElementById('filter_toggle').addEventListener('click', function(e) {
-    e.preventDefault();
-    var filterMenu = document.getElementById('filter_menu');
-    
-    // Check if the menu is currently hidden, then toggle its visibility
-    if (filterMenu.style.opacity === '0') {
-        filterMenu.style.opacity = '1'; // Show the menu
-        filterMenu.style.pointerEvents = 'auto'; // Allow interaction
-    } else {
-        filterMenu.style.opacity = '0'; // Hide the menu
-        filterMenu.style.pointerEvents = 'none'; // Disable interaction
-    }
-});
+document.getElementById('filter_toggle').addEventListener('click', function (e) {
+e.preventDefault();
+var filterMenu = document.getElementById('filter_menu');
 
-</script>
-{% endblock %}
+// Check if the menu is currently hidden, then toggle its visibility
+if (filterMenu.style.opacity === '0') {
+filterMenu.style.opacity = '1'; // Show the menu
+filterMenu.style.pointerEvents = 'auto'; // Allow interaction
+} else {
+filterMenu.style.opacity = '0'; // Hide the menu
+filterMenu.style.pointerEvents = 'none'; // Disable interaction
+}
+});
+		</script>
+	{% endblock %}
 {% endblock %}
