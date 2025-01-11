@@ -102,6 +102,11 @@ class CartController extends AbstractController
         $detailedCart = [];
         $total = 0;
         $totalQuantity = 0;
+        if ($sessionInterface->get('cart') == null) {
+            $this->addFlash('error', 'Your cart is empty');
+            $sessionInterface->set('cart', []);
+            return $this->redirectToRoute('app_home');
+        }
         foreach ($sessionInterface->get('cart', []) as $id => $qty) {
             $menuItem = $mir->find($id);
             $detailedCart[] = [
@@ -112,16 +117,23 @@ class CartController extends AbstractController
             $totalQuantity += $qty;
             $total += ($menuItem->getPrice() * $qty);
         }
-        
 
-        if (in_array('ROLE_ADMIN', $this->getUser()->getRoles()) || in_array('ROLE_EMPLOYEE', $this->getUser()->getRoles())) {
+        if ($this->getUser()) {
+            if (in_array('ROLE_ADMIN', $this->getUser()->getRoles()) || in_array('ROLE_EMPLOYEE', $this->getUser()->getRoles())) {
 
 
-            return $this->render('cart/employeeCart.html.twig', [
-                'items' => $detailedCart,
-                'total' => $total,
-                'totalQuantity' => $totalQuantity
-            ]);
+                return $this->render('cart/employeeCart.html.twig', [
+                    'items' => $detailedCart,
+                    'total' => $total,
+                    'totalQuantity' => $totalQuantity
+                ]);
+            } else {
+                return $this->render('cart/index.html.twig', [
+                    'items' => $detailedCart,
+                    'total' => $total,
+                    'totalQuantity' => $totalQuantity
+                ]);
+            }
         } else {
             return $this->render('cart/index.html.twig', [
                 'items' => $detailedCart,
@@ -137,7 +149,6 @@ class CartController extends AbstractController
     #[Route('/employee/order/payment', name: 'employee_pay')]
     public function employeePay(Request $request)
     {
-        dd('inside the employee encaissement');
         $paymentMethod = $request->request->get('payment_method');
 
         if (!$paymentMethod) {

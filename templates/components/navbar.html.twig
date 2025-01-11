@@ -3,14 +3,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Navbar Example</title>
+		<title>Navbar</title>
 		<script src="https://cdn.tailwindcss.com"></script>
 	</head>
 	<body
 		class="bg-gray-100">
 
 		<!-- Navbar -->
-		<nav class="bg-white shadow-md">
+		<nav class="relative bg-center bg-cover shadow-md" style="background-image: url('https://www.eatingwell.com/thmb/m5xUzIOmhWSoXZnY-oZcO9SdArQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/article_291139_the-top-10-healthiest-foods-for-kids_-02-4b745e57928c4786a61b47d8ba920058.jpg');">
 			<div
 				class="container flex items-center justify-between px-4 py-3 mx-auto">
 				<!-- Brand Name -->
@@ -92,7 +92,7 @@
 							<a href="{{ path('app_menu_item') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">
 								Menu Item
 							</a>
-							
+
 						{% endif %}
 
 						{% if is_granted('ROLE_ADMIN')%}
@@ -102,9 +102,9 @@
 							<a href="{{ path('admin_report') }}" class="text-[rgb(35,31,32)] hover:text-blue-500">
 								Sales Report
 							</a>
-							
+
 						{% endif %}
-						
+
 						<a href="{{path('app_logout')}}" class="text-[rgb(35,31,32)] hover:text-blue-500">Logout</a>
 					{% else %}
 
@@ -120,6 +120,9 @@
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
 						</svg>
 					</button>
+					<span class="absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full top-2 right-">
+						{{ totalQty }}
+					</span>
 				</div>
 			</div>
 
@@ -129,9 +132,67 @@
 					<svg class="w-6 h-6 text-gray-800 hover:text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 7M7 13l-2 7h14m-4-7a2 2 0 10-4 0 2 2 0 004 0z"></path>
 					</svg>
+
 				</a>
-				<a href="{{path('app_login')}}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Login</a>
+				{% if app.user %}
+					<!-- Profile Dropdown -->
+					<div class="relative">
+						<button class="w-full text-left px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100 flex items-center justify-between" onclick="toggleDropdown('profile-menu')">
+							My Profile
+							<!-- Dropdown Icon -->
+							<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+							</svg>
+						</button>
+						<!-- Dropdown Menu -->
+						<div id="profile-menu" class="flex-col hidden w-full bg-white border border-gray-200 rounded-md shadow-md">
+							<a href="{{ path('user_edit', {'id': app.user.id}) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Edit Profile</a>
+							<a href="{{ path('user_view', {'id': app.user.id}) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">View Profile</a>
+							<a href="{{ path('user_pwd_change', {'id': app.user.id}) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Change Password</a>
+						</div>
+					</div>
+
+					<!-- Orders Dropdown -->
+					<div class="relative">
+						<button class="w-full text-left px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100 flex items-center justify-between" onclick="toggleDropdown('orders-menu')">
+							Orders
+							<!-- Dropdown Icon -->
+							<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+							</svg>
+						</button>
+						<!-- Dropdown Menu -->
+						<div id="orders-menu" class="flex-col hidden w-full bg-white border border-gray-200 rounded-md shadow-md">
+							<a href="{{ path('order_recent') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Track Order</a>
+							<a href="{{ path('app_order')}}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Order History</a>
+							{% if is_granted('ROLE_EMPLOYEE') or is_granted('ROLE_ADMIN') %}
+								<a href="{{ path('app_orderList')}}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">All Orders</a>
+							{% endif %}
+						</div>
+					</div>
+
+					{% if is_granted('ROLE_EMPLOYEE') or  is_granted('ROLE_ADMIN')%}
+						<a href="{{ path('app_menu_item') }}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Menu Item</a>
+					{% endif %}
+
+					{% if is_granted('ROLE_ADMIN')%}
+						<a href="{{ path('app_user') }}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Users</a>
+						<a href="{{ path('admin_report') }}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Sales Report</a>
+					{% endif %}
+
+					<a href="{{path('app_logout')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Logout</a>
+				{% else %}
+					<a href="{{path('app_register')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Register</a>
+					<a href="{{path('app_login')}}" class="block px-4 py-2 text-[rgb(35,31,32)] hover:bg-gray-100">Login</a>
+				{% endif %}
 			</div>
+
+			<script>
+				function toggleDropdown(menuId) {
+const menu = document.getElementById(menuId);
+menu.classList.toggle('hidden');
+}
+			</script>
 		</nav>
 
 		<script>

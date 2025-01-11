@@ -37,20 +37,26 @@
 		{{title}}
 	</h1>
 
-	<div class="flex flex-row flex-wrap justify-center gap-4 p-5 m-5">
+	<div class="flex flex-row flex-wrap justify-center gap-5 p-5 m-5">
 		{% for menuItem in menuItems %}
 			<div
-				class="w-[280px] h-[300px] bg-white rounded-lg shadow-lg overflow-hidden flex flex-col justify-between relative">
+				class="w-[350px] h-[350px] bg-white rounded-lg shadow-lg overflow-hidden flex flex-col justify-between relative">
 				<!-- Favorite Star Icon -->
-				<button class="absolute text-yellow-500 top-2 right-2 hover:text-yellow-700 focus:outline-none favorite-btn" data-menu-id="{{ menuItem.id }}">
+				<button class="absolute top-2 right-2 hover:text-yellow-700 focus:outline-none favorite-btn" data-menu-id="{{ menuItem.id }}" style="color: #ff69b4;">
 					<svg class="w-6 h-6 star-icon" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20">
-						<path class="star-path" fill="none" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.946a1 1 0 00.95.69h4.15c.969 0 1.371 1.24.588 1.81l-3.357 2.44a1 1 0 00-.364 1.118l1.287 3.945c.3.922-.755 1.688-1.54 1.118l-3.356-2.44a1 1 0 00-1.175 0l-3.356 2.44c-.784.57-1.838-.196-1.54-1.118l1.286-3.945a1 1 0 00-.364-1.118L2.328 9.374c-.783-.57-.38-1.81.588-1.81h4.15a1 1 0 00.95-.69l1.286-3.946z"/>
+						<defs>
+							<linearGradient id="multicolor-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+								<stop offset="0%" style="stop-color:#ff69b4;stop-opacity:1"/>
+								<stop offset="100%" style="stop-color:#8a2be2;stop-opacity:1"/>
+							</linearGradient>
+						</defs>
+						<path class="star-path" fill="none" stroke="url(#multicolor-gradient)" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.946a1 1 0 00.95.69h4.15c.969 0 1.371 1.24.588 1.81l-3.357 2.44a1 1 0 00-.364 1.118l1.287 3.945c.3.922-.755 1.688-1.54 1.118l-3.356-2.44a1 1 0 00-1.175 0l-3.356 2.44c-.784.57-1.838-.196-1.54-1.118l1.286-3.945a1 1 0 00-.364-1.118L2.328 9.374c-.783-.57-.38-1.81.588-1.81h4.15a1 1 0 00.95-.69l1.286-3.946z"/>
 					</svg>
 				</button>
 
 				<!-- Image Section -->
-				<div class="flex justify-center mt-4">
-					<img src="../img/{{menuItem.name}}.jpg" alt="Food Image" class="w-32 h-32 border-2 border-gray-300 rounded-full"/>
+				<div class="flex justify-center bg-gray-100 h-1/2">
+					<img src="../img/{{menuItem.name}}.jpg" alt="Food Image" class="object-cover w-full h-full"/>
 				</div>
 				<!-- Content Section -->
 				<div
@@ -70,7 +76,7 @@
 						<!-- Remove from Cart Button -->
 						<form action="{{ path('cart_remove', {'id': menuItem.id}) }}" method="POST" class="inline-block">
 							<button type="submit" class="flex items-center justify-center w-10 h-10 text-red-600 border-2 border-red-600 rounded-full hover:text-red-800 hover:border-red-800">
-								<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" stroke-width="2">
 									<path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd"/>
 								</svg>
 							</button>
