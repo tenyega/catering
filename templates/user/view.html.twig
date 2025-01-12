@@ -1,36 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User List Page
+{% block title %}User  Page
 {% endblock %}
 
 {% block body %}
+	<div class="container px-6 py-12 mx-auto">
+		<h1 class="mb-8 text-4xl font-extrabold text-gray-800">User
+		</h1>
 
-	<div
-		class="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-3">
-
-		<!-- Example Menu Item Card -->
-		<div class="overflow-hidden bg-white rounded-lg shadow-md">
-
-			<div class="p-4">
-				<h3 class="mb-2 text-lg font-bold">{{user.firstName}}
-					{{user.lastName}}</h3>
-
-				<p class="text-sm text-gray-600">
-					Email:
-					{{user.email}}</p>
-			
-				<p class="text-sm text-gray-600">
-					Phone:
-					{{user.phone}}</p>
-				<p class="text-sm text-gray-600">
-					Address:
-					{{user.address}}</p>
+		<div
+			class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			<!-- Example User Card -->
+			<div class="overflow-hidden transition-shadow duration-300 bg-white rounded-lg shadow hover:shadow-lg">
+				<div class="p-6">
+					<h3 class="mb-4 text-xl font-semibold text-gray-800">
+						{{ user.firstName }}
+						{{ user.lastName }}
+					</h3>
+					<p class="mb-2 text-sm text-gray-600">
+						<span class="font-medium text-gray-700">Email:</span>
+						{{ user.email }}
+					</p>
+					<p class="mb-2 text-sm text-gray-600">
+						<span class="font-medium text-gray-700">Phone:</span>
+						{{ user.phone }}
+					</p>
+					<p class="text-sm text-gray-600">
+						<span class="font-medium text-gray-700">Address:</span>
+						{{ user.address }}
+					</p>
+				</div>
 			</div>
-
 		</div>
-
-
 	</div>
-
-
 {% endblock %}

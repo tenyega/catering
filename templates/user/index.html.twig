@@ -4,43 +4,55 @@
 {% endblock %}
 
 {% block body %}
-	<a href="{{ path('user_add') }}" class="px-3 py-1 text-white bg-green-500 rounded hover:bg-green-600">
-		Add new User
-	</a>
-	<div class="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-3">
-		{% for user in users %}
+	<div
+		class="container px-6 py-10 mx-auto">
+		<!-- Add New User Button -->
+		<div class="flex justify-end mb-5 mr-20">
+			<a href="{{ path('user_add') }}" class="inline-flex items-center px-5 py-3 text-white transition-colors duration-300 bg-green-600 rounded-lg shadow-lg hover:bg-green-700">
+				<span class="mr-2 text-lg font-semibold">Add New User</span>
+				<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+				</svg>
+			</a>
+		</div>
 
-			<!-- Example Menu Item Card -->
-			<div class="overflow-hidden bg-white rounded-lg shadow-md">
+		<!-- User Cards Grid -->
+		<div class="grid grid-cols-1 gap-8 p-10 ml-10 mr-10 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+			{% for user in users %}
+				<!-- User Card -->
+				<div class="transition-all duration-300 bg-white rounded-lg shadow-xl hover:shadow-2xl">
+					<div
+						class="p-6">
+						<!-- User Name -->
+						<h3 class="mb-4 text-xl font-bold text-gray-800">{{ user.firstName }}
+							{{ user.lastName }}</h3>
 
-				<div class="p-4">
-					<h3 class="mb-2 text-lg font-bold">{{user.firstName}}
-						{{user.lastName}}</h3>
+						<!-- User Details -->
+						<p class="mb-3 text-sm text-gray-600">
+							<span class="font-medium text-gray-800">Email:</span>
+							{{ user.email }}
+						</p>
+						<p class="mb-3 text-sm text-gray-600">
+							<span class="font-medium text-gray-800">Phone:</span>
+							{{ user.phone }}
+						</p>
+						<p class="text-sm text-gray-600">
+							<span class="font-medium text-gray-800">Address:</span>
+							{{ user.address }}
+						</p>
+					</div>
 
-					<p class="text-sm text-gray-600">
-						Email:
-						{{user.email}}</p>
-				
-					<p class="text-sm text-gray-600">
-						Phone:
-						{{user.phone}}</p>
-					<p class="text-sm text-gray-600">
-						Address:
-						{{user.address}}</p>
+					<!-- Action Buttons -->
+					<div class="flex items-center justify-between px-6 py-4 bg-gray-100 rounded-b-lg">
+						<a href="{{ path('user_edit', { 'id': user.id }) }}" class="px-4 py-2 text-sm text-white transition-all duration-300 bg-yellow-500 rounded-lg hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+							Edit
+						</a>
+						<a href="{{ path('user_delete', { 'id': user.id }) }}" class="px-4 py-2 text-sm text-white transition-all duration-300 bg-red-500 rounded-lg hover:bg-red-600 focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+							Delete
+						</a>
+					</div>
 				</div>
-				<div class="flex justify-between px-4 py-2 bg-gray-100">
-					<a href="{{ path('user_edit', { 'id': user.id }) }}" class="px-3 py-1 text-white bg-yellow-500 rounded hover:bg-yellow-600">
-						Edit
-					</a>
-
-					<a href="{{ path('user_delete', { 'id': user.id }) }}" class="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600">
-						Delete
-					</a>
-				</div>
-			</div>
-		{% endfor %}
-
+			{% endfor %}
+		</div>
 	</div>
-
-
 {% endblock %}

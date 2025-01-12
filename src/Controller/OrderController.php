@@ -45,7 +45,7 @@ class OrderController extends AbstractController
         if ($paymentStatus) {
             $criteria['paymentStatus'] = $paymentStatus;
         }
-       
+
         $orders = $or->findBy($criteria, ['orderDate' => 'DESC']);
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
@@ -63,9 +63,34 @@ class OrderController extends AbstractController
             ['user' => $user, 'paymentStatus' => 'PAID'],
             ['orderDate' => 'DESC']
         );
+        if ($recentOrder) {
+            $statusID = $recentOrder->getOrderStatus();
+
+            switch ($statusID) {
+                case 'RECEIVED':
+                    $statusID = 1;
+                    break;
+                case 'PROCESSING':
+                    $statusID = 2;
+                    break;
+                case 'DELIVERY':
+                    $statusID = 3;
+                    break;
+                case 'DELIVERED':
+                    $statusID = 4;
+                    break;
+                case 'CANCELLED':
+                    $statusID = 5;
+                    break;
+            }
+        } else {
+            $statusID = 0;
+        }
+
 
         return $this->render('order/recent.html.twig', [
             'order' => $recentOrder,
+            'statusID' => $statusID
         ]);
     }
 
@@ -117,28 +142,27 @@ class OrderController extends AbstractController
 
         $this->entityManager->flush();
         $this->addFlash('success', "Your order is cancelled sucessfully");
-          return $this->render('order/cancel.html.twig', [
-              'order' => $recentOrder,
-          ]);
-      }
+        return $this->render('order/cancel.html.twig', [
+            'order' => $recentOrder,
+        ]);
+    }
 
-      #[Route('/user/save/SR', name: 'saveSR')]
-      public function specialRequest(Request $request, OrderRepository $or, UserRepository  $ur, PaymentRepository $pr): Response
-      {
+    #[Route('/user/save/SR', name: 'saveSR')]
+    public function specialRequest(Request $request, OrderRepository $or, UserRepository  $ur, PaymentRepository $pr): Response
+    {
         $data = json_decode($request->getContent(), true);
         $specialRequest = $data['special_request'] ?? null;
-          $user = $this->getUser();
-          $recentOrder = $or->findOneBy(
-              ['user' => $user, 'paymentStatus' => 'PAID'],
-              ['orderDate' => 'DESC']
-          );
-          $recentOrder->setSpecialRequest($specialRequest); 
-    
-        $this->entityManager->flush(); 
-       
-      }
-       
- 
+        $user = $this->getUser();
+        $recentOrder = $or->findOneBy(
+            ['user' => $user, 'paymentStatus' => 'PAID'],
+            ['orderDate' => 'DESC']
+        );
+        $recentOrder->setSpecialRequest($specialRequest);
+
+        $this->entityManager->flush();
+    }
+
+
 
 
 
@@ -171,7 +195,7 @@ class OrderController extends AbstractController
         $this->entityManager->flush();
         $orders = $or->findAll();
         $this->addFlash('success', "The order status has been updated successfully");
-        
+
         // Redirect to the orders list
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
@@ -179,7 +203,4 @@ class OrderController extends AbstractController
 
         ]);
     }
-
-
-   
 }

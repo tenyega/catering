@@ -4,40 +4,54 @@
 {% endblock %}
 
 {% block body %}
-	{% if is_granted('ROLE_ADMIN') %}
-		<a href="{{ path('menu_item_add') }}" class="px-3 py-1 text-white bg-green-500 rounded hover:bg-green-600">
-			Add new Menu Item
-		</a>
-	{% endif %}
-	<div class="grid grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-3">
-		{% for menuItem in menuItems %}
-
-			<!-- Example Menu Item Card -->
-			<div class="overflow-hidden bg-white rounded-lg shadow-md">
-
-				<img class="object-cover w-full h-48" src="{{ file_exists('img/' ~ menuItem.name ~ '.jpg') ? asset('img/' ~ menuItem.name ~ '.jpg') : asset('img/default.jpg') }}" alt="Menu Image">
-				<div class="p-4">
-					<h3 class="mb-2 text-lg font-bold">{{menuItem.name}}</h3>
-					<p class="mb-2 text-sm text-gray-700">
-						{{menuItem.description}}
-					</p>
-					<p class="text-sm font-semibold text-gray-900">Price: ${{menuItem.price}}</p>
-					<p class="text-sm text-gray-600">Category:
-						{{menuItem.category}}</p>
-				</div>
-				<div class="flex justify-between px-4 py-2 bg-gray-100">
-					<a href="{{ path('menu_item_edit', { 'id': menuItem.id }) }}" class="px-3 py-1 text-white bg-yellow-500 rounded hover:bg-yellow-600">
-						Edit
-					</a>
-					{% if is_granted('ROLE_ADMIN') %}
-						<a href="{{ path('menu_item_delete', { 'id': menuItem.id }) }}" class="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600">
-							Delete
-						</a>
-					{% endif %}
-
-
-				</div>
+	<div
+		class="container px-6 py-10 mx-auto">
+		<!-- Add New Menu Item Button (for Admins) -->
+		{% if is_granted('ROLE_ADMIN') %}
+			<div class="flex justify-end mb-6 mr-20">
+				<a href="{{ path('menu_item_add') }}" class="inline-flex items-center px-5 py-3 text-white transition-colors duration-300 bg-green-600 rounded-lg shadow-lg hover:bg-green-700">
+					<span class="mr-2 text-lg font-semibold">Add New Menu Item</span>
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+					</svg>
+				</a>
 			</div>
-		{% endfor %}
+		{% endif %}
+
+		<!-- Menu Items Grid -->
+		<div class="grid grid-cols-1 gap-8 ml-20 mr-20 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+			{% for menuItem in menuItems %}
+				<!-- Menu Item Card with rounded corners -->
+				<div class="transition-all duration-300 bg-white rounded-lg shadow-xl hover:shadow-2xl">
+					<div class="overflow-hidden rounded-lg">
+						<!-- Ensuring image also has rounded corners -->
+						<!-- Image Section -->
+					<img class="object-cover w-full h-48 rounded-t-lg" src="{{ file_exists('img/' ~ menuItem.name ~ '.jpg') ? asset('img/' ~ menuItem.name ~ '.jpg') : asset('img/default.jpg') }}" alt="Menu Image"> </div>
+
+					<!-- Content Section -->
+					<div class="p-6">
+						<h3 class="mb-4 text-xl font-bold text-gray-800">{{ menuItem.name }}</h3>
+						<p class="mb-4 text-sm text-gray-700 line-clamp-2">{{ menuItem.description }}</p>
+						<p class="text-sm font-semibold text-gray-900">Price: ${{ menuItem.price }}</p>
+						<p class="text-sm text-gray-600">Category:
+							{{ menuItem.category }}</p>
+					</div>
+
+					<!-- Action Buttons -->
+					<div
+						class="flex items-center justify-between px-6 py-4 bg-gray-100 rounded-b-lg">
+						<!-- Bottom rounded corner -->
+						<a href="{{ path('menu_item_edit', { 'id': menuItem.id }) }}" class="px-4 py-2 text-sm text-white transition-all duration-300 bg-yellow-500 rounded-md hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+							Edit
+						</a>
+						{% if is_granted('ROLE_ADMIN') %}
+							<a href="{{ path('menu_item_delete', { 'id': menuItem.id }) }}" class="px-4 py-2 text-sm text-white transition-all duration-300 bg-red-500 rounded-md hover:bg-red-600 focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+								Delete
+							</a>
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
 	</div>
 {% endblock %}

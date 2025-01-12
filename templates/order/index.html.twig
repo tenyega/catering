@@ -1,125 +1,122 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Order List Page
 {% endblock %}
 
 {% block body %}
-	{% include 'orderFilter.html.twig' with {'route': route} %}
+	<div class="container px-6 py-12 mx-auto max-w-7xl">
+		{% include 'orderFilter.html.twig' with {'route': route} %}
 
+		{% if orders == null %}
+			<h1 class="mt-20 mb-6 text-3xl font-bold text-center text-gray-800">
+				No orders to show
+			</h1>
+		{% else %}
+			<h1 class="mb-8 text-3xl font-extrabold text-center text-gray-800">
+				Total Orders:
+				{{ orders | length }}
+			</h1>
 
-
-	{% if orders == null %}
-		<h1 class="mb-6 text-3xl font-bold text-gray-800 text-center mt-20 mb-20">
-			No orders to show
-		</h1>
-	{% else %}
-		<h1 class="text-3xl font-bold text-gray-800 text-center">Total Orders:
-			{{ orders | length }}</h1>
-
-		<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-			{% for order in orders %}
-				<div
-					class="p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
-					<!-- Order ID and Date -->
-					<div class="mb-4">
-
-						<p class="text-sm text-gray-500">Date:
-							{{ order.orderDate|date('Y-m-d H:i') }}</p>
-					</div>
-
-					<!-- Payment and Order Status -->
-					<div class="mb-4">
-						<p class="text-sm font-medium text-gray-700">
-							Payment Status:
-							<span class="{% if order.paymentStatus == 'PAID' %}text-green-600{% else %}text-red-600{% endif %}">
-								{{ order.paymentStatus }}
-							</span>
-						</p>
-						<p class="text-sm font-medium text-gray-700">
-							Order Status:
-							<span id="status_span-{{ order.id }}" class="font-semibold text-blue-600">
-								{{ order.orderStatus }}
-							</span>
-						</p>
-					</div>
-
-					<!-- User Details -->
-					<div class="mb-4">
-						<p class="text-sm text-gray-700">
-							<span class="font-semibold">User:</span>
-							{{ order.getUser().getFirstName() }}
-						</p>
-					</div>
-
-					<!-- Special Request -->
-					<div class="mb-4">
-						<h3 class="text-sm font-semibold text-gray-700">Special Request:</h3>
-						<div class="p-4 mt-2 bg-gray-50 border border-gray-200 rounded-lg">
-							<p class="italic text-sm text-gray-700">{{ order.getSpecialRequest() }}</p>
-						</div>
-					</div>
-
-					<!-- Order Items -->
-					<div class="mb-6">
-						<h3 class="text-sm font-semibold text-gray-700">Order Items:</h3>
-						<ul class="mt-2 space-y-1 text-sm text-gray-700 list-disc pl-5">
-							{% for orderItem in order.getOrderItems() %}
-								<li>
-									<span class="font-medium">{{ orderItem.getMenuItem().getName() }}</span>
-									×
-									{{ orderItem.getQuantity() }}
-									- ${{ orderItem.getMenuItem().getPrice() }}
-									<span class="font-semibold">Subtotal:</span>
-									${{ orderItem.getItemPrice() }}
-								</li>
-							{% endfor %}
-						</ul>
-					</div>
-
-					<!-- Total Amount -->
-					<div class="mb-6">
-						<p class="text-xl font-bold text-gray-800">Total: ${{ order.totalAmount }}</p>
-					</div>
-					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE') %}
-						<!-- Update Order Status -->
-						<div>
-							<form action="{{ path('order_status', {id: order.id}) }}" method="post" class="space-y-4">
-								<input type="hidden" name="_token" value="{{ csrf_token('order_status' ~ order.id) }}">
-
-								<label for="order-status-{{ order.id }}" class="block text-sm font-medium text-gray-700">
-									Change Order Status:
-								</label>
-								<select id="order-status-{{ order.id }}" name="orderStatus" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-									{% for status in ['DELIVERED', 'RECEIVED', 'CANCELLED', 'PROCESSING', 'DELIVERY'] %}
-										<option value="{{ status }}" {% if order.orderStatus == status %} selected {% endif %}>
-											{{ status }}
-										</option>
-									{% endfor %}
-								</select>
-
-								<button type="submit" class="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
-									Update Status
-								</button>
-							</form>
+			<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+				{% for order in orders %}
+					<div
+						class="p-6 transition-shadow duration-300 bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg">
+						<!-- Order ID and Date -->
+						<div class="mb-4">
+							<p class="text-sm text-gray-500">
+								<span class="font-semibold">Date:</span>
+								{{ order.orderDate|date('Y-m-d H:i') }}
+							</p>
 						</div>
 
-					{% endif %}
+						<!-- Payment and Order Status -->
+						<div class="mb-4">
+							<p class="text-sm font-medium text-gray-700">
+								Payment Status:
+								<span class="{% if order.paymentStatus == 'PAID' %}text-green-600{% else %}text-red-600{% endif %}">
+									{{ order.paymentStatus }}
+								</span>
+							</p>
+							<p class="text-sm font-medium text-gray-700">
+								Order Status:
+								<span id="status_span-{{ order.id }}" class="font-semibold text-blue-600">
+									{{ order.orderStatus }}
+								</span>
+							</p>
+						</div>
 
+						<!-- User Details -->
+						<div class="mb-4">
+							<p class="text-sm text-gray-700">
+								<span class="font-semibold">User:</span>
+								{{ order.getUser().getFirstName() }}
+							</p>
+						</div>
 
-				</div>
-			{% endfor %}
-		</div>
-	{% endif %}
+						<!-- Special Request -->
+						<div class="mb-4">
+							<h3 class="text-sm font-semibold text-gray-700">Special Request:</h3>
+							<div class="p-4 mt-2 border border-gray-200 rounded-lg bg-gray-50">
+								<p class="text-sm italic text-gray-700">{{ order.getSpecialRequest() }}</p>
+							</div>
+						</div>
+
+						<!-- Order Items -->
+						<div class="mb-6">
+							<h3 class="text-sm font-semibold text-gray-700">Order Items:</h3>
+							<ul class="pl-5 mt-2 space-y-1 text-sm text-gray-700 list-disc">
+								{% for orderItem in order.getOrderItems() %}
+									<li>
+										<span class="font-medium">{{ orderItem.getMenuItem().getName() }}</span>
+										×
+										{{ orderItem.getQuantity() }}
+										- ${{ orderItem.getMenuItem().getPrice() }}
+										<span class="font-semibold">Subtotal:</span>
+										${{ orderItem.getItemPrice() }}
+									</li>
+								{% endfor %}
+							</ul>
+						</div>
+
+						<!-- Total Amount -->
+						<div class="mb-6">
+							<p class="text-xl font-bold text-gray-800">Total: ${{ order.totalAmount }}</p>
+						</div>
+
+						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE') %}
+							<!-- Update Order Status -->
+							<div>
+								<form action="{{ path('order_status', {id: order.id}) }}" method="post" class="space-y-4">
+									<input type="hidden" name="_token" value="{{ csrf_token('order_status' ~ order.id) }}">
+
+									<label for="order-status-{{ order.id }}" class="block text-sm font-medium text-gray-700">
+										Change Order Status:
+									</label>
+									<select id="order-status-{{ order.id }}" name="orderStatus" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+										{% for status in ['DELIVERED', 'RECEIVED', 'CANCELLED', 'PROCESSING', 'DELIVERY'] %}
+											<option value="{{ status }}" {% if order.orderStatus == status %} selected {% endif %}>
+												{{ status }}
+											</option>
+										{% endfor %}
+									</select>
+
+									<button type="submit" class="w-full px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+										Update Status
+									</button>
+								</form>
+							</div>
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
 
 	<script>
-		// Attach event listeners to all order status dropdowns
-document.querySelectorAll('select[id^="order-status-"]').forEach((selectElement) => {
-selectElement.addEventListener('change', function () { // Get the corresponding span element for this order
-const orderId = this.id.split('-').pop(); // Extract order ID from the select element's ID
+		document.querySelectorAll('select[id^="order-status-"]').forEach((selectElement) => {
+selectElement.addEventListener('change', function () {
+const orderId = this.id.split('-').pop();
 const statusSpan = document.querySelector (`#status_span-${orderId}`);
-
-// Update the status span text with the selected value
 if (statusSpan) {
 statusSpan.innerHTML = this.value;
 }
