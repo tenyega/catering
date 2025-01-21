@@ -30,9 +30,9 @@
 
 					<!-- Content Section -->
 					<div class="p-6">
-						<h3 class="mb-4 text-xl font-bold text-gray-800">{{ menuItem.name }}</h3>
+						<h3 class="mb-4 text-xl font-bold text-gray-800">{{ menuItem.name|replace({'_': ' '})|upper  }}</h3>
 						<p class="mb-4 text-sm text-gray-700 line-clamp-2">{{ menuItem.description }}</p>
-						<p class="text-sm font-semibold text-gray-900">Price: ${{ menuItem.price }}</p>
+						<p class="text-sm font-semibold text-gray-900">Price: &euro;{{ menuItem.price }}</p>
 						<p class="text-sm text-gray-600">Category:
 							{{ menuItem.category }}</p>
 					</div>

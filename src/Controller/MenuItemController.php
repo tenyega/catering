@@ -57,6 +57,9 @@ class MenuItemController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $b = $form->get('name')->getData();
+            $a = str_replace(' ', '_', $b);
+            $menuItem->setName($a);
             $this->entityManager->flush();
             $this->addFlash("success", "Your Menu Item has been updated Successfully");
             return $this->redirectToRoute('app_menu_item');
