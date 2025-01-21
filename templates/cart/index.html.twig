@@ -16,18 +16,18 @@
 				<table class="w-full max-w-4xl mx-auto text-left border border-collapse border-gray-200 rounded-lg shadow-md">
 					<thead class="bg-gray-100">
 						<tr>
-							<th class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300">Menu Name</th>
-							<th class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300">Price of Menu</th>
-							<th class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300">Category</th>
-							<th class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300">Quantity</th>
-							<th class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300">Total</th>
-							<th class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-300">Actions</th>
+							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Menu Name</th>
+							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Price of Menu</th>
+							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Category</th>
+							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Quantity</th>
+							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Total</th>
+							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for item in items %}
 							<tr class="hover:bg-gray-50">
-								<td class="px-4 py-2 border border-gray-300">{{ item.menuItem.name }}</td>
+								<td class="px-4 py-2 border border-gray-300">{{ item.menuItem.name|replace({'_': ' '})|upper }}</td>
 								<td class="px-4 py-2 border border-gray-300">{{ item.menuItem.price }}
 									€</td>
 								<td class="px-4 py-2 border border-gray-300">{{ item.menuItem.category }}</td>

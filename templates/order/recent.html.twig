@@ -19,7 +19,7 @@
 						<p>
 							<strong>Date:</strong>
 							{{ order.orderDate|date('Y-m-d H:i') }}</p>
-						<span>{{order.orderStatus()}}</span>
+
 						<p>
 							<strong>Payment Status:</strong>
 							<span class="{% if order.paymentStatus == 'PAID' %}text-green-600{% else %}text-red-600{% endif %}">{{ order.paymentStatus }}</span>
@@ -38,13 +38,14 @@
 					<ul class="mt-4 space-y-2">
 						{% for orderItem in order.getOrderItems() %}
 							<li class="flex justify-between">
-								<span>{{ orderItem.getMenuItem().getName() }}
-									x{{ orderItem.getQuantity() }}</span>
-								<span>${{ orderItem.getItemPrice() }}</span>
+								<span>{{ orderItem.getMenuItem().getName()|replace({'_': ' '})|upper }}
+									&nbsp; X &nbsp;
+									{{ orderItem.getQuantity() }}</span>
+								<span>&euro;{{ orderItem.getItemPrice() }}</span>
 							</li>
 						{% endfor %}
 					</ul>
-					<p class="mt-6 text-xl font-bold text-gray-800">Total: ${{ order.totalAmount }}</p>
+					<p class="mt-6 text-xl font-bold text-gray-800">Total: &euro;{{ order.totalAmount }}</p>
 				</div>
 
 				<!-- Order Tracking Section -->
@@ -62,11 +63,11 @@
         } %}
 							<li class="ml-6">
 								<span class="absolute w-8 h-8 flex items-center justify-center rounded-full -left-4
-										                    {% if statusID >= status %}
-										                        bg-green-500 text-white
-										                    {% else %}
-										                        bg-gray-400 text-gray-200
-										                    {% endif %}">
+																																																																						                    {% if statusID >= status %}
+																																																																						                        bg-green-500 text-white
+																																																																						                    {% else %}
+																																																																						                        bg-gray-400 text-gray-200
+																																																																						                    {% endif %}">
 									{% if statusID >= status %}
 										<!-- Checkmark for completed and current steps -->
 										<svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
@@ -78,11 +79,11 @@
 									{% endif %}
 								</span>
 								<h4 class="text-base font-semibold
-									                    {% if statusID == status %}
-									                        text-green-300
-									                    {% else %}
-									                        text-gray-200
-									                    {% endif %}">{{ label }}</h4>
+																																																															                    {% if statusID == status %}
+																																																															                        text-green-300
+																																																															                    {% else %}
+																																																															                        text-gray-200
+																																																															                    {% endif %}">{{ label }}</h4>
 								<p class="text-sm text-gray-300">
 									{% if status == 1 %}
 										Your order has been received.

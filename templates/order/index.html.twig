@@ -67,12 +67,14 @@
 							<ul class="pl-5 mt-2 space-y-1 text-sm text-gray-700 list-disc">
 								{% for orderItem in order.getOrderItems() %}
 									<li>
-										<span class="font-medium">{{ orderItem.getMenuItem().getName() }}</span>
-										×
+										<span class="font-medium">{{ orderItem.getMenuItem().getName()|replace({'_': ' '})|upper }}
+										</span>
+										X
 										{{ orderItem.getQuantity() }}
-										- ${{ orderItem.getMenuItem().getPrice() }}
-										<span class="font-semibold">Subtotal:</span>
-										${{ orderItem.getItemPrice() }}
+										==> &euro;{{ orderItem.getMenuItem().getPrice() }}X
+										{{ orderItem.getQuantity() }}
+										==>&euro;{{ orderItem.getItemPrice() }}					
+																																								
 									</li>
 								{% endfor %}
 							</ul>
@@ -80,7 +82,7 @@
 
 						<!-- Total Amount -->
 						<div class="mb-6">
-							<p class="text-xl font-bold text-gray-800">Total: ${{ order.totalAmount }}</p>
+							<p class="text-xl font-bold text-gray-800">Total: &euro;{{ order.totalAmount }}</p>
 						</div>
 
 						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE') %}

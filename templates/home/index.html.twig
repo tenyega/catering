@@ -62,7 +62,7 @@
 				<div
 					class="flex flex-col flex-grow p-6 text-center">
 					<!-- Name -->
-					<h2 class="text-lg font-semibold text-gray-800">{{ menuItem.name }}</h2>
+					<h2 class="text-lg font-semibold text-gray-800">{{ menuItem.name|replace({'_': ' '})|upper }}</h2>
 
 					<!-- Category and Availability -->
 					<div class="flex justify-center gap-2 mt-2 text-sm text-gray-600">
