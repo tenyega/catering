@@ -2,12 +2,13 @@
 
 {% block body %}
 	<div class="container max-w-4xl px-6 py-12 mx-auto">
-		<h1 class="mb-8 text-4xl font-extrabold text-gray-800">Edit User</h1>
+		<h1 class="mb-8 text-4xl font-extrabold text-gray-800">{{title}}
+			User</h1>
 
 		{% if is_granted('ROLE_ADMIN') %}
 			<div class="p-4 mb-6 border-l-4 border-blue-500 rounded-lg bg-blue-50">
 				<h2 class="text-lg font-semibold text-blue-800">
-					The first password is set to the first name of the user entered!
+					The password is set to the first name of the user entered!
 				</h2>
 			</div>
 		{% endif %}

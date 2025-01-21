@@ -43,13 +43,13 @@ class UserController extends AbstractController
     public function editUser(int $id, UserRepository $ur, Request $request): Response
     {
 
-      
+
         $user = $ur->findOneBy(['id' => $id]);
         if (!$user) {
             throw $this->createNotFoundException('user not found');
         }
 
-        if($user != $this->getUser() && !$this->isGranted('ROLE_ADMIN')){
+        if ($user != $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             return $this->render('home/access_denied.html.twig');
         }
 
@@ -63,10 +63,11 @@ class UserController extends AbstractController
 
             $this->entityManager->flush();
             $this->addFlash("success", "Your user has been updated Successfully");
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_user');
         }
 
         return $this->render('user/edit.html.twig', [
+            'title' => " Edit ",
             'form' => $form->createView(),
         ]);
     }
@@ -75,7 +76,7 @@ class UserController extends AbstractController
 
     public function deleteUser(User $user): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN') ) {
+        if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->render('home/access_denied.html.twig');
         }
 
@@ -120,6 +121,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', [
+            'title' => "Add ",
             'form' => $form->createView(),
         ]);
     }
@@ -127,7 +129,7 @@ class UserController extends AbstractController
 
     public function viewUser(User $user): Response
     {
-        if($user != $this->getUser() && !$this->isGranted('ROLE_ADMIN')){
+        if ($user != $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             return $this->render('home/access_denied.html.twig');
         }
 
@@ -142,7 +144,7 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordType::class);
 
-        if($user != $this->getUser()){
+        if ($user != $this->getUser()) {
             return $this->render('home/access_denied.html.twig');
         }
         $form->handleRequest($request);

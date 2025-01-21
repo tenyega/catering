@@ -1,57 +1,69 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container mx-auto p-6">
+	<style>
+		.hide {
+			display: none;
+		}
+		.show {
+			display: block;
+		}
+	</style>
+	<div
+		class="container p-6 mx-auto">
 
-    <!-- Title Section -->
-    <h1 class="text-3xl font-bold text-center mb-6">Restaurant Ticket Calculation</h1>
+		<!-- Title Section -->
+		<h1 class="mb-6 text-3xl font-bold text-center">Restaurant Ticket Calculation</h1>
 
-    <!-- Form Section -->
-    <form method="POST" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
+		<!-- Form Section -->
+		<form method="POST" class="max-w-lg p-6 mx-auto bg-white rounded-lg shadow-lg">
 
-        <div class="mb-4">
-            <label for="ticket_value" class="block text-lg font-medium text-gray-700">Ticket Restaurant Value (in currency):</label>
-            <input type="text" id="ticket_value" name="ticket_value" step="0.01" required class="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
+			<div class="mb-4">
+				<label for="ticket_value" class="block text-lg font-medium text-gray-700">Ticket Restaurant Value (in currency):</label>
+				<input type="text" id="ticket_value" name="ticket_value" step="0.01" required class="block w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+			</div>
 
-        <div class="mb-4">
-            <label for="num_tickets" class="block text-lg font-medium text-gray-700">Number of Tickets:</label>
-            <input type="number" id="num_tickets" name="num_tickets" min="1" required class="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
+			<div class="mb-4">
+				<label for="num_tickets" class="block text-lg font-medium text-gray-700">Number of Tickets:</label>
+				<input type="number" id="num_tickets" name="num_tickets" min="1" required class="block w-full p-3 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+			</div>
 
-       
 
-    </form>
+		</form>
 
-    <!-- Subtotal and Final Total Section -->
-    {% if ticket_value is defined and num_tickets is defined %}
-        {% set subtotal = ticket_value * num_tickets %}
-        <div class="mt-6 text-center">
-            <p class="text-xl font-semibold">Subtotal: <span class="font-bold text-blue-600">{{ subtotal | number_format(2) }}</span></p>
-        </div>
+		<!-- Subtotal and Final Total Section -->
+		{% if ticket_value is defined and num_tickets is defined %}
+			{% set subtotal = ticket_value * num_tickets %}
+			<div class="mt-6 text-center">
+				<p class="text-xl font-semibold">Subtotal:
+					<span class="font-bold text-blue-600">{{ subtotal | number_format(2) }}</span>
+				</p>
+			</div>
 
-        <div class="mt-4 text-center">
-            <p class="text-xl font-semibold">Final Total (after applying ticket restaurant): <span class="font-bold text-blue-600">{{ total - subtotal | number_format(2) }}</span></p>
-        </div>
-    {% endif %}
+			<div class="mt-4 text-center">
+				<p class="text-xl font-semibold">Final Total (after applying ticket restaurant):
+					<span class="font-bold text-blue-600">{{ total - subtotal | number_format(2) }}</span>
+				</p>
+			</div>
+		{% endif %}
 
-    <!-- Total Display and Payment Section -->
-    <div class="mt-12 flex flex-col items-center justify-center bg-gray-100 p-6 rounded-lg shadow-xl">
-        <h2 class="text-2xl font-bold mb-4">Total</h2>
-        <p id="total_display" class="text-4xl font-extrabold text-blue-600 mb-4">${{ total | number_format(2) }}</p>
-        <span id="payment_detail" class="text-lg text-gray-600 mb-6"></span>
-        
-        <a href="{{ path('tr_close', {'total': total}) }}" 
-           id="card_payment_btn"
-           class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition duration-200">
-            Pay
-        </a>
-          <span id="payment_detail"></span>
-    </div>
+		<!-- Total Display and Payment Section -->
+		<div class="flex flex-col items-center justify-center p-6 mt-12 bg-gray-100 rounded-lg shadow-xl">
+			<h2 class="mb-4 text-2xl font-bold">Total</h2>
+			<p id="total_display" class="mb-4 text-4xl font-extrabold text-blue-600">&euro;{{ total | number_format(2) }}</p>
+			<span id="payment_detail" class="mb-6 text-lg text-gray-600"></span>
 
-</div>
-<script>
-// Get the ticket value and number of tickets from the input fields
+			<a href="{{ path('tr_close', {'total': total}) }}" id="card_payment_btn" class="px-8 py-3 text-white transition duration-200 bg-blue-500 rounded-lg hover:bg-blue-600 hide">
+				Pay
+			</a>
+
+
+			<span id="payment_detail"></span>
+		</div>
+
+	</div>
+	<script>
+		// Get the ticket value and number of tickets from the input fields
 const ticket_value = document.getElementById('ticket_value');
 const num_tickets = document.getElementById('num_tickets');
 const payment_detail = document.getElementById('payment_detail');
@@ -62,34 +74,55 @@ const total = parseFloat("{{ total | number_format(2, '.', '') }}");
 
 // Function to update the payment details with the current values
 function updatePaymentDetail() {
-    const ticketValue = parseFloat(ticket_value.value);
-    const numTickets = parseInt(num_tickets.value);
+const ticketValue = parseFloat(ticket_value.value);
+const numTickets = parseInt(num_tickets.value);
 
-    // Clear previous child elements inside payment_detail
-    while (payment_detail.firstChild) {
-        payment_detail.removeChild(payment_detail.firstChild);
-    }
+// Clear previous child elements inside payment_detail
+while (payment_detail.firstChild) {
+payment_detail.removeChild(payment_detail.firstChild);
+}
 
-    if (!isNaN(ticketValue) && !isNaN(numTickets)) {
-        const subtotal = ticketValue * numTickets;
-        const remainingAmount = total - subtotal;
+if (!isNaN(ticketValue) && !isNaN(numTickets)) {
+const subtotal = ticketValue * numTickets;
+let remainingAmount = total - subtotal;
 
-        // Display ticket value, number of tickets, and subtotal
-        payment_detail.innerText = `${ticketValue.toFixed(2)} X ${numTickets} = ${subtotal.toFixed(2)}`;
+// Display ticket value, number of tickets, and subtotal
+payment_detail.innerText = `${
+ticketValue.toFixed(2)
+} X ${numTickets} = ${
+subtotal.toFixed(2)
+}`;
 
-        // Create a new element to show how much change needs to be returned or the insufficient funds message
-        const resultMessage = document.createElement('p');
-        
-        // Check if the remaining amount is negative
-      
-            // Otherwise, show the remaining amount (change)
-            resultMessage.innerText = `Your balance is  ${remainingAmount.toFixed(2)}. Sorry we dont return on the ticket restaurent!!!`;
-            resultMessage.style.color = 'green';  // Optional styling for the change amount
-       
+// Create a new element to show how much change needs to be returned or the insufficient funds message
+const resultMessage = document.createElement('p');
 
-        // Append the result message as a child to the payment_detail element
-        payment_detail.appendChild(resultMessage);
-    }
+let card_payment_btn = document.getElementById('card_payment_btn');
+
+card_payment_btn.classList.add('hide');
+card_payment_btn.classList.remove('show');
+// Otherwise, show the remaining amount (change)
+if (remainingAmount < 0) {
+resultMessage.innerText = `Your balance is  ${
+remainingAmount.toFixed(2)
+}. Sorry we don't return on the ticket restaurant!!!`;
+resultMessage.style.color = 'red';
+card_payment_btn.classList.add('show');
+card_payment_btn.classList.remove('hide');
+
+} else {
+
+card_payment_btn.classList.add('hide');
+card_payment_btn.classList.remove('show');
+resultMessage.innerText = `Still need to pay:   ${
+remainingAmount.toFixed(2)
+}`;
+resultMessage.style.color = 'green'; // Optional styling for the change amount
+}
+
+
+// Append the result message as a child to the payment_detail element
+payment_detail.appendChild(resultMessage);
+}
 }
 
 // Event listeners to trigger the update when either input changes
@@ -98,9 +131,7 @@ num_tickets.addEventListener('input', updatePaymentDetail);
 
 // Initial update to set the correct message based on initial values
 updatePaymentDetail();
-</script>
-
-
+	</script>
 
 
 {% endblock %}

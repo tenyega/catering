@@ -60,12 +60,38 @@ class MenuItemController extends AbstractController
             $b = $form->get('name')->getData();
             $a = str_replace(' ', '_', $b);
             $menuItem->setName($a);
+
+            $uploadedFile = $form->get('img')->getData();
+
+            if ($uploadedFile) {
+                // Generate a custom name for the file
+                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $customFilename = $a . '.' . $uploadedFile->guessExtension();
+
+                // Define the path to the public folder
+                $publicDirectory = $this->getParameter('kernel.project_dir') . '/public/img';
+                //dd($publicDirectory);
+                // Move the file to the public/uploads directory
+                try {
+                    $uploadedFile->move($publicDirectory, $customFilename);
+                } catch (FileException $e) {
+                    // Handle exception if something happens during file upload
+                    throw new \Exception('Failed to upload the file: ' . $e->getMessage());
+                }
+
+                // (Optional) Save the custom filename to the database if needed
+                // $menuItem = $form->getData();
+                $menuItem->setImg($customFilename); // Assuming 'setImage' exists in your entity
+            }
+
+
             $this->entityManager->flush();
             $this->addFlash("success", "Your Menu Item has been updated Successfully");
             return $this->redirectToRoute('app_menu_item');
         }
 
         return $this->render('menu_item/edit.html.twig', [
+            'title' => "Edit ",
             'form' => $form->createView(),
         ]);
     }
@@ -152,6 +178,7 @@ class MenuItemController extends AbstractController
         }
 
         return $this->render('menu_item/edit.html.twig', [
+            'title' => 'Add ',
             'form' => $form->createView(),
         ]);
     }
