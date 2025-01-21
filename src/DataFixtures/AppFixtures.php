@@ -297,8 +297,8 @@ class AppFixtures extends Fixture
                 ->setCategory($category)
                 ->setDescription($faker->paragraph(3, true))
                 ->setName($name)
-                ->setPrice($faker->randomFloat(2, 0, 100))
-                ->setImg("img1.jpg")
+                ->setPrice($faker->randomFloat(2, 0, 30))
+                ->setImg($name . ".jpg")
             ;
             $menuItemArray[] = $menuItem;
             $manager->persist($menuItem);
