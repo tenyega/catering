@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Security\Core\Security;
 
 class ChangePasswordType extends AbstractType
 {
@@ -20,11 +21,9 @@ class ChangePasswordType extends AbstractType
                 'label' => 'Current Password',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Please enter your current password']),
-                    new Callback(function ($value, ExecutionContextInterface $context) {
-                        // Access the user entity from the options
-                        $user = $context->getRoot()->getConfig()->getOption('user');
+                    new Callback(function ($value, ExecutionContextInterface $context) use ($options) {
 
-                        // Check if the current password is correct
+                        $user = $options['data']['user']; // Get the user passed as an option
                         if (!$user || !password_verify($value, $user->getPassword())) {
                             $context->buildViolation('The current password is incorrect.')
                                 ->addViolation();

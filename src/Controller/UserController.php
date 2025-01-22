@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Repository\UserRepository;
 use App\Form\UserType;
 use App\Entity\User;
@@ -142,7 +143,10 @@ class UserController extends AbstractController
     public function changePwd(Request $request): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(ChangePasswordType::class);
+        //passing the current connected user to the ChangePasswordType form to compare the password which the user has entered and the user which is connected 
+        $form = $this->createForm(ChangePasswordType::class, [
+            'user' => $user
+        ]);
 
         if ($user != $this->getUser()) {
             return $this->render('home/access_denied.html.twig');

@@ -287,16 +287,39 @@ composer require google/recaptcha-bundle
 To launch the mailer service 
 symfony console messenger:consume async -vv
 
+1-------------------------------- Validations to the Change Password is done -------------------------------
 
-1. Change password validation added to check if the current password is same as that of password in the database.
-	using a callback funtion in the constraints. and checking execution context interface 
-	and getting root and getting its config with getting an option of user. which brings the user. 
-	ones we have the user, we verify its password using the password_verify function(); 
-	Later if its not matched the builder will build a violationa and add this violation in the constraints to show to the user. 
+1. first of all when you call the ChangePasswordType form, pass the user as an option to the form.
+		//passing the current connected user to the ChangePasswordType form to compare the password which the user has entered and the user which is connected 
+        $form = $this->createForm(ChangePasswordType::class, [
+            'user' => $user
+        ]);
+
+1. inside the callback function under the constraints, where you can access the options directly inside the call back function, where the  buildForm(FormBuilderInterface $builder, array $options): automatically accepts the options. 
+     
+	new Callback(function ($value, ExecutionContextInterface $context) use ($options) {
+
+                        $user = $options['data']['user']; // Get the user passed as an option
+                        if (!$user || !password_verify($value, $user->getPassword())) {// here the password_verify is the function that actually does the verification as the values are same and also to check if the user really is an object . 
+						
+                            $context->buildViolation('The current password is incorrect.')
+                                ->addViolation();
+                        }
+                    }),  
+
 2. check the new password entered contains atleast 6 char. 
 	using Assrt\Length() 
 3. check the confirm password is same as that of new password entered by the user. 
 	Again using a callback function. 
 	where the form is collected using the context->getRoot() function. 
 	where will get the newPassword field of the form and compare it with the value of the confirmPassord itself 
+4. At the twig side of the change password added 
+	{% if form.currentPassword.vars.errors|length > 0 %}
+					<div class="mt-1 text-sm text-red-500 errorMsg">
+						{% for error in form.currentPassword.vars.errors %}
+							{{ error.message }}
+						{% endfor %}
+					</div>
+				{% endif %} 
+	To show the error message in red color. 
 NEED TO DO THE VALIDATIONS 
