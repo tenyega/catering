@@ -286,3 +286,17 @@ composer require google/recaptcha-bundle
 
 To launch the mailer service 
 symfony console messenger:consume async -vv
+
+
+1. Change password validation added to check if the current password is same as that of password in the database.
+	using a callback funtion in the constraints. and checking execution context interface 
+	and getting root and getting its config with getting an option of user. which brings the user. 
+	ones we have the user, we verify its password using the password_verify function(); 
+	Later if its not matched the builder will build a violationa and add this violation in the constraints to show to the user. 
+2. check the new password entered contains atleast 6 char. 
+	using Assrt\Length() 
+3. check the confirm password is same as that of new password entered by the user. 
+	Again using a callback function. 
+	where the form is collected using the context->getRoot() function. 
+	where will get the newPassword field of the form and compare it with the value of the confirmPassord itself 
+NEED TO DO THE VALIDATIONS 

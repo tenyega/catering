@@ -14,11 +14,22 @@ class ChangePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // Add custom validation logic here if needed
         $builder
             ->add('currentPassword', PasswordType::class, [
                 'label' => 'Current Password',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Please enter your current password']),
+                    new Callback(function ($value, ExecutionContextInterface $context) {
+                        // Access the user entity from the options
+                        $user = $context->getRoot()->getConfig()->getOption('user');
+
+                        // Check if the current password is correct
+                        if (!$user || !password_verify($value, $user->getPassword())) {
+                            $context->buildViolation('The current password is incorrect.')
+                                ->addViolation();
+                        }
+                    }),
                 ],
                 'mapped' => false, // Current password is not saved in the database
             ])
