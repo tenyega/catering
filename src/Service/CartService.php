@@ -15,7 +15,7 @@ class CartService
     private $em;
     private $security;
     private $userRepo;
-    public function __construct(EntityManagerInterface $em, SecurityBundleSecurity $security,UserRepository $cr)
+    public function __construct(EntityManagerInterface $em, SecurityBundleSecurity $security, UserRepository $cr)
     {
         $this->em = $em;
         $this->security = $security;
@@ -25,8 +25,8 @@ class CartService
     public function addItemToCart(MenuItem $menuItem, int $quantity): Order
     {
         // Get the current user
-        //$user = $this->security->getUser();
-        $user = $this->userRepo->findOneBy(['id' => "151"]);
+        $user = $this->security->getUser();
+        // $user = $this->userRepo->findOneBy(['id' => "151"]);
         // Fetch or create a "cart" order
         $cart = $this->getCartForUser($user);
         if (!$cart) {
