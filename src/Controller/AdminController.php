@@ -21,7 +21,7 @@ class AdminController extends AbstractController
     #[Route('/admin', name: 'admin_report')]
     public function index(): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
+        if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->render('home/access_denied.html.twig');
         }
         $salesReport = $this->reportService->generateSalesReport();
