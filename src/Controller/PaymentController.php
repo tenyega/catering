@@ -104,6 +104,8 @@ class PaymentController extends AbstractController
     #[Route('/c/pay', name: 'cart_pay')]
     public function cart_pay(SessionInterface $sessionInterface, MenuItemRepository $mir, UserRepository $ur, EntityManagerInterface $entityManagerInterface, PaymentService $ps, Request $request)
     {
+
+        
         $specialRequest = $request->request->get('specialRequest') ?? "No Special needs ";
 
 
