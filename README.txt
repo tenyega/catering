@@ -323,3 +323,17 @@ symfony console messenger:consume async -vv
 				{% endif %} 
 	To show the error message in red color. 
 NEED TO DO THE VALIDATIONS 
+
+
+
+
+
+
+
+
+Translator for the web application
+	composer require symfony/translation
+
+
+Inside config\packages\translation.yaml 
+	change the  default_locale: en to english as ur application is in english 
