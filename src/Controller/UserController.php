@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\User;
+use App\Form\UserType;
+use App\Form\ChangePasswordType;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use App\Repository\UserRepository;
-use App\Form\UserType;
-use App\Entity\User;
-use App\Form\ChangePasswordType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class UserController extends AbstractController
@@ -27,15 +29,21 @@ class UserController extends AbstractController
 
 
     #[Route('/user', name: 'app_user')]
-    public function index(UserRepository $ur): Response
+    public function index(UserRepository $ur, PaginatorInterface $paginator, Request $request): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->render('home/access_denied.html.twig');
         }
 
         $users = $ur->findBy([], ['firstName' => 'ASC']);
+        $pagination = $paginator->paginate(
+            $users, /* query NOT result */
+            $request->query->getInt('page', 1), /* page number */
+            9 /* limit per page */
+        );
         return $this->render('user/index.html.twig', [
             'users' => $users,
+            'pagination' => $pagination
         ]);
     }
 

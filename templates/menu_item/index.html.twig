@@ -20,7 +20,7 @@
 
 		<!-- Menu Items Grid -->
 		<div class="grid grid-cols-1 gap-8 ml-20 mr-20 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-			{% for menuItem in menuItems %}
+			{% for menuItem in pagination %}
 				<!-- Menu Item Card with rounded corners -->
 				<div class="transition-all duration-300 bg-white rounded-lg shadow-xl hover:shadow-2xl">
 					<div class="overflow-hidden rounded-lg">
@@ -53,5 +53,8 @@
 				</div>
 			{% endfor %}
 		</div>
+	</div>
+	<div class="flex justify-center mt-4 mb-4 navigation">
+		{{ knp_pagination_render(pagination) }}
 	</div>
 {% endblock %}

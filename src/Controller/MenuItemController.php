@@ -7,6 +7,7 @@ use App\Entity\MenuItem;
 use App\Form\MenuItemType;
 use App\Repository\MenuItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -28,14 +29,21 @@ class MenuItemController extends AbstractController
         $this->entityManager = $entityManager;
     }
     #[Route('/menu/item', name: 'app_menu_item')]
-    public function index(MenuItemRepository $mir): Response
+    public function index(MenuItemRepository $mir, PaginatorInterface $paginator, Request $request): Response
     {
         if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
             return $this->render('home/access_denied.html.twig');
         }
         $menuItems = $mir->findBy([], ['name' => 'ASC']);
+
+        $pagination = $paginator->paginate(
+            $menuItems, /* query NOT result */
+            $request->query->getInt('page', 1), /* page number */
+            9 /* limit per page */
+        );
         return $this->render('menu_item/index.html.twig', [
             'menuItems' => $menuItems,
+            'pagination' => $pagination
         ]);
     }
 

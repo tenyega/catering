@@ -2,19 +2,20 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\UserRepository;
-use App\Repository\OrderRepository;
-use App\Repository\OrderItemRepository;
-use App\Repository\PaymentRepository;
 use App\Entity\Order;
 use Doctrine\ORM\Mapping\OrderBy;
+use App\Repository\UserRepository;
+use App\Repository\OrderRepository;
+use App\Repository\PaymentRepository;
+use App\Repository\OrderItemRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -98,7 +99,7 @@ class OrderController extends AbstractController
 
     // this lists all the orders  
     #[Route('/orders', name: 'app_orderList')]
-    public function orderList(Request $request, OrderRepository $or, UserRepository  $cr, OrderItemRepository $oir): Response
+    public function orderList(Request $request, OrderRepository $or, PaginatorInterface $paginator, UserRepository  $cr, OrderItemRepository $oir): Response
     {
         if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
             return $this->render('home/access_denied.html.twig');
@@ -118,10 +119,16 @@ class OrderController extends AbstractController
         // Fetch filtered orders
         $orders = $or->findBy($criteria);
 
+        $pagination = $paginator->paginate(
+            $orders, /* query NOT result */
+            $request->query->getInt('page', 1), /* page number */
+            7 /* limit per page */
+        );
 
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
-            'route' => 'app_orderList'
+            'route' => 'app_orderList',
+            'pagination' => $pagination
 
         ]);
     }
