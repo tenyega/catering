@@ -13,34 +13,31 @@
 			{% endblock %}
 			<script src="https://cdn.tailwindcss.com"></script>
 		{% endblock %}
-		<head>
-  <script src="https://www.google.com/recaptcha/enterprise.js?render=RECAPTCHA_KEY"></script>
-  <!-- Your code -->
-</head>
 	</head>
-	<body>
-		{{ include('components/navbar.html.twig') }}
-		{% for label, messages in app.flashes %}
-			<div class="mb-4 p-4 rounded-lg
-																																			        {% if label == 'success' %}
-																																			            bg-green-100 text-green-800 border border-green-300
-																																			        {% elseif label == 'error' %}
-																																			            bg-red-100 text-red-800 border border-red-300
-																																			        {% elseif label == 'warning' %}
-																																			            bg-yellow-100 text-yellow-800 border border-yellow-300
-																																			        {% else %}
-																																			            bg-gray-100 text-gray-800 border border-gray-300
-																																			        {% endif %}">
-				{% for message in messages %}
-					<p>{{ message }}</p>
-				{% endfor %}
-			</div>
+	<head>
+		<script src="https://www.google.com/recaptcha/enterprise.js?render=6Lce-MQqAAAAAMcAXguDdJ-GQ1cpR4aUE0gCu9ZT"></script>
+		<!-- Your code -->
+	</head>
+</html></head><body>
+{{ include('components/navbar.html.twig') }}
+{% for label, messages in app.flashes %}
+	<div class="mb-4 p-4 rounded-lg
+																																						        {% if label == 'success' %}
+																																						            bg-green-100 text-green-800 border border-green-300
+																																						        {% elseif label == 'error' %}
+																																						            bg-red-100 text-red-800 border border-red-300
+																																						        {% elseif label == 'warning' %}
+																																						            bg-yellow-100 text-yellow-800 border border-yellow-300
+																																						        {% else %}
+																																						            bg-gray-100 text-gray-800 border border-gray-300
+																																						        {% endif %}">
+		{% for message in messages %}
+			<p>{{ message }}</p>
 		{% endfor %}
+	</div>
+{% endfor %}
 
 
-		{% block body %}{% endblock %}
-		{{ include('components/footer.html.twig') }}
-<script src="https://unpkg.com/turbolinks"></script>
-
-	</body>
-</html>
+{% block body %}{% endblock %}
+{{ include('components/footer.html.twig') }}
+<script src="https://unpkg.com/turbolinks"></script></body></html>
