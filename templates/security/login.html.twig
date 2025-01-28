@@ -37,13 +37,13 @@
 				type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 				{#
-				                    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-				                    See https://symfony.com/doc/current/security/remember_me.html
-				                    <div class="flex items-center mb-4">
-				                        <input type="checkbox" name="_remember_me" id="_remember_me" class="mr-2">
-				                        <label for="_remember_me" class="text-gray-700">Remember me</label>
-				                    </div>
-				                #}
+								                    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+								                    See https://symfony.com/doc/current/security/remember_me.html
+								                    <div class="flex items-center mb-4">
+								                        <input type="checkbox" name="_remember_me" id="_remember_me" class="mr-2">
+								                        <label for="_remember_me" class="text-gray-700">Remember me</label>
+								                    </div>
+								                #}
 
 				<div class="flex justify-center">
 					<button type="submit" class="w-full px-4 py-3 font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -59,7 +59,7 @@
 		function onClick(e) {
 e.preventDefault();
 grecaptcha.enterprise.ready(async () => {
-const token = await grecaptcha.enterprise.execute('6Lce-MQqAAAAAMcAXguDdJ-GQ1cpR4aUE0gCu9ZT', {action: 'LOGIN'});
+const token = await grecaptcha.enterprise.execute('6Lce-MQqAAAAABHr6Zj8MFzE4XIaRyxKuLnRhi7r', {action: 'LOGIN'});
 });
 }
 	</script>

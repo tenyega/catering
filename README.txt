@@ -341,3 +341,5 @@ Inside config\packages\translation.yaml
 
 
 Modified the order entity to add a boolean IsDelivery to the Order table
+
+For accessing the database of the sub domain i need to grant and acces of the database _db_catering from the tab MYSQL a distance. 

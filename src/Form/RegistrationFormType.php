@@ -95,7 +95,12 @@ class RegistrationFormType extends AbstractType
                         'minMessage' => 'Your password should be at least {{ limit }} characters.',
                         'max' => 4096,
                     ]),
+                    new Assert\Regex([
+                        'pattern' => '/^(?=.*[A-Z])(?=.*\W).+$/',
+                        'message' => 'Your password must contain at least one uppercase letter and one special character.',
+                    ]),
                 ],
+
             ]);
     }
 
