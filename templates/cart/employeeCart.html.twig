@@ -81,20 +81,19 @@
 								</a>
 
 								<!-- Card Payment Option -->
-								<form
-									action="{{ path('cart_pay') }}" method="POST">
-									{# <input type="hidden" name="_token" value="{{ csrf_token('cart_pay') }}"> #}
-									<input type="hidden" name="d" id="new-total" value="{{total}}">
-									<a href="{{ path('cart_pay') }}" class="cursor-pointer">
-										<div class="relative flex flex-col items-center">
-											<img src="{{ asset('img/card-icon.jpg') }}" alt="Card" class="object-cover w-32 h-32 transition-transform transform rounded-md shadow-lg hover:scale-105 hover:shadow-2xl">
+								{# <form
+																	action="{{ path('cart_pay') }}" method="POST"> #}
+								{# <input type="hidden" name="_token" value="{{ csrf_token('cart_pay') }}"> #}
+								<input type="hidden" name="d" id="new-total" value="{{total}}"> <a href="{{ path('cart_pay') }}" class="cursor-pointer">
+									<div class="relative flex flex-col items-center">
+										<img src="{{ asset('img/card-icon.jpg') }}" alt="Card" class="object-cover w-32 h-32 transition-transform transform rounded-md shadow-lg hover:scale-105 hover:shadow-2xl">
 
 
-											<button type="submit" class="mt-2 text-sm font-medium text-gray-700">Card</button>
+										<button type="submit" class="mt-2 text-sm font-medium text-gray-700">Card</button>
 
-										</div>
-									</a>
-								</form>
+									</div>
+								</a>
+								{# </form> #}
 								<!-- Ticket Restaurant Payment Option -->
 								<a href="{{ path('tr_payment', {'total': total}) }}" class="cursor-pointer">
 									<div class="relative flex flex-col items-center">
