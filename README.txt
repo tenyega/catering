@@ -326,4 +326,18 @@ NEED TO DO THE VALIDATIONS
 
 
 
+
+
+
+
+
+Translator for the web application
+	composer require symfony/translation
+
+
+Inside config\packages\translation.yaml 
+	change the  default_locale: en to english as ur application is in english 
+
+
+
 Modified the order entity to add a boolean IsDelivery to the Order table
