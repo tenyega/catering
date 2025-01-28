@@ -4,83 +4,127 @@
 {% endblock %}
 
 {% block body %}
-	{% if total == 0 %}
-		<h1 class="m-20 text-2xl text-center text-gray-800 hover:text-blue-500 ">
-			Your cart is empty
-		</h1>
-	{% else %}
-		<div class="container px-4 mx-auto mt-8">
-			<h1 class="mb-6 text-3xl font-bold text-center text-gray-800">Cart Details</h1>
+{% if total == 0 %}
+	<h1 class="m-20 text-2xl text-center text-gray-800 hover:text-blue-500 ">
+		Your cart is empty
+	</h1>
+{% else %}
+	<div class="container px-4 mx-auto mt-8">
+		<h1 class="mb-6 text-3xl font-bold text-center text-gray-800">Cart Details</h1>
 
-			<div class="overflow-x-auto">
-				<table class="w-full max-w-4xl mx-auto text-left border border-collapse border-gray-200 rounded-lg shadow-md">
-					<thead class="bg-gray-100">
-						<tr>
-							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Menu Name</th>
-							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Price of Menu</th>
-							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Category</th>
-							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Quantity</th>
-							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Total</th>
-							<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for item in items %}
-							<tr class="hover:bg-gray-50">
-								<td class="px-4 py-2 border border-gray-300">{{ item.menuItem.name|replace({'_': ' '})|upper }}</td>
-								<td class="px-4 py-2 border border-gray-300">{{ item.menuItem.price }}
-									€</td>
-								<td class="px-4 py-2 border border-gray-300">{{ item.menuItem.category }}</td>
-								<td class="px-4 py-2 border border-gray-300">{{ item.qty }}</td>
-								<td class="px-4 py-2 border border-gray-300">{{ item.qty * item.menuItem.price }}
-									€</td>
-								<td class="px-4 py-2 border border-gray-300">
-									<div
-										class="flex items-center justify-between space-x-2">
-										<!-- Remove Item Button -->
-										<form action="{{ path('cart_remove', {'id': item.menuItem.id}) }}" method="POST" class="inline-block">
-											<button type="submit" class="flex items-center justify-center w-8 h-8 text-red-600 border-2 border-red-600 rounded-full hover:text-red-800 hover:border-red-800">
-												<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-													<path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd"/>
-												</svg>
-											</button>
-										</form>
-
-										<!-- Add Item Button -->
-										<form action="{{ path('cart_add', {'id': item.menuItem.id}) }}" method="POST" class="inline-block">
-											<button type="submit" class="flex items-center justify-center w-8 h-8 text-blue-600 border-2 border-blue-600 rounded-full hover:text-blue-800 hover:border-blue-800">
-												<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-													<path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
-												</svg>
-											</button>
-										</form>
-									</div>
-								</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-					<tfoot>
-						<tr class="bg-gray-100">
-							<td colspan="4" class="px-4 py-2 font-bold text-right text-gray-700 border border-gray-300">TOTAL:</td>
-							<td class="px-4 py-2 font-bold text-gray-700 border border-gray-300">{{ total }}
+		<div class="overflow-x-auto">
+			<table class="w-full max-w-4xl mx-auto text-left border border-collapse border-gray-200 rounded-lg shadow-md">
+				<thead class="bg-gray-100">
+					<tr>
+						<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Menu Name</th>
+						<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Price of Menu</th>
+						<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Category</th>
+						<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Quantity</th>
+						<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Total</th>
+						<th class="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in items %}
+						<tr class="hover:bg-gray-50">
+							<td class="px-4 py-2 border border-gray-300">{{ item.menuItem.name|replace({'_': ' '})|upper }}</td>
+							<td class="px-4 py-2 border border-gray-300">{{ item.menuItem.price }}
 								€</td>
-							<td class="px-4 py-2 text-center border border-gray-300">
-								<form action="{{ path('cart_pay') }}" method="POST">
-									<input type="hidden" name="_token" value="{{ csrf_token('cart_pay') }}">
-									<div>
-										<label for="special-request" class="block text-sm font-medium text-gray-700">Special Request:</label>
-										<textarea id="special-request" name="specialRequest" rows="3" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
-									</div>
-									<a href="{{ path('cart_pay') }}" type="submit" class="px-6 py-2 mt-4 text-white bg-green-500 rounded hover:bg-green-600 show" id="pay-now-button">
-										Pay Now
-									</a>
-								</form>
+							<td class="px-4 py-2 border border-gray-300">{{ item.menuItem.category }}</td>
+							<td class="px-4 py-2 border border-gray-300">{{ item.qty }}</td>
+							<td class="px-4 py-2 border border-gray-300">{{ item.qty * item.menuItem.price }}
+								€</td>
+							<td class="px-4 py-2 border border-gray-300">
+								<div
+									class="flex items-center justify-between space-x-2">
+									<!-- Remove Item Button -->
+									<form action="{{ path('cart_remove', {'id': item.menuItem.id}) }}" method="POST" class="inline-block">
+										<button type="submit" class="flex items-center justify-center w-8 h-8 text-red-600 border-2 border-red-600 rounded-full hover:text-red-800 hover:border-red-800">
+											<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+												<path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd"/>
+											</svg>
+										</button>
+									</form>
+
+									<!-- Add Item Button -->
+									<form action="{{ path('cart_add', {'id': item.menuItem.id}) }}" method="POST" class="inline-block">
+										<button type="submit" class="flex items-center justify-center w-8 h-8 text-blue-600 border-2 border-blue-600 rounded-full hover:text-blue-800 hover:border-blue-800">
+											<svg class="w-5 h-5 text-current" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+												<path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
+											</svg>
+										</button>
+									</form>
+								</div>
 							</td>
 						</tr>
-					</tfoot>
-				</table>
-			</div>
-		</div>
-	{% endif %}
+					{% endfor %}
+				</tbody>
+				<tfoot>
+					<tr class="bg-gray-100">
+						<td colspan="4" class="px-4 py-2 font-bold text-right text-gray-700 border border-gray-300">TOTAL:</td>
+						<td class="px-4 py-2 font-bold text-gray-700 border border-gray-300" id='total'>{{ total }}
+							€</td>
+						{% set newTotal = total %}
+						<td class="px-4 py-2 text-center border border-gray-300">
+							<form
+								action="{{ path('cart_pay') }}" method="POST">
+								{# <input type="hidden" name="_token" value="{{ csrf_token('cart_pay') }}"> #}
+								<input type="hidden" name="d" id="new-total" value="<script>document.getElementById('total').innerText</script>">
+								<div>
+									<div class="mb-4">
+										<label class="inline-flex items-center">
+											<input type="radio" class="form-radio" name="deliveryOption" value="delivery" checked>
+											<span class="ml-2">Delivery
+												<strong>(extra 1.9 €)</strong>
+											</span>
+										</label>
+										<label class="flex ml-6 justify-left items-left">
+											<input type="radio" class="form-radio" name="deliveryOption" value="pickup">
+											<span class="ml-2">Pickup<strong>( available in 30 mins)</strong>
+											</span>
+										</label>
+									</div>
+								</div>
+								<label for="special-request" class="block text-sm font-medium text-gray-700">Special Request:</label>
+								<textarea id="special-request" name="specialRequest" rows="3" class="block w-full p-2 mt-1 mb-4 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+							</div>
+							<button href="{{ path('cart_pay' ) }}" type="submit" class="px-6 py-2 mt-10 text-white bg-green-500 rounded hover:bg-green-600 show" id="pay-now-button">
+								Pay Now
+							</button>
+						</td>
+					</tr>
+				</tfoot>
+			</form>
+		</td>
+	</tr>
+</tfoot></table></div></div>{% endif %}{% endblock %}{% block javascripts %}<script>document.addEventListener('DOMContentLoaded', function () {
+const deliveryOptionInputs = document.querySelectorAll('input[name="deliveryOption"]');
+const totalElement = document.getElementById('total');
+const hiddenInput = document.getElementById('new-total');
 
-{% endblock %}
+// Parse the current total and add 1.9€ for delivery by default
+let currentTotal = parseFloat(totalElement.innerText.replace('€', '').trim());
+if (isNaN(currentTotal)) {
+currentTotal = 0;
+}
+currentTotal += 1.9;
+totalElement.innerText = currentTotal.toFixed(2) + ' €';
+hiddenInput.value = currentTotal.toFixed(2);
+// Update hidden input
+
+// Add event listeners to update the total based on delivery option
+deliveryOptionInputs.forEach(input => {
+input.addEventListener('change', function () {
+let adjustedTotal = currentTotal; // Reset to current total (with delivery fee)
+if (this.value === "pickup" && this.checked) {
+adjustedTotal -= 1.9; // Remove delivery fee for pickup
+hiddenInput.value = adjustedTotal;
+} else if (this.value === "delivery" && this.checked) {
+adjustedTotal = currentTotal; // Keep delivery fee
+hiddenInput.value = adjustedTotal;
+}
+totalElement.innerText = adjustedTotal.toFixed(2) + ' €';
+hiddenInput.value = adjustedTotal.toFixed(2); // Update hidden input
+});
+});
+});</script>{% endblock %}

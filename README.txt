@@ -323,3 +323,7 @@ symfony console messenger:consume async -vv
 				{% endif %} 
 	To show the error message in red color. 
 NEED TO DO THE VALIDATIONS 
+
+
+
+Modified the order entity to add a boolean IsDelivery to the Order table

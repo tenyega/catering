@@ -104,13 +104,14 @@ class PaymentController extends AbstractController
     #[Route('/c/pay', name: 'cart_pay')]
     public function cart_pay(SessionInterface $sessionInterface, MenuItemRepository $mir, UserRepository $ur, EntityManagerInterface $entityManagerInterface, PaymentService $ps, Request $request)
     {
+        $newTotal = $request->request->get('d'); // 'd' is the name of the hidden input
 
-        
         $specialRequest = $request->request->get('specialRequest') ?? "No Special needs ";
 
 
         $total = 0.0; // Start as a float
         $totalQuantity = 0;
+        $calculatedTotal = 0;
 
         foreach ($sessionInterface->get('cart', []) as $id => $qty) {
             $menuItem = $mir->find($id);
@@ -122,15 +123,27 @@ class PaymentController extends AbstractController
                 'qty' => $qty,
             ];
             $totalQuantity += $qty;
-            $total += ($menuItem->getPrice() * $qty);
+            $calculatedTotal =  ($menuItem->getPrice() * $qty);
+            if ($newTotal) {
+                $total = $newTotal;
+            } else {
+                $total = $calculatedTotal;
+            }
         }
 
-        $order = new Order;
+        $order = new Order();
+
         $order->setTotalAmount((float) $total)
             ->setPaymentStatus('PENDING')
             ->setOrderStatus('PROCCESSING')
             ->setSpecialRequest($specialRequest)
             ->setUser($ur->findOneBy(['id' => $this->getUser()->getId()]));
+
+        if ($calculatedTotal < $total) {
+            $order->setDelivery(true);
+        } else {
+            $order->setDelivery(false);
+        }
 
 
         // Persist and flush to save in the database
@@ -235,6 +248,7 @@ Encoding issues
             $order->setTotalAmount((float) $total)
                 ->setPaymentStatus('PAID')
                 ->setOrderStatus('PROCESSING')
+                ->setDelivery(false)
                 ->setUser($ur->findOneBy(['id' => $this->getUser()->getId()]));
 
             $entityManagerInterface->persist($order);
@@ -333,6 +347,7 @@ Encoding issues
             $order->setTotalAmount((float) $total)
                 ->setPaymentStatus('PAID')
                 ->setOrderStatus('PROCESSING')
+                ->setDelivery(false)
                 ->setUser($ur->findOneBy(['id' => $this->getUser()->getId()]));
 
             $entityManagerInterface->persist($order);

@@ -47,10 +47,12 @@ class Order
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $specialRequest = 'No special request';
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $isDelivery=true;
 
-   /** #[ORM\ManyToOne(inversedBy: 'orders')]
+    /** #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Report $report = null;
- */
+     */
 
     public function __construct()
     {
@@ -105,7 +107,7 @@ class Order
         return $this;
     }
 
-    
+
     public function getPaymentStatus(): ?string
     {
         return $this->paymentStatus;
@@ -176,7 +178,7 @@ class Order
 
         return $this;
     }
-/*
+    /*
    public function getReport(): ?Report
     {
         return $this->report;
@@ -201,4 +203,15 @@ class Order
         return $this;
     }
 
+    public function isDelivery(): ?bool
+    {
+        return $this->isDelivery;
+    }
+
+    public function setDelivery(bool $isDelivery): static
+    {
+        $this->isDelivery = $isDelivery;
+
+        return $this;
+    }
 }

@@ -32,6 +32,7 @@ class CartController extends AbstractController
     #[Route('/cart/add/{id}', name: 'cart_add', requirements: ['id' => '\d+'])]
     public function addToCart($id,  MenuItemRepository $mir, SessionInterface $sessionInterface, Request $request)
     {
+        
 
         $menuItem = $mir->find($id);
         if (!$menuItem) {

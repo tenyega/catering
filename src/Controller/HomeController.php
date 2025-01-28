@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Repository\MenuItemRepository;
 use App\Repository\OrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,9 +13,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(MenuItemRepository $mir, SessionInterface $sessionInterface): Response
+    public function index(MenuItemRepository $mir, SessionInterface $sessionInterface, Request $request): Response
     {
         $title = "Catering Cash Register 🍕";
+        // $session = $request->getSession(); // Get the session
+        // $session->clear();
         $menuItems = $mir->findBy([
             "isAvailable" => true
         ]);

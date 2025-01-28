@@ -312,10 +312,11 @@ class AppFixtures extends Fixture
                 ->setUser($faker->randomElement($userArray))
                 ->setPaymentStatus($faker->randomElement($paymentStatus))
                 ->setOrderStatus($faker->randomElement($orderStatus))
-            ;
+                ->isDelivery($faker->boolean(90));
 
             $orderArray[] = $order; // Store Order in array for easy reference
             $orderTotals[spl_object_id($order)] = 0; // Initialize total for this order in $orderTotals
+
 
             $manager->persist($order);
         }
