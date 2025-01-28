@@ -2,18 +2,20 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use App\Repository\MenuItemRepository;
 use App\Repository\OrderRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\MenuItemRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(MenuItemRepository $mir, SessionInterface $sessionInterface, Request $request): Response
+    public function index(MenuItemRepository $mir, PaginatorInterface $paginator,  SessionInterface $sessionInterface, Request $request): Response
     {
         $title = "Catering Cash Register 🍕";
         // $session = $request->getSession(); // Get the session
@@ -22,15 +24,22 @@ class HomeController extends AbstractController
             "isAvailable" => true
         ]);
 
+        $pagination = $paginator->paginate(
+            $menuItems, /* query NOT result */
+            $request->query->getInt('page', 1), /* page number */
+            9 /* limit per page */
+        );
+
         // $menuItems = $mir->findAll();
         return $this->render('home/index.html.twig', [
             'menuItems' => $menuItems,
-            'title' => $title
+            'title' => $title,
+            'pagination' => $pagination
         ]);
     }
 
     #[Route('/search/{filter}', name: 'app_filter')]
-    public function starter(string $filter, MenuItemRepository $mir)
+    public function starter(string $filter, MenuItemRepository $mir, PaginatorInterface $paginator, Request $request)
     {
 
         switch ($filter) {
@@ -58,9 +67,16 @@ class HomeController extends AbstractController
         $menuItems = $mir->findBy([
             'category' => $filter
         ]);
+
+        $pagination = $paginator->paginate(
+            $menuItems, /* query NOT result */
+            $request->query->getInt('page', 1), /* page number */
+            9 /* limit per page */
+        );
         return $this->render('home/index.html.twig', [
             'menuItems' => $menuItems,
-            'title' => $title
+            'title' => $title,
+            'pagination' => $pagination
         ]);
     }
 

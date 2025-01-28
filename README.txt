@@ -343,3 +343,31 @@ Inside config\packages\translation.yaml
 Modified the order entity to add a boolean IsDelivery to the Order table
 
 For accessing the database of the sub domain i need to grant and acces of the database _db_catering from the tab MYSQL a distance. 
+
+
+pagination 
+		composer require knplabs/knp-paginator-bundle
+		Copied content  from Vendor>knplabs>knp-paginator-bundle> template\Pagination>tailwindcss_pagination.html.twig to a new file that you have created inside the template>components>pagination.html.twig 
+		Now copy the content of yaml file from https://github.com/KnpLabs/KnpPaginatorBundle 
+		then paste it to a new yaml file that u have created under config>packages>paginator.yaml and inside this yaml file change    pagination: "components/pagination.html.twig" # sliding pagination controls template
+		Now you need to add the inside the controller where u want to use ur pagination, HomeController in my case 
+						     $pagination = $paginator->paginate(
+								$menuItems, /* query NOT result */
+								$request->query->getInt('page', 1), /* page number */
+								9 /* limit per page */
+							);
+
+							// $menuItems = $mir->findAll();
+							return $this->render('home/index.html.twig', [
+								'menuItems' => $menuItems,
+								'title' => $title,
+								'pagination' => $pagination
+							]);
+
+		To the twig file i have passed the pagination which needs to be used to loop through to show to the user on the client side 
+			like this 			{% for menuItem in pagination %}
+
+		Then add the navigation for the pages at the end of the div  inside the same file so that you will have the link to click on the each pages 
+				<div class="navigation">
+					{{ knp_pagination_render(pagination) }}
+				</div> 

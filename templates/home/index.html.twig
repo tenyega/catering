@@ -38,7 +38,7 @@
 	</h1>
 
 	<div class="flex flex-row flex-wrap justify-center gap-5 p-5 m-5">
-		{% for menuItem in menuItems %}
+		{% for menuItem in pagination %}
 			<div
 				class="w-[350px] h-[350px] bg-white rounded-lg shadow-lg overflow-hidden flex flex-col justify-between relative">
 				<!-- Favorite Star Icon -->
@@ -94,6 +94,9 @@
 				</div>
 			</div>
 		{% endfor %}
+	</div>
+	<div class="flex justify-center mt-4 mb-4 navigation">
+		{{ knp_pagination_render(pagination) }}
 	</div>
 	{% block javascripts %}
 		<script>
