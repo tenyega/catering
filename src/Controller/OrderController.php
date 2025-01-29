@@ -31,7 +31,7 @@ class OrderController extends AbstractController
 
     // this lists the orders of the user connected, here i have taken the userid 5  
     #[Route('/user/order', name: 'app_order')]
-    public function index(Request $request, OrderRepository $or, UserRepository  $ur): Response
+    public function index(Request $request, OrderRepository $or, UserRepository  $ur, PaginatorInterface $paginator): Response
     {
         $user = $ur->find($this->getUser()->getId());
 
@@ -48,10 +48,17 @@ class OrderController extends AbstractController
         }
 
         $orders = $or->findBy($criteria, ['orderDate' => 'DESC']);
+
+        $pagination = $paginator->paginate(
+            $orders, /* query NOT result */
+            $request->query->getInt('page', 1), /* page number */
+            6 /* limit per page */
+        );
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
             'user' => $user,
-            'route' => 'app_order'
+            'route' => 'app_order',
+            'pagination' => $pagination
         ]);
     }
 
@@ -117,12 +124,12 @@ class OrderController extends AbstractController
         }
 
         // Fetch filtered orders
-        $orders = $or->findBy($criteria);
+        $orders = $or->findBy($criteria, ['orderDate' => 'DESC']);
 
         $pagination = $paginator->paginate(
             $orders, /* query NOT result */
             $request->query->getInt('page', 1), /* page number */
-            7 /* limit per page */
+            6 /* limit per page */
         );
 
         return $this->render('order/index.html.twig', [
