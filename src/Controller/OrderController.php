@@ -160,7 +160,7 @@ class OrderController extends AbstractController
             'order' => $recentOrder,
         ]);
     }
-
+    // i dont think that m using this route at all 
     #[Route('/user/save/SR', name: 'saveSR')]
     public function specialRequest(Request $request, OrderRepository $or, UserRepository  $ur, PaymentRepository $pr): Response
     {
@@ -182,7 +182,7 @@ class OrderController extends AbstractController
 
     // this lists all the orders  
     #[Route('/order/status/{id}', name: 'order_status')]
-    public function orderStatus(Request $request, OrderRepository $or, Order $order, SessionInterface $session): Response
+    public function orderStatus(Request $request, OrderRepository $or, Order $order, PaginatorInterface $paginator, SessionInterface $session): Response
     {
 
         if (!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_EMPLOYEE')) {
@@ -210,10 +210,17 @@ class OrderController extends AbstractController
         $orders = $or->findAll();
         $this->addFlash('success', "The order status has been updated successfully");
 
+        $pagination = $paginator->paginate(
+            $orders,
+            $request->query->getInt('page', 1),
+            6
+        );
+
         // Redirect to the orders list
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
-            'route' => 'app_orderList'
+            'route' => 'app_orderList',
+            'pagination' => $pagination
 
         ]);
     }

@@ -371,3 +371,8 @@ pagination
 				<div class="navigation">
 					{{ knp_pagination_render(pagination) }}
 				</div> 
+
+
+
+Added a cron tache in the hostinger to send the email as and when necessary in the catering application by using the commande
+  *****php /home/u354698490/domains/hall4all.fr/public_html/catering/bin/console messenger:consume async --no-interaction --env=prod

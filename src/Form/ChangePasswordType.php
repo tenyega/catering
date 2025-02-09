@@ -40,6 +40,10 @@ class ChangePasswordType extends AbstractType
                         'min' => 6,
                         'minMessage' => 'Your password must be at least {{ limit }} characters long',
                     ]),
+                    new Assert\Regex([
+                        'pattern' => '/^(?=.*[A-Z])(?=.*\W).+$/',
+                        'message' => 'Your password must contain at least one uppercase letter and one special character.',
+                    ]),
                 ],
                 'mapped' => false, // Password update logic will handle this
             ])
