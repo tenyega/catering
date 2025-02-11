@@ -7,18 +7,11 @@
 	<div class="flex items-center justify-center min-h-screen bg-gray-100">
 		<div class="w-full max-w-sm p-8 mt-8 space-y-6 bg-white rounded-lg shadow-md">
 			<form method="post">
-				{% if error is defined and error is not empty %}
-					{% if error is iterable and error.messageKey is defined and error.messageKey == 'account.not_verified' %}
-						<div class="p-2 text-red-600 border border-red-500 rounded alert alert-danger">
-							{{ 'Your account is not verified yet, please check your email.'|trans }}
-						</div>
-					{% else %}
-						<div class="p-2 text-red-600 border border-red-500 rounded alert alert-danger">
-							{{ error|trans }}
-						</div>
-					{% endif %}
+				{% if error %}
+					<div class="p-2 text-red-600 border border-red-500 rounded alert alert-danger">
+						{{ error.messageKey|trans(error.messageData, 'security') }}
+					</div>
 				{% endif %}
-
 
 				{% if app.user %}
 					<div class="mb-4 text-sm text-center text-gray-700">
@@ -44,13 +37,13 @@
 				type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 				{#
-																												                    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-																												                    See https://symfony.com/doc/current/security/remember_me.html
-																												                    <div class="flex items-center mb-4">
-																												                        <input type="checkbox" name="_remember_me" id="_remember_me" class="mr-2">
-																												                        <label for="_remember_me" class="text-gray-700">Remember me</label>
-																												                    </div>
-																												                #}
+												                    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+												                    See https://symfony.com/doc/current/security/remember_me.html
+												                    <div class="flex items-center mb-4">
+												                        <input type="checkbox" name="_remember_me" id="_remember_me" class="mr-2">
+												                        <label for="_remember_me" class="text-gray-700">Remember me</label>
+												                    </div>
+												                #}
 
 				<div class="flex justify-center">
 					<button type="submit" class="w-full px-4 py-3 font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
