@@ -14,6 +14,9 @@ services:
   App\Service\PaymentService: ~
   App\Twig\FileExistsExtension:
         tags: [ 'twig.extension' ]
+  App\EventListener\CheckVerifiedUserListener:
+        tags:
+            - { name: kernel.event_listener, event: security.authentication.success }
 
   _defaults:
     autowire: true # Automatically injects dependencies in your services.
